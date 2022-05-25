@@ -1,0 +1,16 @@
+==================
+identColonEquals var multiple
+==================
+
+var foo, bar: type = expr
+
+---
+
+(module
+  (complexOrSimpleStmt
+    (variable
+      (identColonEquals
+        (IDENT)
+        (IDENT)
+        (typeDesc)                                                                                                                     │
+        (expr)))))

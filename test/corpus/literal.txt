@@ -1,0 +1,560 @@
+==================
+hex literal
+==================
+
+0x0123456789_ABCDEF_abcdef
+-0X0
+
+---
+
+(module
+  (literal
+    (INT_LIT))
+  (literal
+    (INT_LIT)))
+
+
+==================
+dec literal
+==================
+
+01234_56789
+-0
+
+---
+
+(module
+  (literal
+    (INT_LIT))
+  (literal
+    (INT_LIT)))
+
+==================
+oct literal
+==================
+
+0o0123_4567
+-0o0
+
+---
+
+(module
+  (literal
+    (INT_LIT))
+  (literal
+    (INT_LIT)))
+
+==================
+bin literal
+==================
+
+0b0_1
+-0B0
+
+---
+
+(module
+  (literal
+    (INT_LIT))
+  (literal
+    (INT_LIT)))
+
+==================
+uint8-64 literal
+==================
+
+01234_56789'i8
+-01234_56789'I8
+0B101'i16
+0o1234_567'i32
+0X1234_56789_abcDEF'i64
+01234_56789'u
+01234_56789'u8
+-01234_56789'U8
+0B101'u16
+0o1234_567'u32
+0X1234_56789_abcDEF'u64
+
+---
+
+(module
+  (literal
+    (INT8_LIT))
+  (literal
+    (INT8_LIT))
+  (literal
+    (INT16_LIT))
+  (literal
+    (INT32_LIT))
+  (literal
+    (INT64_LIT))
+  (literal
+    (UINT_LIT))
+  (literal
+    (UINT8_LIT))
+  (literal
+    (UINT8_LIT))
+  (literal
+    (UINT16_LIT))
+  (literal
+    (UINT32_LIT))
+  (literal
+    (UINT64_LIT)))
+
+==================
+float literal
+==================
+
+123.123e-123
+-123.123
+123e123
+-123e+123
+
+---
+
+(module
+  (literal
+    (FLOAT_LIT))
+  (literal
+    (FLOAT_LIT))
+  (literal
+    (FLOAT_LIT))
+  (literal
+    (FLOAT_LIT)))
+
+
+==================
+float32 literal
+==================
+
+0xff'f
+0xff'f32
+0b01f
+0o36'f32
+123.123f
+
+---
+
+(module
+  (literal
+    (FLOAT32_LIT))
+  (literal
+    (FLOAT32_LIT))
+  (literal
+    (FLOAT32_LIT))
+  (literal
+    (FLOAT32_LIT))
+  (literal
+    (FLOAT32_LIT)))
+
+==================
+float64 literal
+==================
+
+0xff'f
+0xff'f64
+0b01d
+0o36'D
+123.123f
+
+---
+
+(module
+  (literal
+    (FLOAT32_LIT))
+  (literal
+    (FLOAT64_LIT))
+  (literal
+    (FLOAT64_LIT))
+  (literal
+    (FLOAT64_LIT))
+  (literal
+    (FLOAT32_LIT)))
+
+==================
+char literal
+==================
+
+'0'
+'1'
+'2'
+'3'
+'4'
+'5'
+'6'
+'7'
+'8'
+'9'
+
+'a'
+'b'
+'c'
+'d'
+'e'
+'f'
+'g'
+'h'
+'i'
+'j'
+'k'
+'l'
+'m'
+'n'
+'o'
+'p'
+'q'
+'r'
+'s'
+'t'
+'u'
+'v'
+'w'
+'x'
+'y'
+'z'
+
+'A'
+'B'
+'C'
+'D'
+'E'
+'F'
+'G'
+'H'
+'I'
+'J'
+'K'
+'L'
+'M'
+'N'
+'O'
+'P'
+'Q'
+'R'
+'S'
+'T'
+'U'
+'V'
+'W'
+'X'
+'Y'
+'Z'
+
+'!'
+'@'
+'#'
+'$'
+'%'
+'^'
+'&'
+'*'
+'('
+')'
+'{'
+'}'
+'['
+']'
+'<'
+'>'
+'`'
+'~'
+'_'
+'-'
+'='
+'+'
+'/'
+'?'
+'.'
+','
+';'
+':'
+'"'
+'|'
+' '
+
+'\r'
+'\c'
+'\n'
+'\l'
+'\f'
+'\t'
+'\v'
+'\\'
+'\"'
+'\''
+'\a'
+'\b'
+'\e'
+'\xa9'
+'\123'
+
+---
+
+(module
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT))
+  (literal
+    (CHAR_LIT)))
+
+==================
+string literal
+==================
+
+"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+"!@#$%^&*(){}[]<>`~_-=+/?.,;:'|"
+"\r\c\n\l\f\t\v\\\"\'\a\b\e\xa9\123\uabcd\u{012345}"
+
+---
+
+(module
+  (literal
+    (STR_LIT))
+  (literal
+    (STR_LIT))
+  (literal
+    (STR_LIT)))
+
+==================
+triple string literal
+==================
+
+""""0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+"!@#$%^&*(){}[]<>`~_-=+/?.,;:'|"
+"\r\c\n\l\f\t\v\\\"\'\a\b\e\xa9\123\uabcd\u{012345}
+""""
+
+---
+
+(module
+  (literal
+    (TRIPLESTR_LIT)))
+
+==================
+raw string literal
+==================
+
+r"heya"
+R"hi""h\ni"
+"hi"
+
+---
+
+(module
+  (literal
+    (RSTR_LIT))
+  (literal
+    (RSTR_LIT))
+  (literal
+    (STR_LIT)))

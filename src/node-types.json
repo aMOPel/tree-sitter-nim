@@ -1,0 +1,174 @@
+[
+  {
+    "type": "RSTR_LIT",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "TRIPLESTR_LIT",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "literal",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "CHAR_LIT",
+          "named": true
+        },
+        {
+          "type": "FLOAT32_LIT",
+          "named": true
+        },
+        {
+          "type": "FLOAT64_LIT",
+          "named": true
+        },
+        {
+          "type": "FLOAT_LIT",
+          "named": true
+        },
+        {
+          "type": "INT16_LIT",
+          "named": true
+        },
+        {
+          "type": "INT32_LIT",
+          "named": true
+        },
+        {
+          "type": "INT64_LIT",
+          "named": true
+        },
+        {
+          "type": "INT8_LIT",
+          "named": true
+        },
+        {
+          "type": "INT_LIT",
+          "named": true
+        },
+        {
+          "type": "RSTR_LIT",
+          "named": true
+        },
+        {
+          "type": "STR_LIT",
+          "named": true
+        },
+        {
+          "type": "TRIPLESTR_LIT",
+          "named": true
+        },
+        {
+          "type": "UINT16_LIT",
+          "named": true
+        },
+        {
+          "type": "UINT32_LIT",
+          "named": true
+        },
+        {
+          "type": "UINT64_LIT",
+          "named": true
+        },
+        {
+          "type": "UINT8_LIT",
+          "named": true
+        },
+        {
+          "type": "UINT_LIT",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "module",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "literal",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "\"",
+    "named": false
+  },
+  {
+    "type": "\"\"\"",
+    "named": false
+  },
+  {
+    "type": "CHAR_LIT",
+    "named": true
+  },
+  {
+    "type": "FLOAT32_LIT",
+    "named": true
+  },
+  {
+    "type": "FLOAT64_LIT",
+    "named": true
+  },
+  {
+    "type": "FLOAT_LIT",
+    "named": true
+  },
+  {
+    "type": "INT16_LIT",
+    "named": true
+  },
+  {
+    "type": "INT32_LIT",
+    "named": true
+  },
+  {
+    "type": "INT64_LIT",
+    "named": true
+  },
+  {
+    "type": "INT8_LIT",
+    "named": true
+  },
+  {
+    "type": "INT_LIT",
+    "named": true
+  },
+  {
+    "type": "STR_LIT",
+    "named": true
+  },
+  {
+    "type": "UINT16_LIT",
+    "named": true
+  },
+  {
+    "type": "UINT32_LIT",
+    "named": true
+  },
+  {
+    "type": "UINT64_LIT",
+    "named": true
+  },
+  {
+    "type": "UINT8_LIT",
+    "named": true
+  },
+  {
+    "type": "UINT_LIT",
+    "named": true
+  }
+]
