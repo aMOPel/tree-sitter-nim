@@ -70,7 +70,7 @@ uint8-64 literal
 0X1234_56789_abcDEF'i64
 01234_56789'u
 01234_56789'u8
--01234_56789'U8
+01234_56789'U8
 0B101'u16
 0o1234_567'u32
 0X1234_56789_abcDEF'u64
@@ -534,10 +534,13 @@ triple string literal
 "!@#$%^&*(){}[]<>`~_-=+/?.,;:'|"
 "\r\c\n\l\f\t\v\\\"\'\a\b\e\xa9\123\uabcd\u{012345}
 """"
+r"""same"""
 
 ---
 
 (module
+  (literal
+    (TRIPLESTR_LIT))
   (literal
     (TRIPLESTR_LIT)))
 
@@ -558,3 +561,59 @@ R"hi""h\ni"
     (RSTR_LIT))
   (literal
     (STR_LIT)))
+
+==================
+generalized string literal
+==================
+
+mich_404"tree lhfea lakshd;fl"
+
+---
+
+(module
+  (generalizedLit
+    (GENERALIZED_STR_LIT)))
+
+==================
+generalized triple string literal
+==================
+
+hgasld_1234r"""sa
+asdfj
+laskhdf//lkhqwe;rme"""
+
+---
+
+
+(module
+  (generalizedLit
+    (GENERALIZED_TRIPLESTR_LIT)))
+
+==================
+custom numeric literal
+==================
+
+0o34'sdf_89_coo
+-13.123e-743'asdf_89
+
+---
+
+
+(module
+  (literal
+    (CUSTOM_NUMERIC_LIT))
+  (literal
+    (CUSTOM_NUMERIC_LIT)))
+
+==================
+nil literal
+==================
+
+nil
+
+---
+
+(module
+  (literal
+    (NIL)))
+

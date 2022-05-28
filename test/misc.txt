@@ -1,0 +1,15 @@
+==================
+symbol
+==================
+
+`mod asdfs1234.1234e1234 mod and `
+mod
+asdfasd93
+
+---
+
+(module
+  (symbol)
+  (symbol)
+  (symbol))
+

@@ -1,6 +1,61 @@
 [
   {
-    "type": "RSTR_LIT",
+    "type": "GENERALIZED_TRIPLESTR_LIT",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "OP0",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "OP1",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "OP10",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "OP2",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "OP3",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "OP4",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "OP5",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "OP6",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "OP7",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "OP8",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "OP9",
     "named": true,
     "fields": {}
   },
@@ -8,6 +63,25 @@
     "type": "TRIPLESTR_LIT",
     "named": true,
     "fields": {}
+  },
+  {
+    "type": "generalizedLit",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "GENERALIZED_STR_LIT",
+          "named": true
+        },
+        {
+          "type": "GENERALIZED_TRIPLESTR_LIT",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "literal",
@@ -19,6 +93,10 @@
       "types": [
         {
           "type": "CHAR_LIT",
+          "named": true
+        },
+        {
+          "type": "CUSTOM_NUMERIC_LIT",
           "named": true
         },
         {
@@ -51,6 +129,10 @@
         },
         {
           "type": "INT_LIT",
+          "named": true
+        },
+        {
+          "type": "NIL",
           "named": true
         },
         {
@@ -97,6 +179,54 @@
       "required": false,
       "types": [
         {
+          "type": "OP0",
+          "named": true
+        },
+        {
+          "type": "OP1",
+          "named": true
+        },
+        {
+          "type": "OP10",
+          "named": true
+        },
+        {
+          "type": "OP2",
+          "named": true
+        },
+        {
+          "type": "OP3",
+          "named": true
+        },
+        {
+          "type": "OP4",
+          "named": true
+        },
+        {
+          "type": "OP5",
+          "named": true
+        },
+        {
+          "type": "OP6",
+          "named": true
+        },
+        {
+          "type": "OP7",
+          "named": true
+        },
+        {
+          "type": "OP8",
+          "named": true
+        },
+        {
+          "type": "OP9",
+          "named": true
+        },
+        {
+          "type": "generalizedLit",
+          "named": true
+        },
+        {
           "type": "literal",
           "named": true
         }
@@ -104,7 +234,7 @@
     }
   },
   {
-    "type": "\"",
+    "type": "!=",
     "named": false
   },
   {
@@ -112,7 +242,59 @@
     "named": false
   },
   {
+    "type": "%",
+    "named": false
+  },
+  {
+    "type": "&",
+    "named": false
+  },
+  {
+    "type": "*",
+    "named": false
+  },
+  {
+    "type": "+",
+    "named": false
+  },
+  {
+    "type": "-",
+    "named": false
+  },
+  {
+    "type": "..",
+    "named": false
+  },
+  {
+    "type": "/",
+    "named": false
+  },
+  {
+    "type": "<",
+    "named": false
+  },
+  {
+    "type": "<=",
+    "named": false
+  },
+  {
+    "type": "==",
+    "named": false
+  },
+  {
+    "type": ">",
+    "named": false
+  },
+  {
+    "type": ">=",
+    "named": false
+  },
+  {
     "type": "CHAR_LIT",
+    "named": true
+  },
+  {
+    "type": "CUSTOM_NUMERIC_LIT",
     "named": true
   },
   {
@@ -125,6 +307,10 @@
   },
   {
     "type": "FLOAT_LIT",
+    "named": true
+  },
+  {
+    "type": "GENERALIZED_STR_LIT",
     "named": true
   },
   {
@@ -145,6 +331,14 @@
   },
   {
     "type": "INT_LIT",
+    "named": true
+  },
+  {
+    "type": "NIL",
+    "named": true
+  },
+  {
+    "type": "RSTR_LIT",
     "named": true
   },
   {
@@ -170,5 +364,65 @@
   {
     "type": "UINT_LIT",
     "named": true
+  },
+  {
+    "type": "and",
+    "named": false
+  },
+  {
+    "type": "as",
+    "named": false
+  },
+  {
+    "type": "div",
+    "named": false
+  },
+  {
+    "type": "from",
+    "named": false
+  },
+  {
+    "type": "in",
+    "named": false
+  },
+  {
+    "type": "is",
+    "named": false
+  },
+  {
+    "type": "isnot",
+    "named": false
+  },
+  {
+    "type": "mod",
+    "named": false
+  },
+  {
+    "type": "not",
+    "named": false
+  },
+  {
+    "type": "notin",
+    "named": false
+  },
+  {
+    "type": "of",
+    "named": false
+  },
+  {
+    "type": "or",
+    "named": false
+  },
+  {
+    "type": "shl",
+    "named": false
+  },
+  {
+    "type": "shr",
+    "named": false
+  },
+  {
+    "type": "xor",
+    "named": false
   }
 ]
