@@ -4,49 +4,267 @@ const PREC = {
 
   lit: 2,
   keyword: 3,
+  comment: 100,
 
-  op0: 0,
-  op1: 1,
-  op2: 2,
-  op3: 3,
-  op4: 4,
-  op5: 5,
-  op6: 6,
-  op7: 7,
-  op8: 8,
-  op9: 9,
-  op10: 10,
-  unary: 11,
+  op0: 10,
+  op1: 11,
+  op2: 12,
+  op3: 13,
+  op4: 14,
+  op5: 15,
+  op6: 16,
+  op7: 17,
+  op8: 18,
+  op9: 19,
+  op10: 20,
+  unary: 21,
 }
 
 module.exports = grammar({
-  name: 'Nim',
+  name: 'nim',
 
-  // word: $ => $.IDENT,
-  inline: $ => [
+
+  // inline: $ => [
+  //   $._section,
+  // ],
+
+  extras: $ => [
+    $.normal_comment,
+    /[\s\f\uFEFF\u2060\u200B]|\\\r?\n/,
   ],
 
+  externals: $ => [
+    $._NEWLINE,
+    $._INDENT,
+    $._DEDENT,
+  ],
+
+  // word: $ => $.IDENT,
+  
   rules: {
-    module: $ => repeat($._definition),
-    _definition: $ => choice(
+    module: $ => seq(
+      repeat1(seq(
+        $.stmt,
+        choice( ';', $._NEWLINE,),
+      )),
+    ),
+
+    comma: $ => seq(',', optional($.COMMENT)),
+    semicolon: $ => seq(';', optional($.COMMENT)),
+    colon: $ => seq(':', optional($.COMMENT)),
+    colcom: $ => seq(':', optional($.COMMENT)),
+
+    stmt: $ => choice(
+      $.complexOrSimpleStmt,
+      $.simpleStmt,
       // $.declColonEquals,
       // $.complexOrSimpleStmt,
-      $.generalizedLit,
-      $.literal,
+      // $.generalizedLit,
+      // $.literal,
       // $.IDENT,
       // $.symbol,
       // $.OPR,
-      $.OP0,
-      $.OP1,
-      $.OP2,
-      $.OP3,
-      $.OP4,
-      $.OP5,
-      $.OP6,
-      $.OP7,
-      $.OP8,
-      $.OP9,
-      $.OP10,
+      // $.OP0,
+      // $.OP1,
+      // $.OP2,
+      // $.OP3,
+      // $.OP4,
+      // $.OP5,
+      // $.OP6,
+      // $.OP7,
+      // $.OP8,
+      // $.OP9,
+      // $.OP10,
+      // $.expr,
+    ),
+
+    // _suite: $ => choice(
+    //   // alias($.literal, $.block),
+    //   // alias($._NEWLINE, $.block)
+    //   // $.literal,
+    //   seq($._INDENT, $.block),
+    //   $._NEWLINE,
+    // ),
+    //
+    // block: $ => seq(
+    //   repeat($.stmt),
+    //   $._DEDENT,
+    // ),
+
+    expr: $ => choice(
+      $._simpleExpr,
+    ),
+
+    complexOrSimpleStmt: $ => prec(1, choice(
+      choice(
+        // $.ifStmt,
+        // $.whenStmt,
+        // $.whileStmt,
+        // $.tryStmt,
+        // $.forStmt,
+        // $.blockStmt,
+        // $.staticStmt,
+        // $.deferStmt,
+        // $.asmStmt,
+        // $.bingStmt,
+        // $.mixinStmt,
+        // seq('proc', $.routine),
+        // seq('method', $.routine),
+        // seq('func', $.routine),
+        // seq('iterator', $.routine),
+        // seq('macro', $.routine),
+        // seq('template', $.routine),
+        // seq('converter', $.routine),
+        // seq('type', section($.typeDef)),
+        // seq('const', section($.constant)),
+        seq(
+          choice('let' , 'var' , 'using'),
+          section($, $.variable),
+        ),
+      ),
+      $.simpleStmt,
+    )),
+
+    variable: $ => seq(
+      choice(
+        // $.varTuple,
+        $.identColonEquals,
+      ),
+      optional($.colonBody),
+      // $.indAndComment,
+    ),
+
+    identColonEquals: $ => prec.right(seq(
+      $.IDENT,
+      repeat(seq($.comma, $.IDENT)),
+      optional($.comma),
+      optional(seq(
+        ':',
+        optInd($, $.typeDesc)
+      )),
+      optional(seq(
+        '=',
+        optInd($, $.expr)
+      )),
+    )),
+
+    typeDesc: $ => prec.left(seq(
+      $._simpleExpr,
+      repeat(seq(
+        'not',
+        $.expr
+      )),
+    )),
+
+    colonBody: $ => seq(
+      $.colcom,
+      $.stmt,
+      // optional($.postExprBlocks),
+    ),
+
+    simpleStmt: $ => prec.left(seq(
+      choice(
+        $.discardStmt,
+      ),
+      optional($.COMMENT)
+    )),
+
+    discardStmt: $ => prec.left(seq(
+      'discard',
+      optional(
+        optInd($, $.expr),
+      ),
+    )),
+
+    _simpleExpr: $ => prec.left(seq(
+      $.primary,
+      repeat(seq($.operatorB, optInd($, $.primary))),
+      // optional($.pragma),
+    )),
+
+    // _simpleExpr: $ => prec.left(seq(
+    //   $._arrowExpr,
+    //   repeat(seq($.OP0, optInd($, $._arrowExpr))),
+    //   // optional($.pragma),
+    // )),
+    // _arrowExpr: $ => prec.left(seq(
+    //   $._assignExpr,
+    //   repeat(seq($.OP1, optInd($, $._assignExpr)))
+    // )),
+    // _assignExpr: $ => prec.left(seq(
+    //   $._orExpr,
+    //   repeat(seq($.OP2, optInd($, $._orExpr)))
+    // )),
+    // _orExpr: $ => prec.left(seq(
+    //   $._andExpr,
+    //   repeat(seq($.OP3, optInd($, $._andExpr)))
+    // )),
+    // _andExpr: $ => prec.left(seq(
+    //   $._cmpExpr,
+    //   repeat(seq($.OP4, optInd($, $._cmpExpr)))
+    // )),
+    // _cmpExpr: $ => prec.left(seq(
+    //   $._sliceExpr,
+    //   repeat(seq($.OP5, optInd($, $._sliceExpr)))
+    // )),
+    // _sliceExpr: $ => prec.left(seq(
+    //   $._ampExpr,
+    //   repeat(seq($.OP6, optInd($, $._ampExpr)))
+    // )),
+    // _ampExpr: $ => prec.left(seq(
+    //   $._plusExpr,
+    //   repeat(seq($.OP7, optInd($, $._plusExpr)))
+    // )),
+    // _plusExpr: $ => prec.left(seq(
+    //   $._mulExpr,
+    //   repeat(seq($.OP8, optInd($, $._mulExpr)))
+    // )),
+    // _mulExpr: $ => prec.left(seq(
+    //   $._dollarExpr,
+    //   repeat(seq($.OP9, optInd($, $._dollarExpr)))
+    // )),
+    // _dollarExpr: $ => prec.left(seq(
+    //   $.primary,
+    //   repeat(seq($.OP10, optInd($, $.primary)))
+    // )),
+
+    primary: $ => choice(
+      choice(
+        // seq(
+        //   $.operatorB,
+        //   $.primary,
+        //   repeat($.primarySuffix),
+        // ),
+      //   $.tupleDecl,
+      //   $.routineExpr,
+      //   $.enumDecl,
+      //   $.objectDecl,
+      //   $.conceptDecl,
+      //   seq(
+      //     'bind',
+      //     $.primary,
+      //   ),
+      //   seq(
+      //     choice('var', 'out', 'ref', 'ptr', 'distinct'),
+      //     $.primary,
+      //   ),
+      ),
+      seq(
+        repeat($.operator),
+        $.identOrLiteral,
+        // $.primarySuffix,
+      ),
+    ),
+
+    identOrLiteral: $ => choice(
+      $.generalizedLit,
+      $.symbol,
+      $.literal,
+      // $.par,
+      // $.arrayConstr,
+      // $.setOrTableConstr,
+      // $.tuplesConstr,
+      // $.castExpr,
     ),
 
     literal: $ => prec(PREC.lit, choice(
@@ -69,6 +287,7 @@ module.exports = grammar({
       $.TRIPLESTR_LIT,
       $.CUSTOM_NUMERIC_LIT,
       $.NIL,
+      $.BOOL_LIT,
     )),
 
     generalizedLit: $ => choice(
@@ -76,24 +295,41 @@ module.exports = grammar({
       $.GENERALIZED_TRIPLESTR_LIT,
     ),
 
-    // symbol: $ => token(choice(
-    //   seq(
-    //     '`',
-    //     repeat1(choice(
-    //       /\s/,
-    //       keywords(),
-    //       identifier(),
-    //       literal(),
-    //       prec.left(repeat1(choice(
-    //         operators(),
-    //         /[\(\)\[\]\{\}]/
-    //       ))),
-    //     )),
-    //     '`',
-    //   ),
-    //   identifier(),
-    //   keywords(),
-    // )),
+    symbol: $ => prec(0, choice(
+      seq(
+        '`',
+        repeat1(choice(
+          // /\s/,
+          $.KEYW,
+          $.IDENT,
+          $.literal,
+          prec.left(repeat1(choice(
+            $.operatorB,
+            /[\(\)\[\]\{\}]/
+          ))),
+        )),
+        '`',
+      ),
+      $.IDENT,
+      $.KEYW
+    )),
+
+
+    operator: $ => choice(operators(), 'static'),
+    operatorB: $ => operators(),
+
+
+    COMMENT: $ => seq(
+      /##.*/,
+      $._NEWLINE,
+    ),
+
+    normal_comment: $ => seq(
+      /#[^#].*/,
+      $._NEWLINE,
+    ),
+
+    KEYW: $ => keywords(),
 
     DOTLIKEOP: $ => prec(PREC.op6, dotlikeop()),
     OPR: $ => operator_signs(),
@@ -138,7 +374,21 @@ module.exports = grammar({
      * proc `'customLiteral`(s: string) is the same as proc `'\''customLiteral`(s: string)."
      */
     CHAR_LIT: $ => char_lit(),
-    STR_LIT: $ => str_lit(),
+    STR_LIT: $ => token(seq(
+      '"',
+      repeat(choice(
+        /[^\n\r"]/,
+        field('esc_seq',
+          seq('\\', choice(
+            /[prcnlftv\\"'abe]/,
+            /x[0-9a-fA-F]{2}/,
+            /u[0-9a-fA-F]{4}/,
+            /u\{[0-9a-fA-F]+\}/,
+            /[0-9]{1,3}/,
+          ))))),
+      '"',
+    )),
+
     // TODO: TRIPLESTR_LIT continues matching when it's not closed, instead of throwing an error
     TRIPLESTR_LIT: $ => triplestr_lit(),
     RSTR_LIT: $ => rstr_lit(),
@@ -147,90 +397,7 @@ module.exports = grammar({
     GENERALIZED_TRIPLESTR_LIT: $ => generalized_triplestr_lit(),
 
     NIL: $ => nil(),
-
-
-    // complexOrSimpleStmt: $ => choice(
-    //   seq(
-    //     choice(
-    //       'let',
-    //       'var',
-    //       'using',
-    //     ),
-    //     $.variable,
-    //   ),
-    // ),
-    // variable: $ => seq(
-    //   choice(
-    //     // $.varTuple,
-    //     $.identColonEquals,
-    //   ),
-    //   optional($.colonBody),
-    //   // $.indAndComment,
-    // ),
-    // // varTuple: $ => '',
-    // 
-    // identColonEquals: $ => prec.right(seq(
-    //   $.IDENT,
-    //   repeat(
-    //     seq(
-    //       ',',
-    //       $.IDENT,
-    //     ),
-    //   ),
-    //   optional(','),
-    //   optional(
-    //     seq(
-    //       ':',
-    //       $.typeDesc
-    //     ),
-    //   ),
-    //   optional(
-    //     seq(
-    //       '=',
-    //       $.expr,
-    //     ),
-    //   ),
-    // )),
-    //
-    // colonBody: $ => seq(
-    //   ':',
-    //   $.stmt,
-    // ),
-    //
-    // stmt: $ => 'stmt',
-    //
-    // expr: $ => 'expr',
-    //
-    // typeDesc: $ => 'type',
-    // indAndComment: $ => '',
-    // declColonEquals: $ => prec.left(seq(
-    //   $.identWithPragma,
-    //   repeat(
-    //     seq(
-    //       ',',
-    //       $.identWithPragma
-    //     ),
-    //   ),
-    //   optional(','),
-    //   optional(
-    //     seq(
-    //       ':',
-    //       $.typeDesc
-    //     )
-    //   ),
-    //   optional(
-    //     seq(
-    //       '=',
-    //       $.expr,
-    //     )
-    //   )
-    // )),
-    // // optInd: $ => optional(/[\t\v ]*/),
-    // typeDesc: $ => 'int',
-    // identWithPragma: $ => /\w+/,
-    // expr: $ => 'expr',
-    // _letter: $ => /[a-zA-Z\x80-\xff]/,
-    // _digit: $ => /[0-9]/,
+    BOOL_LIT: $ => bool_lit(),
 
   }
 });
@@ -362,7 +529,7 @@ function char_lit() {
   return token(seq(
   '\'',
   choice(
-    /[^\n']/,
+    /[^\n\r']/,
     field('esc_seq',
       seq( '\\', choice(
           /[rcnlftv\\"'abe]/,
@@ -426,6 +593,7 @@ function generalized_triplestr_lit() {
 }
 
 function nil() { return 'nil' }
+function bool_lit() { return choice('true', 'false',) }
 
 function literal() {
   return choice(
@@ -450,6 +618,7 @@ function literal() {
     // generalized_triplestr_lit(),
     custom_numeric_lit(),
     nil(),
+    bool_lit(),
 )
 }
 
@@ -509,3 +678,40 @@ function op9() { return prec(PREC.op9, choice('*', '/', '%', 'div', 'mod', 'shl'
 function op10() { return prec(PREC.op10, choice(
   /[$^][=+\-*\/<>@$~&%|!?^.:\\]+/
 )) }
+
+function operators() {return choice(op0(), op1(), op2(), op3(), op4(), op5(), op6(), op7(), op8(), op9(), )}
+
+function optInd($, content) {
+  return seq(
+    optional($.COMMENT),
+    choice(
+      seq(
+        $._INDENT,
+        content,
+        $._DEDENT
+      ),
+      content,
+    )
+  )
+}
+
+function section($, content) {
+  return prec.left(choice(
+    seq(
+      optional($.COMMENT),
+      content,
+    ),
+    seq(
+      $._INDENT,
+      repeat1(seq(
+        choice(
+          content,
+          $.COMMENT,
+        ),
+        $._NEWLINE,
+      )),
+      $._DEDENT,
+    ),
+  ))
+}
+

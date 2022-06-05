@@ -2,16 +2,30 @@
 hex literal
 ==================
 
-0x0123456789_ABCDEF_abcdef
--0X0
+discard 0x0123456789_ABCDEF_abcdef
+discard -0X0
 
 ---
 
 (module
-  (literal
-    (INT_LIT))
-  (literal
-    (INT_LIT)))
+  (stmt
+    (complexOrSimpleStmt
+      (simpleStmt
+        (discardStmt
+          (expr
+            (primary
+              (identOrLiteral
+                (literal
+                  (INT_LIT)))))))))
+  (stmt
+    (complexOrSimpleStmt
+      (simpleStmt
+        (discardStmt
+          (expr
+            (primary
+              (identOrLiteral
+                (literal
+                  (INT_LIT))))))))))
 
 
 ==================

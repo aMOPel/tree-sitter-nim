@@ -1,0 +1,3 @@
+* bool literal isn't mentioned
+* `IND` without curly braces
+* COMMENT should be defined as the doc string comment

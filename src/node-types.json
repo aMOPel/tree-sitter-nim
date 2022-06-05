@@ -1,61 +1,31 @@
 [
   {
+    "type": "BOOL_LIT",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "COMMENT",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "GENERALIZED_TRIPLESTR_LIT",
     "named": true,
     "fields": {}
   },
   {
-    "type": "OP0",
+    "type": "IDENT",
     "named": true,
     "fields": {}
   },
   {
-    "type": "OP1",
+    "type": "KEYW",
     "named": true,
     "fields": {}
   },
   {
-    "type": "OP10",
-    "named": true,
-    "fields": {}
-  },
-  {
-    "type": "OP2",
-    "named": true,
-    "fields": {}
-  },
-  {
-    "type": "OP3",
-    "named": true,
-    "fields": {}
-  },
-  {
-    "type": "OP4",
-    "named": true,
-    "fields": {}
-  },
-  {
-    "type": "OP5",
-    "named": true,
-    "fields": {}
-  },
-  {
-    "type": "OP6",
-    "named": true,
-    "fields": {}
-  },
-  {
-    "type": "OP7",
-    "named": true,
-    "fields": {}
-  },
-  {
-    "type": "OP8",
-    "named": true,
-    "fields": {}
-  },
-  {
-    "type": "OP9",
+    "type": "NIL",
     "named": true,
     "fields": {}
   },
@@ -63,6 +33,120 @@
     "type": "TRIPLESTR_LIT",
     "named": true,
     "fields": {}
+  },
+  {
+    "type": "colcom",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "COMMENT",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "colonBody",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "colcom",
+          "named": true
+        },
+        {
+          "type": "stmt",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "comma",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "COMMENT",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "complexOrSimpleStmt",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "COMMENT",
+          "named": true
+        },
+        {
+          "type": "simpleStmt",
+          "named": true
+        },
+        {
+          "type": "variable",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "discardStmt",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "COMMENT",
+          "named": true
+        },
+        {
+          "type": "expr",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "expr",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "COMMENT",
+          "named": true
+        },
+        {
+          "type": "operatorB",
+          "named": true
+        },
+        {
+          "type": "primary",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "generalizedLit",
@@ -84,6 +168,60 @@
     }
   },
   {
+    "type": "identColonEquals",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "COMMENT",
+          "named": true
+        },
+        {
+          "type": "IDENT",
+          "named": true
+        },
+        {
+          "type": "comma",
+          "named": true
+        },
+        {
+          "type": "expr",
+          "named": true
+        },
+        {
+          "type": "typeDesc",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "identOrLiteral",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "generalizedLit",
+          "named": true
+        },
+        {
+          "type": "literal",
+          "named": true
+        },
+        {
+          "type": "symbol",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "literal",
     "named": true,
     "fields": {},
@@ -91,6 +229,10 @@
       "multiple": false,
       "required": true,
       "types": [
+        {
+          "type": "BOOL_LIT",
+          "named": true
+        },
         {
           "type": "CHAR_LIT",
           "named": true
@@ -176,58 +318,155 @@
     "fields": {},
     "children": {
       "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "stmt",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "normal_comment",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "operator",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "operatorB",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "primary",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "identOrLiteral",
+          "named": true
+        },
+        {
+          "type": "operator",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "simpleStmt",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "COMMENT",
+          "named": true
+        },
+        {
+          "type": "discardStmt",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "stmt",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "complexOrSimpleStmt",
+          "named": true
+        },
+        {
+          "type": "simpleStmt",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "symbol",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
       "required": false,
       "types": [
         {
-          "type": "OP0",
+          "type": "IDENT",
           "named": true
         },
         {
-          "type": "OP1",
-          "named": true
-        },
-        {
-          "type": "OP10",
-          "named": true
-        },
-        {
-          "type": "OP2",
-          "named": true
-        },
-        {
-          "type": "OP3",
-          "named": true
-        },
-        {
-          "type": "OP4",
-          "named": true
-        },
-        {
-          "type": "OP5",
-          "named": true
-        },
-        {
-          "type": "OP6",
-          "named": true
-        },
-        {
-          "type": "OP7",
-          "named": true
-        },
-        {
-          "type": "OP8",
-          "named": true
-        },
-        {
-          "type": "OP9",
-          "named": true
-        },
-        {
-          "type": "generalizedLit",
+          "type": "KEYW",
           "named": true
         },
         {
           "type": "literal",
+          "named": true
+        },
+        {
+          "type": "operatorB",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "typeDesc",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "COMMENT",
+          "named": true
+        },
+        {
+          "type": "expr",
+          "named": true
+        },
+        {
+          "type": "operatorB",
+          "named": true
+        },
+        {
+          "type": "primary",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "variable",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "colonBody",
+          "named": true
+        },
+        {
+          "type": "identColonEquals",
           "named": true
         }
       ]
@@ -258,6 +497,10 @@
     "named": false
   },
   {
+    "type": ",",
+    "named": false
+  },
+  {
     "type": "-",
     "named": false
   },
@@ -270,11 +513,23 @@
     "named": false
   },
   {
+    "type": ":",
+    "named": false
+  },
+  {
+    "type": ";",
+    "named": false
+  },
+  {
     "type": "<",
     "named": false
   },
   {
     "type": "<=",
+    "named": false
+  },
+  {
+    "type": "=",
     "named": false
   },
   {
@@ -334,10 +589,6 @@
     "named": true
   },
   {
-    "type": "NIL",
-    "named": true
-  },
-  {
     "type": "RSTR_LIT",
     "named": true
   },
@@ -366,6 +617,14 @@
     "named": true
   },
   {
+    "type": "`",
+    "named": false
+  },
+  {
+    "type": "addr",
+    "named": false
+  },
+  {
     "type": "and",
     "named": false
   },
@@ -374,7 +633,99 @@
     "named": false
   },
   {
+    "type": "asm",
+    "named": false
+  },
+  {
+    "type": "bind",
+    "named": false
+  },
+  {
+    "type": "block",
+    "named": false
+  },
+  {
+    "type": "break",
+    "named": false
+  },
+  {
+    "type": "case",
+    "named": false
+  },
+  {
+    "type": "cast",
+    "named": false
+  },
+  {
+    "type": "concept",
+    "named": false
+  },
+  {
+    "type": "const",
+    "named": false
+  },
+  {
+    "type": "continue",
+    "named": false
+  },
+  {
+    "type": "converter",
+    "named": false
+  },
+  {
+    "type": "defer",
+    "named": false
+  },
+  {
+    "type": "discard",
+    "named": false
+  },
+  {
+    "type": "distinct",
+    "named": false
+  },
+  {
     "type": "div",
+    "named": false
+  },
+  {
+    "type": "do",
+    "named": false
+  },
+  {
+    "type": "elif",
+    "named": false
+  },
+  {
+    "type": "else",
+    "named": false
+  },
+  {
+    "type": "end",
+    "named": false
+  },
+  {
+    "type": "enum",
+    "named": false
+  },
+  {
+    "type": "except",
+    "named": false
+  },
+  {
+    "type": "export",
+    "named": false
+  },
+  {
+    "type": "false",
+    "named": false
+  },
+  {
+    "type": "finally",
+    "named": false
+  },
+  {
+    "type": "for",
     "named": false
   },
   {
@@ -382,7 +733,27 @@
     "named": false
   },
   {
+    "type": "func",
+    "named": false
+  },
+  {
+    "type": "if",
+    "named": false
+  },
+  {
+    "type": "import",
+    "named": false
+  },
+  {
     "type": "in",
+    "named": false
+  },
+  {
+    "type": "include",
+    "named": false
+  },
+  {
+    "type": "interface",
     "named": false
   },
   {
@@ -394,7 +765,31 @@
     "named": false
   },
   {
+    "type": "iterator",
+    "named": false
+  },
+  {
+    "type": "let",
+    "named": false
+  },
+  {
+    "type": "macro",
+    "named": false
+  },
+  {
+    "type": "method",
+    "named": false
+  },
+  {
+    "type": "mixin",
+    "named": false
+  },
+  {
     "type": "mod",
+    "named": false
+  },
+  {
+    "type": "nil",
     "named": false
   },
   {
@@ -406,11 +801,39 @@
     "named": false
   },
   {
+    "type": "object",
+    "named": false
+  },
+  {
     "type": "of",
     "named": false
   },
   {
     "type": "or",
+    "named": false
+  },
+  {
+    "type": "out",
+    "named": false
+  },
+  {
+    "type": "proc",
+    "named": false
+  },
+  {
+    "type": "ptr",
+    "named": false
+  },
+  {
+    "type": "raise",
+    "named": false
+  },
+  {
+    "type": "ref",
+    "named": false
+  },
+  {
+    "type": "return",
     "named": false
   },
   {
@@ -422,7 +845,51 @@
     "named": false
   },
   {
+    "type": "static",
+    "named": false
+  },
+  {
+    "type": "template",
+    "named": false
+  },
+  {
+    "type": "true",
+    "named": false
+  },
+  {
+    "type": "try",
+    "named": false
+  },
+  {
+    "type": "tuple",
+    "named": false
+  },
+  {
+    "type": "type",
+    "named": false
+  },
+  {
+    "type": "using",
+    "named": false
+  },
+  {
+    "type": "var",
+    "named": false
+  },
+  {
+    "type": "when",
+    "named": false
+  },
+  {
+    "type": "while",
+    "named": false
+  },
+  {
     "type": "xor",
+    "named": false
+  },
+  {
+    "type": "yield",
     "named": false
   }
 ]
