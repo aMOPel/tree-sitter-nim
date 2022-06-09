@@ -9,625 +9,1465 @@ discard -0X0
 
 (module
   (stmt
-    (complexOrSimpleStmt
-      (simpleStmt
-        (discardStmt
-          (expr
-            (primary
-              (identOrLiteral
-                (literal
-                  (INT_LIT)))))))))
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (int_lit))))))
   (stmt
-    (complexOrSimpleStmt
-      (simpleStmt
-        (discardStmt
-          (expr
-            (primary
-              (identOrLiteral
-                (literal
-                  (INT_LIT))))))))))
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (operator)
+          (literal
+            (int_lit)))))))
 
 
 ==================
 dec literal
 ==================
 
-01234_56789
--0
+discard 01234_56789
+discard -0
 
 ---
 
 (module
-  (literal
-    (INT_LIT))
-  (literal
-    (INT_LIT)))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (int_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (operator)
+          (literal
+            (int_lit)))))))
 
 ==================
 oct literal
 ==================
 
-0o0123_4567
--0o0
+discard 0o0123_4567
+discard -0o0
 
 ---
 
 (module
-  (literal
-    (INT_LIT))
-  (literal
-    (INT_LIT)))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (int_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (operator)
+          (literal
+            (int_lit)))))))
 
 ==================
 bin literal
 ==================
 
-0b0_1
--0B0
+discard 0b0_1
+discard -0B0
 
 ---
 
 (module
-  (literal
-    (INT_LIT))
-  (literal
-    (INT_LIT)))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (int_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (operator)
+          (literal
+            (int_lit)))))))
 
 ==================
 uint8-64 literal
 ==================
 
-01234_56789'i8
--01234_56789'I8
-0B101'i16
-0o1234_567'i32
-0X1234_56789_abcDEF'i64
-01234_56789'u
-01234_56789'u8
-01234_56789'U8
-0B101'u16
-0o1234_567'u32
-0X1234_56789_abcDEF'u64
+discard 01234_56789'i8
+discard -01234_56789'I8
+discard 0B101'i16
+discard 0o1234_567'i32
+discard 0X1234_56789_abcDEF'i64
+discard 01234_56789'u
+discard 01234_56789'u8
+discard 01234_56789'U8
+discard 0B101'u16
+discard 0o1234_567'u32
+discard 0X1234_56789_abcDEF'u64
 
 ---
 
 (module
-  (literal
-    (INT8_LIT))
-  (literal
-    (INT8_LIT))
-  (literal
-    (INT16_LIT))
-  (literal
-    (INT32_LIT))
-  (literal
-    (INT64_LIT))
-  (literal
-    (UINT_LIT))
-  (literal
-    (UINT8_LIT))
-  (literal
-    (UINT8_LIT))
-  (literal
-    (UINT16_LIT))
-  (literal
-    (UINT32_LIT))
-  (literal
-    (UINT64_LIT)))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (int_lit)
+            (int_suffix))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (operator)
+          (literal
+            (int_lit)
+            (int_suffix))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (int_lit)
+            (int_suffix))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (int_lit)
+            (int_suffix))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (int_lit)
+            (int_suffix))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (int_lit)
+            (int_suffix))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (int_lit)
+            (int_suffix))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (int_lit)
+            (int_suffix))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (int_lit)
+            (int_suffix))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (int_lit)
+            (int_suffix))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (int_lit)
+            (int_suffix)))))))
 
 ==================
 float literal
 ==================
 
-123.123e-123
--123.123
-123e123
--123e+123
+discard 123.123e-123
+discard -123.123
+discard 123e123
+discard -123e+123
 
 ---
 
 (module
-  (literal
-    (FLOAT_LIT))
-  (literal
-    (FLOAT_LIT))
-  (literal
-    (FLOAT_LIT))
-  (literal
-    (FLOAT_LIT)))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (float_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (operator)
+          (literal
+            (float_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (float_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (operator)
+          (literal
+            (float_lit)))))))
 
 
 ==================
 float32 literal
 ==================
 
-0xff'f
-0xff'f32
-0b01f
-0o36'f32
-123.123f
+discard 0xff'f
+discard 0xff'f32
+discard 0b01f
+discard 0o36'f32
+discard 123.123f
 
 ---
 
 (module
-  (literal
-    (FLOAT32_LIT))
-  (literal
-    (FLOAT32_LIT))
-  (literal
-    (FLOAT32_LIT))
-  (literal
-    (FLOAT32_LIT))
-  (literal
-    (FLOAT32_LIT)))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (int_lit)
+            (float_suffix))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (int_lit)
+            (float_suffix))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (int_lit)
+            (float_suffix))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (int_lit)
+            (float_suffix))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (float_lit)
+            (float_suffix)))))))
 
 ==================
 float64 literal
 ==================
 
-0xff'f
-0xff'f64
-0b01d
-0o36'D
-123.123f
+discard 0xff'f
+discard 0xff'f64
+discard 0b01d
+discard 0o36'D
+discard 123.123f
 
 ---
 
 (module
-  (literal
-    (FLOAT32_LIT))
-  (literal
-    (FLOAT64_LIT))
-  (literal
-    (FLOAT64_LIT))
-  (literal
-    (FLOAT64_LIT))
-  (literal
-    (FLOAT32_LIT)))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (int_lit)
+            (float_suffix))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (int_lit)
+            (float_suffix))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (int_lit)
+            (float_suffix))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (int_lit)
+            (float_suffix))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (float_lit)
+            (float_suffix)))))))
 
 ==================
 char literal
 ==================
 
-'0'
-'1'
-'2'
-'3'
-'4'
-'5'
-'6'
-'7'
-'8'
-'9'
-
-'a'
-'b'
-'c'
-'d'
-'e'
-'f'
-'g'
-'h'
-'i'
-'j'
-'k'
-'l'
-'m'
-'n'
-'o'
-'p'
-'q'
-'r'
-'s'
-'t'
-'u'
-'v'
-'w'
-'x'
-'y'
-'z'
-
-'A'
-'B'
-'C'
-'D'
-'E'
-'F'
-'G'
-'H'
-'I'
-'J'
-'K'
-'L'
-'M'
-'N'
-'O'
-'P'
-'Q'
-'R'
-'S'
-'T'
-'U'
-'V'
-'W'
-'X'
-'Y'
-'Z'
-
-'!'
-'@'
-'#'
-'$'
-'%'
-'^'
-'&'
-'*'
-'('
-')'
-'{'
-'}'
-'['
-']'
-'<'
-'>'
-'`'
-'~'
-'_'
-'-'
-'='
-'+'
-'/'
-'?'
-'.'
-','
-';'
-':'
-'"'
-'|'
-' '
-
-'\r'
-'\c'
-'\n'
-'\l'
-'\f'
-'\t'
-'\v'
-'\\'
-'\"'
-'\''
-'\a'
-'\b'
-'\e'
-'\xa9'
-'\123'
+discard '0'
+discard '1'
+discard '2'
+discard '3'
+discard '4'
+discard '5'
+discard '6'
+discard '7'
+discard '8'
+discard '9'
+discard 'a'
+discard 'b'
+discard 'c'
+discard 'd'
+discard 'e'
+discard 'f'
+discard 'g'
+discard 'h'
+discard 'i'
+discard 'j'
+discard 'k'
+discard 'l'
+discard 'm'
+discard 'n'
+discard 'o'
+discard 'p'
+discard 'q'
+discard 'r'
+discard 's'
+discard 't'
+discard 'u'
+discard 'v'
+discard 'w'
+discard 'x'
+discard 'y'
+discard 'z'
+discard 'A'
+discard 'B'
+discard 'C'
+discard 'D'
+discard 'E'
+discard 'F'
+discard 'G'
+discard 'H'
+discard 'I'
+discard 'J'
+discard 'K'
+discard 'L'
+discard 'M'
+discard 'N'
+discard 'O'
+discard 'P'
+discard 'Q'
+discard 'R'
+discard 'S'
+discard 'T'
+discard 'U'
+discard 'V'
+discard 'W'
+discard 'X'
+discard 'Y'
+discard 'Z'
+discard '!'
+discard '@'
+discard '#'
+discard '$'
+discard '%'
+discard '^'
+discard '&'
+discard '*'
+discard '('
+discard ')'
+discard '{'
+discard '}'
+discard '['
+discard ']'
+discard '<'
+discard '>'
+discard '`'
+discard '~'
+discard '_'
+discard '-'
+discard '='
+discard '+'
+discard '/'
+discard '?'
+discard '.'
+discard ','
+discard ';'
+discard ':'
+discard '"'
+discard '|'
+discard ' '
+discard '\r'
+discard '\c'
+discard '\n'
+discard '\l'
+discard '\f'
+discard '\t'
+discard '\v'
+discard '\\'
+discard '\"'
+discard '\''
+discard '\a'
+discard '\b'
+discard '\e'
+discard '\xa9'
+discard '\123'
 
 ---
 
 (module
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT))
-  (literal
-    (CHAR_LIT)))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit
+              (char_esc_seq)))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit
+              (char_esc_seq)))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit
+              (char_esc_seq)))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit
+              (char_esc_seq)))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit
+              (char_esc_seq)))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit
+              (char_esc_seq)))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit
+              (char_esc_seq)))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit
+              (char_esc_seq)))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit
+              (char_esc_seq)))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit
+              (char_esc_seq)))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit
+              (char_esc_seq)))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit
+              (char_esc_seq)))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit
+              (char_esc_seq)))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit
+              (char_esc_seq)))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (char_lit
+              (char_esc_seq))))))))
 
 ==================
 string literal
 ==================
 
-"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-"!@#$%^&*(){}[]<>`~_-=+/?.,;:'|"
-"\r\c\n\l\f\t\v\\\"\'\a\b\e\xa9\123\uabcd\u{012345}"
+discard "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+discard "!@#$%^&*(){}[]<>`~_-=+/?.,;:'|"
+discard "\r\c\n\l\f\t\v\\\"\'\a\b\e\xa9\123\uabcd\u{012345}"
 
 ---
 
 (module
-  (literal
-    (STR_LIT))
-  (literal
-    (STR_LIT))
-  (literal
-    (STR_LIT)))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (str_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (str_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (str_lit
+              (str_esc_seq)
+              (str_esc_seq)
+              (str_esc_seq)
+              (str_esc_seq)
+              (str_esc_seq)
+              (str_esc_seq)
+              (str_esc_seq)
+              (str_esc_seq)
+              (str_esc_seq)
+              (str_esc_seq)
+              (str_esc_seq)
+              (str_esc_seq)
+              (str_esc_seq)
+              (str_esc_seq)
+              (str_esc_seq)
+              (str_esc_seq)
+              (str_esc_seq))))))))
 
 ==================
 triple string literal
 ==================
 
-""""0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+discard """"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 "!@#$%^&*(){}[]<>`~_-=+/?.,;:'|"
 "\r\c\n\l\f\t\v\\\"\'\a\b\e\xa9\123\uabcd\u{012345}
 """"
-r"""same"""
+discard r"""same"""
 
 ---
 
 (module
-  (literal
-    (TRIPLESTR_LIT))
-  (literal
-    (TRIPLESTR_LIT)))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (triplestr_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (triplestr_lit)))))))
 
 ==================
 raw string literal
 ==================
 
-r"heya"
-R"hi""h\ni"
-"hi"
+discard r"heya"
+discard R"hi""h\ni"
+discard "hi"
 
 ---
 
 (module
-  (literal
-    (RSTR_LIT))
-  (literal
-    (RSTR_LIT))
-  (literal
-    (STR_LIT)))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (rstr_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (rstr_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (str_lit)))))))
 
 ==================
 generalized string literal
 ==================
 
-mich_404"tree lhfea lakshd;fl"
+discard mich_404"tree lhfea lakshd;fl"
 
 ---
 
 (module
-  (generalizedLit
-    (GENERALIZED_STR_LIT)))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (generalizedLit
+            (generalized_str_lit
+              (ident))))))))
 
 ==================
 generalized triple string literal
 ==================
 
-hgasld_1234r"""sa
+discard hgasld_1234r"""sa
 asdfj
 laskhdf//lkhqwe;rme"""
 
 ---
 
-
 (module
-  (generalizedLit
-    (GENERALIZED_TRIPLESTR_LIT)))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (generalizedLit
+            (generalized_triplestr_lit
+              (ident))))))))
 
 ==================
 custom numeric literal
 ==================
 
-0o34'sdf_89_coo
--13.123e-743'asdf_89
+discard 0o34'sdf_89_coo
+discard -13.123e-743'asdf_89
 
 ---
 
 
 (module
-  (literal
-    (CUSTOM_NUMERIC_LIT))
-  (literal
-    (CUSTOM_NUMERIC_LIT)))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (custom_numeric_lit
+              (int_lit)))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (operator)
+          (literal
+            (custom_numeric_lit
+              (float_lit))))))))
 
 ==================
 nil literal
 ==================
 
-nil
+discard nil
 
 ---
 
 (module
-  (literal
-    (NIL)))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (nil)))))))
 
+==================
+bool literal
+==================
+
+discard true
+discard false
+
+---
+
+(module
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (bool_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (bool_lit)))))))

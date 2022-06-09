@@ -1,22 +1,22 @@
 #include "tree_sitter/parser.h"
-#include <vector>
-#include <cwctype>
-#include <cstring>
 #include <cassert>
+#include <cstring>
+#include <cwctype>
 #include <stdio.h>
+#include <vector>
 namespace {
 
-using std::vector;
 using std::iswspace;
 using std::memcpy;
+using std::vector;
 
 enum TokenType {
   NEWLINE,
   INDENT,
+  SAMEDENT,
   DEDENT,
-  // STRING_START,
-  // STRING_CONTENT,
-  // STRING_END,
+  MULTI_STRING_CONTENT,
+  MULTI_STRING_END,
 };
 
 // struct Delimiter {
@@ -108,9 +108,8 @@ struct Scanner {
     // }
     // i += delimiter_count;
 
-    vector<uint16_t>::iterator
-      iter = indent_length_stack.begin() + 1,
-      end = indent_length_stack.end();
+    vector<uint16_t>::iterator iter = indent_length_stack.begin() + 1,
+                               end = indent_length_stack.end();
 
     for (; iter != end && i < TREE_SITTER_SERIALIZATION_BUFFER_SIZE; ++iter) {
       buffer[i++] = *iter;
@@ -140,21 +139,46 @@ struct Scanner {
     }
   }
 
-  void advance(TSLexer *lexer) {
-    lexer->advance(lexer, false);
-  }
+  void advance(TSLexer *lexer) { lexer->advance(lexer, false); }
 
-  void skip(TSLexer *lexer) {
-    lexer->advance(lexer, true);
-  }
+  void skip(TSLexer *lexer) { lexer->advance(lexer, true); }
 
   bool scan(TSLexer *lexer, const bool *valid_symbols) {
-    // if (valid_symbols[STRING_CONTENT] && !valid_symbols[INDENT] && !delimiter_stack.empty()) {
+    if (valid_symbols[MULTI_STRING_CONTENT] && !valid_symbols[INDENT]) {
+      if (lexer->lookahead == '"') {
+        int count = 0;
+        while (lexer->lookahead == '"') {
+          ++count;
+          advance(lexer);
+        }
+
+        if (count >= 3) {
+          lexer->mark_end(lexer);
+          lexer->result_symbol = MULTI_STRING_END;
+        } else {
+          lexer->mark_end(lexer);
+          lexer->result_symbol = MULTI_STRING_CONTENT;
+        }
+
+        return true;
+      } else {
+        while (lexer->lookahead != '"') {
+          advance(lexer);
+        }
+        lexer->mark_end(lexer);
+        lexer->result_symbol = MULTI_STRING_CONTENT;
+        return true;
+      }
+    }
+
+    // if (valid_symbols[STRING_CONTENT] && !valid_symbols[INDENT] &&
+    // !delimiter_stack.empty()) {
     //   Delimiter delimiter = delimiter_stack.back();
     //   int32_t end_character = delimiter.end_character();
     //   bool has_content = false;
     //   while (lexer->lookahead) {
-    //     if ((lexer->lookahead == '{' || lexer->lookahead == '}') && delimiter.is_format()) {
+    //     if ((lexer->lookahead == '{' || lexer->lookahead == '}') &&
+    //     delimiter.is_format()) {
     //       lexer->mark_end(lexer);
     //       lexer->result_symbol = STRING_CONTENT;
     //       return has_content;
@@ -164,9 +188,12 @@ struct Scanner {
     //       } else if (delimiter.is_bytes()) {
     //           lexer->mark_end(lexer);
     //           lexer->advance(lexer, false);
-    //           if (lexer->lookahead == 'N' || lexer->lookahead == 'u' || lexer->lookahead == 'U') {
-    //             // In bytes string, \N{...}, \uXXXX and \UXXXXXXXX are not escape sequences
-    //             // https://docs.python.org/3/reference/lexical_analysis.html#string-and-bytes-literals
+    //           if (lexer->lookahead == 'N' || lexer->lookahead == 'u' ||
+    //           lexer->lookahead == 'U') {
+    //             // In bytes string, \N{...}, \uXXXX and \UXXXXXXXX are not
+    //             escape sequences
+    //             //
+    //             https://docs.python.org/3/reference/lexical_analysis.html#string-and-bytes-literals
     //             lexer->advance(lexer, false);
     //           } else {
     //               lexer->result_symbol = STRING_CONTENT;
@@ -214,7 +241,8 @@ struct Scanner {
     //         lexer->mark_end(lexer);
     //         return true;
     //       }
-    //     } else if (lexer->lookahead == '\n' && has_content && !delimiter.is_triple()) {
+    //     } else if (lexer->lookahead == '\n' && has_content &&
+    //     !delimiter.is_triple()) {
     //       return false;
     //     }
     //     advance(lexer);
@@ -276,23 +304,22 @@ struct Scanner {
       if (!indent_length_stack.empty()) {
         uint16_t current_indent_length = indent_length_stack.back();
 
-        if (
-          valid_symbols[INDENT] &&
-          indent_length > current_indent_length
-        ) {
+        if (valid_symbols[INDENT] && indent_length > current_indent_length) {
           indent_length_stack.push_back(indent_length);
           lexer->result_symbol = INDENT;
           return true;
         }
 
-        if (
-          valid_symbols[DEDENT] &&
-          indent_length < current_indent_length &&
+        if (valid_symbols[SAMEDENT] && indent_length == current_indent_length) {
+          lexer->result_symbol = SAMEDENT;
+          return true;
+        }
 
-          // Wait to create a dedent token until we've consumed any comments
-          // whose indentation matches the current block.
-          first_comment_indent_length < (int32_t)current_indent_length
-        ) {
+        if (valid_symbols[DEDENT] && indent_length < current_indent_length &&
+
+            // Wait to create a dedent token until we've consumed any comments
+            // whose indentation matches the current block.
+            first_comment_indent_length < (int32_t)current_indent_length) {
           indent_length_stack.pop_back();
           lexer->result_symbol = DEDENT;
           return true;
@@ -369,26 +396,27 @@ struct Scanner {
   // vector<Delimiter> delimiter_stack;
 };
 
-}
+} // namespace
 
 extern "C" {
 
-void *tree_sitter_nim_external_scanner_create() {
-  return new Scanner();
-}
+void *tree_sitter_nim_external_scanner_create() { return new Scanner(); }
 
 bool tree_sitter_nim_external_scanner_scan(void *payload, TSLexer *lexer,
-                                            const bool *valid_symbols) {
+                                           const bool *valid_symbols) {
   Scanner *scanner = static_cast<Scanner *>(payload);
   return scanner->scan(lexer, valid_symbols);
 }
 
-unsigned tree_sitter_nim_external_scanner_serialize(void *payload, char *buffer) {
+unsigned tree_sitter_nim_external_scanner_serialize(void *payload,
+                                                    char *buffer) {
   Scanner *scanner = static_cast<Scanner *>(payload);
   return scanner->serialize(buffer);
 }
 
-void tree_sitter_nim_external_scanner_deserialize(void *payload, const char *buffer, unsigned length) {
+void tree_sitter_nim_external_scanner_deserialize(void *payload,
+                                                  const char *buffer,
+                                                  unsigned length) {
   Scanner *scanner = static_cast<Scanner *>(payload);
   scanner->deserialize(buffer, length);
 }
@@ -397,5 +425,4 @@ void tree_sitter_nim_external_scanner_destroy(void *payload) {
   Scanner *scanner = static_cast<Scanner *>(payload);
   delete scanner;
 }
-
 }

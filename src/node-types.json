@@ -1,41 +1,34 @@
 [
   {
-    "type": "BOOL_LIT",
+    "type": "blockExpr",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "keyw",
+          "named": true
+        },
+        {
+          "type": "stmt",
+          "named": true
+        },
+        {
+          "type": "symbol",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "bool_lit",
     "named": true,
     "fields": {}
   },
   {
-    "type": "COMMENT",
-    "named": true,
-    "fields": {}
-  },
-  {
-    "type": "GENERALIZED_TRIPLESTR_LIT",
-    "named": true,
-    "fields": {}
-  },
-  {
-    "type": "IDENT",
-    "named": true,
-    "fields": {}
-  },
-  {
-    "type": "KEYW",
-    "named": true,
-    "fields": {}
-  },
-  {
-    "type": "NIL",
-    "named": true,
-    "fields": {}
-  },
-  {
-    "type": "TRIPLESTR_LIT",
-    "named": true,
-    "fields": {}
-  },
-  {
-    "type": "colcom",
+    "type": "char_lit",
     "named": true,
     "fields": {},
     "children": {
@@ -43,7 +36,7 @@
       "required": false,
       "types": [
         {
-          "type": "COMMENT",
+          "type": "char_esc_seq",
           "named": true
         }
       ]
@@ -54,13 +47,9 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": true,
+      "multiple": false,
       "required": true,
       "types": [
-        {
-          "type": "colcom",
-          "named": true
-        },
         {
           "type": "stmt",
           "named": true
@@ -69,22 +58,7 @@
     }
   },
   {
-    "type": "comma",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": false,
-      "types": [
-        {
-          "type": "COMMENT",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "complexOrSimpleStmt",
+    "type": "condExpr",
     "named": true,
     "fields": {},
     "children": {
@@ -92,15 +66,30 @@
       "required": true,
       "types": [
         {
-          "type": "COMMENT",
+          "type": "expr",
           "named": true
         },
         {
-          "type": "simpleStmt",
+          "type": "keyw",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "custom_numeric_lit",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "float_lit",
           "named": true
         },
         {
-          "type": "variable",
+          "type": "int_lit",
           "named": true
         }
       ]
@@ -112,14 +101,14 @@
     "fields": {},
     "children": {
       "multiple": true,
-      "required": false,
+      "required": true,
       "types": [
         {
-          "type": "COMMENT",
+          "type": "expr",
           "named": true
         },
         {
-          "type": "expr",
+          "type": "keyw",
           "named": true
         }
       ]
@@ -134,7 +123,65 @@
       "required": true,
       "types": [
         {
-          "type": "COMMENT",
+          "type": "blockExpr",
+          "named": true
+        },
+        {
+          "type": "forExpr",
+          "named": true
+        },
+        {
+          "type": "ifExpr",
+          "named": true
+        },
+        {
+          "type": "operatorB",
+          "named": true
+        },
+        {
+          "type": "primary",
+          "named": true
+        },
+        {
+          "type": "tryExpr",
+          "named": true
+        },
+        {
+          "type": "whenExpr",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "exprList",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "expr",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "exprStmt",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "colonBody",
+          "named": true
+        },
+        {
+          "type": "expr",
           "named": true
         },
         {
@@ -149,6 +196,47 @@
     }
   },
   {
+    "type": "float_lit",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "for",
+    "named": false,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "expr",
+          "named": true
+        },
+        {
+          "type": "keyw",
+          "named": true
+        },
+        {
+          "type": "opr",
+          "named": true
+        },
+        {
+          "type": "stmt",
+          "named": true
+        },
+        {
+          "type": "symbol",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "forExpr",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "generalizedLit",
     "named": true,
     "fields": {},
@@ -157,11 +245,41 @@
       "required": true,
       "types": [
         {
-          "type": "GENERALIZED_STR_LIT",
+          "type": "generalized_str_lit",
           "named": true
         },
         {
-          "type": "GENERALIZED_TRIPLESTR_LIT",
+          "type": "generalized_triplestr_lit",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "generalized_str_lit",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "ident",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "generalized_triplestr_lit",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "ident",
           "named": true
         }
       ]
@@ -176,19 +294,11 @@
       "required": true,
       "types": [
         {
-          "type": "COMMENT",
-          "named": true
-        },
-        {
-          "type": "IDENT",
-          "named": true
-        },
-        {
-          "type": "comma",
-          "named": true
-        },
-        {
           "type": "expr",
+          "named": true
+        },
+        {
+          "type": "ident",
           "named": true
         },
         {
@@ -199,114 +309,84 @@
     }
   },
   {
-    "type": "identOrLiteral",
+    "type": "ifExpr",
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
         {
-          "type": "generalizedLit",
+          "type": "condExpr",
           "named": true
         },
         {
-          "type": "literal",
-          "named": true
-        },
-        {
-          "type": "symbol",
+          "type": "keyw",
           "named": true
         }
       ]
     }
   },
   {
+    "type": "int_lit",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "keyw",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "literal",
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
         {
-          "type": "BOOL_LIT",
+          "type": "bool_lit",
           "named": true
         },
         {
-          "type": "CHAR_LIT",
+          "type": "char_lit",
           "named": true
         },
         {
-          "type": "CUSTOM_NUMERIC_LIT",
+          "type": "custom_numeric_lit",
           "named": true
         },
         {
-          "type": "FLOAT32_LIT",
+          "type": "float_lit",
           "named": true
         },
         {
-          "type": "FLOAT64_LIT",
+          "type": "float_suffix",
           "named": true
         },
         {
-          "type": "FLOAT_LIT",
+          "type": "int_lit",
           "named": true
         },
         {
-          "type": "INT16_LIT",
+          "type": "int_suffix",
           "named": true
         },
         {
-          "type": "INT32_LIT",
+          "type": "nil",
           "named": true
         },
         {
-          "type": "INT64_LIT",
+          "type": "rstr_lit",
           "named": true
         },
         {
-          "type": "INT8_LIT",
+          "type": "str_lit",
           "named": true
         },
         {
-          "type": "INT_LIT",
-          "named": true
-        },
-        {
-          "type": "NIL",
-          "named": true
-        },
-        {
-          "type": "RSTR_LIT",
-          "named": true
-        },
-        {
-          "type": "STR_LIT",
-          "named": true
-        },
-        {
-          "type": "TRIPLESTR_LIT",
-          "named": true
-        },
-        {
-          "type": "UINT16_LIT",
-          "named": true
-        },
-        {
-          "type": "UINT32_LIT",
-          "named": true
-        },
-        {
-          "type": "UINT64_LIT",
-          "named": true
-        },
-        {
-          "type": "UINT8_LIT",
-          "named": true
-        },
-        {
-          "type": "UINT_LIT",
+          "type": "triplestr_lit",
           "named": true
         }
       ]
@@ -318,7 +398,7 @@
     "fields": {},
     "children": {
       "multiple": true,
-      "required": true,
+      "required": false,
       "types": [
         {
           "type": "stmt",
@@ -326,11 +406,6 @@
         }
       ]
     }
-  },
-  {
-    "type": "normal_comment",
-    "named": true,
-    "fields": {}
   },
   {
     "type": "operator",
@@ -343,6 +418,11 @@
     "fields": {}
   },
   {
+    "type": "opr",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "primary",
     "named": true,
     "fields": {},
@@ -351,7 +431,11 @@
       "required": true,
       "types": [
         {
-          "type": "identOrLiteral",
+          "type": "generalizedLit",
+          "named": true
+        },
+        {
+          "type": "literal",
           "named": true
         },
         {
@@ -362,7 +446,12 @@
     }
   },
   {
-    "type": "simpleStmt",
+    "type": "rstr_lit",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "stmt",
     "named": true,
     "fields": {},
     "children": {
@@ -370,30 +459,34 @@
       "required": true,
       "types": [
         {
-          "type": "COMMENT",
+          "type": "discardStmt",
           "named": true
         },
         {
-          "type": "discardStmt",
+          "type": "exprStmt",
+          "named": true
+        },
+        {
+          "type": "keyw",
+          "named": true
+        },
+        {
+          "type": "variable",
           "named": true
         }
       ]
     }
   },
   {
-    "type": "stmt",
+    "type": "str_lit",
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
-      "required": true,
+      "multiple": true,
+      "required": false,
       "types": [
         {
-          "type": "complexOrSimpleStmt",
-          "named": true
-        },
-        {
-          "type": "simpleStmt",
+          "type": "str_esc_seq",
           "named": true
         }
       ]
@@ -408,11 +501,11 @@
       "required": false,
       "types": [
         {
-          "type": "IDENT",
+          "type": "ident",
           "named": true
         },
         {
-          "type": "KEYW",
+          "type": "keyw",
           "named": true
         },
         {
@@ -427,6 +520,34 @@
     }
   },
   {
+    "type": "triplestr_lit",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "tryExpr",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "exprList",
+          "named": true
+        },
+        {
+          "type": "keyw",
+          "named": true
+        },
+        {
+          "type": "stmt",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "typeDesc",
     "named": true,
     "fields": {},
@@ -435,11 +556,11 @@
       "required": true,
       "types": [
         {
-          "type": "COMMENT",
+          "type": "expr",
           "named": true
         },
         {
-          "type": "expr",
+          "type": "keyw",
           "named": true
         },
         {
@@ -473,7 +594,30 @@
     }
   },
   {
+    "type": "whenExpr",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "condExpr",
+          "named": true
+        },
+        {
+          "type": "keyw",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "!=",
+    "named": false
+  },
+  {
+    "type": "\"",
     "named": false
   },
   {
@@ -486,6 +630,10 @@
   },
   {
     "type": "&",
+    "named": false
+  },
+  {
+    "type": "'",
     "named": false
   },
   {
@@ -545,76 +693,8 @@
     "named": false
   },
   {
-    "type": "CHAR_LIT",
-    "named": true
-  },
-  {
-    "type": "CUSTOM_NUMERIC_LIT",
-    "named": true
-  },
-  {
-    "type": "FLOAT32_LIT",
-    "named": true
-  },
-  {
-    "type": "FLOAT64_LIT",
-    "named": true
-  },
-  {
-    "type": "FLOAT_LIT",
-    "named": true
-  },
-  {
-    "type": "GENERALIZED_STR_LIT",
-    "named": true
-  },
-  {
-    "type": "INT16_LIT",
-    "named": true
-  },
-  {
-    "type": "INT32_LIT",
-    "named": true
-  },
-  {
-    "type": "INT64_LIT",
-    "named": true
-  },
-  {
-    "type": "INT8_LIT",
-    "named": true
-  },
-  {
-    "type": "INT_LIT",
-    "named": true
-  },
-  {
-    "type": "RSTR_LIT",
-    "named": true
-  },
-  {
-    "type": "STR_LIT",
-    "named": true
-  },
-  {
-    "type": "UINT16_LIT",
-    "named": true
-  },
-  {
-    "type": "UINT32_LIT",
-    "named": true
-  },
-  {
-    "type": "UINT64_LIT",
-    "named": true
-  },
-  {
-    "type": "UINT8_LIT",
-    "named": true
-  },
-  {
-    "type": "UINT_LIT",
-    "named": true
+    "type": "R",
+    "named": false
   },
   {
     "type": "`",
@@ -655,6 +735,10 @@
   {
     "type": "cast",
     "named": false
+  },
+  {
+    "type": "char_esc_seq",
+    "named": true
   },
   {
     "type": "concept",
@@ -725,6 +809,10 @@
     "named": false
   },
   {
+    "type": "float_suffix",
+    "named": true
+  },
+  {
     "type": "for",
     "named": false
   },
@@ -735,6 +823,10 @@
   {
     "type": "func",
     "named": false
+  },
+  {
+    "type": "ident",
+    "named": true
   },
   {
     "type": "if",
@@ -751,6 +843,10 @@
   {
     "type": "include",
     "named": false
+  },
+  {
+    "type": "int_suffix",
+    "named": true
   },
   {
     "type": "interface",
@@ -790,7 +886,11 @@
   },
   {
     "type": "nil",
-    "named": false
+    "named": true
+  },
+  {
+    "type": "normal_comment",
+    "named": true
   },
   {
     "type": "not",
@@ -825,6 +925,10 @@
     "named": false
   },
   {
+    "type": "r",
+    "named": false
+  },
+  {
     "type": "raise",
     "named": false
   },
@@ -847,6 +951,10 @@
   {
     "type": "static",
     "named": false
+  },
+  {
+    "type": "str_esc_seq",
+    "named": true
   },
   {
     "type": "template",

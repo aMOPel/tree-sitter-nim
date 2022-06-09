@@ -1,3 +1,6 @@
 * bool literal isn't mentioned
 * `IND` without curly braces
 * COMMENT should be defined as the doc string comment
+* for expression isn't explained in the manual
+* ^+ and ^* is not defined to include and optional trailing separator, but
+in reality it does, eg: simpleStmt ^+ ';'

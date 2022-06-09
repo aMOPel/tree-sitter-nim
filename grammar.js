@@ -2,7 +2,7 @@ const PREC = {
   float: 2,
   raw_string: 3,
 
-  lit: 2,
+  lit: 4,
   keyword: 3,
   comment: 100,
 
@@ -27,76 +27,79 @@ module.exports = grammar({
   // inline: $ => [
   //   $._section,
   // ],
+  //
+  
+  // conflicts: $ => [
+  //   [$.tryExpr,],
+  // ],
 
   extras: $ => [
     $.normal_comment,
-    /[\s\f\uFEFF\u2060\u200B]|\\\r?\n/,
+    /[\s\f\uFEFF\u2060\u200B]|\r?\n/,
   ],
 
   externals: $ => [
-    $._NEWLINE,
-    $._INDENT,
-    $._DEDENT,
+    $._newline,
+    $._indent,
+    $._samedent,
+    $._dedent,
+    $._multi_string_content,
+    $._multi_string_end,
   ],
 
-  // word: $ => $.IDENT,
+  word: $ => $.ident,
   
   rules: {
-    module: $ => seq(
-      repeat1(seq(
-        $.stmt,
-        choice( ';', $._NEWLINE,),
-      )),
+    module: $ => sep_repeat(
+      $.stmt,
+      choice( ';', $._samedent,),
     ),
 
-    comma: $ => seq(',', optional($.COMMENT)),
-    semicolon: $ => seq(';', optional($.COMMENT)),
-    colon: $ => seq(':', optional($.COMMENT)),
-    colcom: $ => seq(':', optional($.COMMENT)),
+    _comma: $ => seq(
+      ',',
+      // optional($.comment)
+    ),
+    _semicolon: $ => seq(
+      ';',
+      // optional($.comment)
+    ),
+    _colon: $ => seq(
+      ':',
+      // optional($.comment)
+    ),
+    _colcom: $ => seq(
+      ':',
+      // optional($.comment)
+    ),
 
     stmt: $ => choice(
-      $.complexOrSimpleStmt,
-      $.simpleStmt,
-      // $.declColonEquals,
-      // $.complexOrSimpleStmt,
-      // $.generalizedLit,
-      // $.literal,
-      // $.IDENT,
-      // $.symbol,
-      // $.OPR,
-      // $.OP0,
-      // $.OP1,
-      // $.OP2,
-      // $.OP3,
-      // $.OP4,
-      // $.OP5,
-      // $.OP6,
-      // $.OP7,
-      // $.OP8,
-      // $.OP9,
-      // $.OP10,
-      // $.expr,
+      prec.left(2, seq(
+        $._indent,
+        sep_repeat1(
+          $._complexOrSimpleStmt,
+          choice(';', $._samedent),
+        ),
+        $._dedent,
+      )),
+      prec.left(1, 
+        sep_repeat1($._simpleStmt, ';'),
+      ),
     ),
-
-    // _suite: $ => choice(
-    //   // alias($.literal, $.block),
-    //   // alias($._NEWLINE, $.block)
-    //   // $.literal,
-    //   seq($._INDENT, $.block),
-    //   $._NEWLINE,
-    // ),
-    //
-    // block: $ => seq(
-    //   repeat($.stmt),
-    //   $._DEDENT,
-    // ),
 
     expr: $ => choice(
-      $._simpleExpr,
+      prec(2, choice(
+        $.blockExpr,
+        $.ifExpr,
+        $.whenExpr,
+        // $.caseStmt,
+        $.forExpr,
+        $.tryExpr,
+      )),
+      prec(1, $._simpleExpr),
     ),
 
-    complexOrSimpleStmt: $ => prec(1, choice(
-      choice(
+    _complexOrSimpleStmt: $ => choice(
+      prec(2, choice(
         // $.ifStmt,
         // $.whenStmt,
         // $.whileStmt,
@@ -118,12 +121,16 @@ module.exports = grammar({
         // seq('type', section($.typeDef)),
         // seq('const', section($.constant)),
         seq(
-          choice('let' , 'var' , 'using'),
+          choice(
+            alias('let', $.keyw), 
+            alias('var', $.keyw), 
+            alias('using', $.keyw), 
+          ),
           section($, $.variable),
         ),
-      ),
-      $.simpleStmt,
-    )),
+      )),
+      prec(1, $._simpleStmt),
+    ),
 
     variable: $ => seq(
       choice(
@@ -135,9 +142,9 @@ module.exports = grammar({
     ),
 
     identColonEquals: $ => prec.right(seq(
-      $.IDENT,
-      repeat(seq($.comma, $.IDENT)),
-      optional($.comma),
+      $.ident,
+      repeat(seq($._comma, $.ident)),
+      optional($._comma),
       optional(seq(
         ':',
         optInd($, $.typeDesc)
@@ -151,30 +158,123 @@ module.exports = grammar({
     typeDesc: $ => prec.left(seq(
       $._simpleExpr,
       repeat(seq(
-        'not',
+        alias('not', $.keyw), 
         $.expr
       )),
     )),
 
     colonBody: $ => seq(
-      $.colcom,
+      $._colcom,
       $.stmt,
       // optional($.postExprBlocks),
     ),
 
-    simpleStmt: $ => prec.left(seq(
+    _simpleStmt: $ => prec.left(seq(
       choice(
-        $.discardStmt,
-      ),
-      optional($.COMMENT)
+        prec(2, choice(
+          // $.returnStmt,
+          // $.raiseStmt,
+          // $.yieldStmt,
+          $.discardStmt,
+          // $.breakStmt,
+          // $.continueStmt,
+          // $.pragmaStmt,
+          // $.importStmt,
+          // $.exportStmt,
+          // $.fromStmt,
+          // $.includeStmt,
+          // $.commentStmt,
+        )), 
+        prec(1, $.exprStmt),
+      ), 
+      // optional($.comment),
     )),
 
     discardStmt: $ => prec.left(seq(
-      'discard',
+      alias('discard', $.keyw), 
       optional(
         optInd($, $.expr),
       ),
     )),
+
+    forStmt: $ => seq(
+      alias('for', $.keyw), 
+      sep_repeat1($._identWithPragma, $._comma),
+      alias('in', $.keyw), 
+      $.expr,
+      $._colcom,
+      $.stmt,
+    ),
+
+    exprStmt: $ => prec.left(seq(
+      $._simpleExpr,
+      optional(choice(
+        prec(2, seq(
+          '=',
+          optInd($, seq($.expr, optional($.colonBody)))
+        )),
+        prec(1, seq(
+          $.expr,
+          // repeat(
+          //   $._comma,
+          //   $.postExprBlocks,
+          // ),
+        )),
+      )),
+    )),
+
+    blockExpr: $ => seq(
+      alias('block', $.keyw), 
+      optional($.symbol),
+      $._colcom,
+      $.stmt,
+    ),
+
+    ifExpr: $ => seq(
+      alias('if', $.keyw), 
+      $.condExpr,
+    ),
+
+    whenExpr: $ => seq(
+      alias('when', $.keyw), 
+      $.condExpr,
+    ),
+
+    forExpr: $ => alias($.forStmt, 'for'),
+
+    tryExpr: $ => (seq(
+      alias('try', $.keyw),
+      $._colcom,
+      $.stmt,
+      repeat(optInd($, seq(
+        alias('except', $.keyw), 
+        $.exprList,
+        $._colcom,
+        $.stmt,
+      ))),
+      optional(optInd($, seq(
+        alias('finally', $.keyw),
+        $._colcom,
+        $.stmt,
+      ))),
+    )),
+
+    condExpr: $ => seq(
+      $.expr,
+      $._colcom,
+      $.expr,
+      repeat(optInd($, seq(
+        alias('elif', $.keyw), 
+        $.expr,
+        $._colcom,
+        $.expr,
+      ))),
+      optInd($, seq(
+        alias('else', $.keyw), 
+        $._colcom,
+        $.expr,
+      )),
+    ),
 
     _simpleExpr: $ => prec.left(seq(
       $.primary,
@@ -182,51 +282,7 @@ module.exports = grammar({
       // optional($.pragma),
     )),
 
-    // _simpleExpr: $ => prec.left(seq(
-    //   $._arrowExpr,
-    //   repeat(seq($.OP0, optInd($, $._arrowExpr))),
-    //   // optional($.pragma),
-    // )),
-    // _arrowExpr: $ => prec.left(seq(
-    //   $._assignExpr,
-    //   repeat(seq($.OP1, optInd($, $._assignExpr)))
-    // )),
-    // _assignExpr: $ => prec.left(seq(
-    //   $._orExpr,
-    //   repeat(seq($.OP2, optInd($, $._orExpr)))
-    // )),
-    // _orExpr: $ => prec.left(seq(
-    //   $._andExpr,
-    //   repeat(seq($.OP3, optInd($, $._andExpr)))
-    // )),
-    // _andExpr: $ => prec.left(seq(
-    //   $._cmpExpr,
-    //   repeat(seq($.OP4, optInd($, $._cmpExpr)))
-    // )),
-    // _cmpExpr: $ => prec.left(seq(
-    //   $._sliceExpr,
-    //   repeat(seq($.OP5, optInd($, $._sliceExpr)))
-    // )),
-    // _sliceExpr: $ => prec.left(seq(
-    //   $._ampExpr,
-    //   repeat(seq($.OP6, optInd($, $._ampExpr)))
-    // )),
-    // _ampExpr: $ => prec.left(seq(
-    //   $._plusExpr,
-    //   repeat(seq($.OP7, optInd($, $._plusExpr)))
-    // )),
-    // _plusExpr: $ => prec.left(seq(
-    //   $._mulExpr,
-    //   repeat(seq($.OP8, optInd($, $._mulExpr)))
-    // )),
-    // _mulExpr: $ => prec.left(seq(
-    //   $._dollarExpr,
-    //   repeat(seq($.OP9, optInd($, $._dollarExpr)))
-    // )),
-    // _dollarExpr: $ => prec.left(seq(
-    //   $.primary,
-    //   repeat(seq($.OP10, optInd($, $.primary)))
-    // )),
+    exprList: $ => sep_repeat1( $.expr, $._comma),
 
     primary: $ => choice(
       choice(
@@ -251,15 +307,25 @@ module.exports = grammar({
       ),
       seq(
         repeat($.operator),
-        $.identOrLiteral,
+        $._identOrLiteral,
         // $.primarySuffix,
       ),
     ),
 
-    identOrLiteral: $ => choice(
-      $.generalizedLit,
+    _identWithPragma: $ => seq(
+      $._identVis,
+      // optional($.pragma),
+    ),
+
+    _identVis: $ => seq(
       $.symbol,
+      optional($.opr),
+    ),
+
+    _identOrLiteral: $ => choice(
       $.literal,
+      $.generalizedLit,
+      // $.symbol,
       // $.par,
       // $.arrayConstr,
       // $.setOrTableConstr,
@@ -267,41 +333,32 @@ module.exports = grammar({
       // $.castExpr,
     ),
 
-    literal: $ => prec(PREC.lit, choice(
-      $.INT_LIT,
-      $.INT8_LIT,
-      $.INT16_LIT,
-      $.INT32_LIT,
-      $.INT64_LIT,
-      $.UINT_LIT,
-      $.UINT8_LIT,
-      $.UINT16_LIT,
-      $.UINT32_LIT,
-      $.UINT64_LIT,
-      $.FLOAT_LIT,
-      $.FLOAT32_LIT,
-      $.FLOAT64_LIT,
-      $.CHAR_LIT,
-      $.STR_LIT,
-      $.RSTR_LIT,
-      $.TRIPLESTR_LIT,
-      $.CUSTOM_NUMERIC_LIT,
-      $.NIL,
-      $.BOOL_LIT,
-    )),
-
-    generalizedLit: $ => choice(
-      $.GENERALIZED_STR_LIT,
-      $.GENERALIZED_TRIPLESTR_LIT,
+    literal: $ => choice(
+      seq($.int_lit, optional(choice($.int_suffix, $.float_suffix))),
+      seq($.float_lit, optional($.float_suffix)),
+      // alias($.float32_lit, $.float_lit),
+      // alias($.float64_lit, $.float_lit),
+      $.custom_numeric_lit,
+      $.char_lit,
+      $.str_lit,
+      $.rstr_lit,
+      $.triplestr_lit,
+      $.nil,
+      $.bool_lit,
     ),
 
-    symbol: $ => prec(0, choice(
+    generalizedLit: $ => choice(
+      $.generalized_str_lit,
+      $.generalized_triplestr_lit,
+    ),
+
+    symbol: $ => choice(
       seq(
         '`',
         repeat1(choice(
           // /\s/,
-          $.KEYW,
-          $.IDENT,
+          $.keyw,
+          $.ident,
           $.literal,
           prec.left(repeat1(choice(
             $.operatorB,
@@ -310,61 +367,104 @@ module.exports = grammar({
         )),
         '`',
       ),
-      $.IDENT,
-      $.KEYW
-    )),
+      $.ident,
+      $.keyw
+    ),
 
 
     operator: $ => choice(operators(), 'static'),
     operatorB: $ => operators(),
 
 
-    COMMENT: $ => seq(
+    comment: $ => seq(
       /##.*/,
-      $._NEWLINE,
+      $._newline,
     ),
 
-    normal_comment: $ => seq(
+    normal_comment: $ => token(prec(-5, seq(
       /#[^#].*/,
-      $._NEWLINE,
+    ))),
+
+    keyw: $ => prec(PREC.keyword, choice('addr', 'and', 'as', 'asm', 'bind', 'block', 'break', 'case', 'cast', 'concept', 'const', 'continue', 'converter', 'defer', 'discard', 'distinct', 'div', 'do', 'elif', 'else', 'end', 'enum', 'except', 'export', 'finally', 'for', 'from', 'func', 'if', 'import', 'in', 'include', 'interface', 'is', 'isnot', 'iterator', 'let', 'macro', 'method', 'mixin', 'mod', 'not', 'notin', 'object', 'of', 'or', 'out', 'proc', 'ptr', 'raise', 'ref', 'return', 'shl', 'shr', 'static', 'template', 'try', 'tuple', 'type', 'using', 'var', 'when', 'while', 'xor', 'yield')),
+    // KEYW: $ => prec(PREC.keyword, choice('addr', 'and', 'as', 'asm', 'bind', 'block', 'break', 'case', 'cast', 'concept', 'const', 'continue', 'converter', 'defer', 'discard', 'distinct', 'div', 'do', 'elif', 'else', 'end', 'enum', 'except', 'export', 'finally', 'for', 'from', 'func', 'if', 'import', 'in', 'include', 'interface', 'is', 'isnot', 'iterator', 'let', 'macro', 'method', 'mixin', 'mod', 'nil', 'not', 'notin', 'object', 'of', 'or', 'out', 'proc', 'ptr', 'raise', 'ref', 'return', 'shl', 'shr', 'static', 'template', 'try', 'tuple', 'type', 'using', 'var', 'when', 'while', 'xor', 'yield')),
+
+    dotlikeop: $ => prec(PREC.op6, dotlikeop()),
+    opr: $ => operator_signs(),
+    op0: $ => op0(),
+    op1: $ => op1(),
+    op2: $ => op2(),
+    op3: $ => op3(),
+    op4: $ => op4(),
+    op5: $ => op5(),
+    op6: $ => op6(),
+    op7: $ => op7(),
+    op8: $ => op8(),
+    op9: $ => op9(),
+    op10: $ => op10(),
+
+    ident: $ => /[a-zA-Z\x80-\xff](_?[a-zA-Z0-9\x80-\xff])*/,
+
+    int_lit: $ => choice(
+      hex_lit(),
+      dec_lit(),
+      oct_lit(),
+      bin_lit(),
     ),
 
-    KEYW: $ => keywords(),
+    int_suffix: $ => token.immediate(choice(
+      seq(
+        '\'',
+        token.immediate(choice('i', 'I')),
+        token.immediate(choice('8', '16', '32', '64')),
+      ),
+      seq(
+        '\'',
+        token.immediate(choice('u', 'U')),
+        token.immediate(optional(choice('8', '16', '32', '64'))),
+      ),
+    )),
 
-    DOTLIKEOP: $ => prec(PREC.op6, dotlikeop()),
-    OPR: $ => operator_signs(),
-    OP0: $ => op0(),
-    OP1: $ => op1(),
-    OP2: $ => op2(),
-    OP3: $ => op3(),
-    OP4: $ => op4(),
-    OP5: $ => op5(),
-    OP6: $ => op6(),
-    OP7: $ => op7(),
-    OP8: $ => op8(),
-    OP9: $ => op9(),
-    OP10: $ => op10(),
+    float_lit: $ => {
+      function exponent() {
+        return seq(
+          choice('e', 'E'),
+          token.immediate(optional(choice('+', '-'))),
+          token.immediate(dec_lit()),
+        )
+      }
 
-    IDENT: $ => identifier(),
+      return seq(
+        dec_lit(),
+        token.immediate(choice(
+          seq(
+            '.',
+            token.immediate(dec_lit()),
+            token.immediate(optional(exponent())),
+          ),
+          exponent(),
+        )),
+      )
+    },
 
-    INT_LIT: $ => int_lit(),
-    INT8_LIT: $ => int8_lit(),
-    INT16_LIT: $ => int16_lit(),
-    INT32_LIT: $ => int32_lit(),
-    INT64_LIT: $ => int64_lit(),
-
-    UINT_LIT: $ => uint_lit(),
-    UINT8_LIT: $ => uint8_lit(),
-    UINT16_LIT: $ => uint16_lit(),
-    UINT32_LIT: $ => uint32_lit(),
-    UINT64_LIT: $ => uint64_lit(),
-
-    FLOAT_LIT: $ => float_lit(),
-    FLOAT32_LIT: $ => float32_lit(),
-    FLOAT64_LIT: $ => float64_lit(),
+    float_suffix: $ => token.immediate(seq(
+      optional('\''),
+      choice(
+        seq(
+          token.immediate(choice('f', 'F')),
+          token.immediate(optional(choice('32', '64'))),
+        ),
+        choice('d', 'D'),
+      )
+    )),
 
     // TODO: doesn't account for the exception of predefined type suffixes (i/u8-64)
-    CUSTOM_NUMERIC_LIT: $ => custom_numeric_lit(),
+    custom_numeric_lit: $ => seq(
+      choice(
+        $.int_lit,
+        $.float_lit,
+      ),
+      token.immediate(/'[a-zA-Z\x80-\xff](_?[a-zA-Z0-9\x80-\xff])*/,),
+    ),
 
     /* TODO: 
      * "A character literal that does not end in ' is interpreted as ' if there is a
@@ -373,258 +473,91 @@ module.exports = grammar({
      * declaration like proc `'customLiteral`(s: string) is valid.
      * proc `'customLiteral`(s: string) is the same as proc `'\''customLiteral`(s: string)."
      */
-    CHAR_LIT: $ => char_lit(),
-    STR_LIT: $ => token(seq(
+    char_lit: $ => seq(
+      '\'',
+      choice(
+        /[^\n\r']/,
+        $.char_esc_seq,
+      ),
+      '\'',
+    ),
+
+    char_esc_seq: $ => token(prec(1, seq(
+      '\\', 
+      choice(
+      /[rcnlftv\\"'abe]/,
+      /x[0-9a-fA-F]{2}/,
+      /[0-9]{1,3}/,
+    )))),
+
+    str_lit: $ => seq(
       '"',
       repeat(choice(
-        /[^\n\r"]/,
-        field('esc_seq',
-          seq('\\', choice(
-            /[prcnlftv\\"'abe]/,
-            /x[0-9a-fA-F]{2}/,
-            /u[0-9a-fA-F]{4}/,
-            /u\{[0-9a-fA-F]+\}/,
-            /[0-9]{1,3}/,
-          ))))),
-      '"',
-    )),
+        token.immediate(/[^\n\r"]/),
+        $.str_esc_seq,
+      )),
+      token.immediate('"'),
+    ),
 
-    // TODO: TRIPLESTR_LIT continues matching when it's not closed, instead of throwing an error
-    TRIPLESTR_LIT: $ => triplestr_lit(),
-    RSTR_LIT: $ => rstr_lit(),
-
-    GENERALIZED_STR_LIT: $ => generalized_str_lit(),
-    GENERALIZED_TRIPLESTR_LIT: $ => generalized_triplestr_lit(),
-
-    NIL: $ => nil(),
-    BOOL_LIT: $ => bool_lit(),
-
-  }
-});
-
-function signed_int() {
-  return /\'(i|I)/
-}
-
-function unsigned_int() {
-  return /\'(u|U)/
-}
-
-function hex_lit() { return /0(x|X)[0-9A-Fa-f](_?[0-9A-Fa-f])*/ }
-function dec_lit() { return /[0-9](_?[0-9])*/ }
-function oct_lit() { return /0o[0-7](_?[0-7])*/ }
-function bin_lit() { return /0(b|B)[01](_?[01])*/ }
-
-/* TODO: 
- * "For the unary_minus rule there are further restrictions that are not covered
- * in the formal grammar. For - to be part of the number literal its immediately
- * preceeding character has to be in the set 
- * {' ', '\t', '\n', '\r', ',', ';', '(', '[', '{'}.
- * This set was designed to cover most cases in a natural manner."
- */
-function unary_minus() { return field('unary_minus', '-') }
-
-function int_lit() {
-  return token(seq(
-      optional(unary_minus()),
+    str_esc_seq: $ => token(prec(1, seq(
+      '\\',
       choice(
-        hex_lit(),
-        dec_lit(),
-        oct_lit(),
-        bin_lit(),
-      ),
-    ))
-}
-
-function float_lit() {
-  return token(prec(PREC.float, seq(
-    optional(unary_minus()),
-    dec_lit(),
-    choice(
-      seq(
-        '.',
-        dec_lit(),
-        optional(exponent()),
-      ),
-      exponent(),
-    ),
-  )))
-}
-
-function exponent() { return field('exp', seq(/(e|E)(\+|\-)?/, dec_lit())) }
-function float32_suffix() { return /(f|F)(32)?/ }
-function float64_suffix() { return /((f|F)64)|d|D/ }
-
-function int8_lit() { return token(seq(int_lit(), signed_int(), '8')) }
-function int16_lit() { return token(seq(int_lit(), signed_int(), '16')) }
-function int32_lit() { return token(seq(int_lit(), signed_int(), '32')) }
-function int64_lit() { return token(seq(int_lit(), signed_int(), '64')) }
-
-function uint_lit() { return token(seq(int_lit(), unsigned_int())) }
-function uint8_lit() { return token(seq(int_lit(), unsigned_int(), '8')) }
-function uint16_lit() { return token(seq(int_lit(), unsigned_int(), '16')) }
-function uint32_lit() { return token(seq(int_lit(), unsigned_int(), '32')) }
-function uint64_lit() { return token(seq(int_lit(), unsigned_int(), '64')) }
-
-function float32_lit() {
-  return token(prec(PREC.float, choice(
-  seq(
-    hex_lit(),
-    '\'',
-    float32_suffix(),
-  ),
-  seq(
-    choice(
-      float_lit(),
-      dec_lit(),
-      oct_lit(),
-      bin_lit(),
-    ),
-    optional('\''),
-    float32_suffix(),
-  ),
-)))
-}
-
-function float64_lit() {
-  return token(prec(PREC.float, choice(
-  seq(
-    hex_lit(),
-    '\'',
-    float64_suffix(),
-  ),
-  seq(
-    choice(
-      float_lit(),
-      dec_lit(),
-      oct_lit(),
-      bin_lit(),
-    ),
-    optional('\''),
-    float64_suffix(),
-  ),
-)))
-}
-
-// TODO: doesn't account for the exception of predefined type suffixes (i/u8-64)
-function custom_numeric_lit() {
-  return token(seq(
-  choice(
-    int_lit(),
-    float_lit(),
-  ),
-  '\'',
-  field('identifier', identifier()),
-))
-}
-
-/* TODO: 
- * "A character literal that does not end in ' is interpreted as ' if there is a
- * preceeding backtick token. There must be no whitespace between the preceeding
- * backtick token and the character literal. This special case ensures that a
- * declaration like proc `'customLiteral`(s: string) is valid.
- * proc `'customLiteral`(s: string) is the same as proc `'\''customLiteral`(s: string)."
- */
-function char_lit() {
-  return token(seq(
-  '\'',
-  choice(
-    /[^\n\r']/,
-    field('esc_seq',
-      seq( '\\', choice(
-          /[rcnlftv\\"'abe]/,
-          /x[0-9a-fA-F]{2}/,
-          /[0-9]{1,3}/,
-        )))),
-  '\'',
-))
-}
-
-function str_lit() {
-  return token(seq(
-  '"',
-  repeat(choice(
-    /[^\n\r"]/,
-    field('esc_seq',
-      seq('\\', choice(
         /[prcnlftv\\"'abe]/,
         /x[0-9a-fA-F]{2}/,
         /u[0-9a-fA-F]{4}/,
         /u\{[0-9a-fA-F]+\}/,
         /[0-9]{1,3}/,
-      ))))),
-  '"',
-))
-}
+      ),
+    ))),
 
-// TODO: TRIPLESTR_LIT continues matching when it's not closed, instead of throwing an error
-function triplestr_lit() {
-  return seq(
-  /(r|R)?"""/,
-  repeat(/./),
-  /"""[^"]/,
-)
-}
+    // TODO: TRIPLESTR_LIT continues matching when it's not closed, instead of throwing an error
+      // TODO: do strings with externals, like python
+    triplestr_lit: $ => seq(
+      optional(choice('r', 'R')),
+      '"""',
+      repeat( $._multi_string_content),
+      $._multi_string_end,
+    ),
 
-function rstr_lit() {
-  return token(seq(
-  /(r|R)".[^"]/,
-  repeat(/[^\r\n"]|""/),
-  '"',
-))
-}
+    rstr_lit: $ => seq(
+      choice('r', 'R'),
+      choice(
+        seq(
+          token.immediate('"'),
+          token.immediate('"'),
+        ),
+        seq(
+          token.immediate(/"[^\r\n"]/),
+          token.immediate(repeat(/[^\r\n"]|""/)),
+          token.immediate('"'),
+        ),
+      ),
+    ),
 
-function generalized_str_lit() {
-  return token(seq(
-  identifier(),
-  /".[^"]/, // to disambiguate from GENERALIZED_TRIPLESTR_LIT
-  repeat(/[^\r\n"]|""/),
-  '"',
-))
-}
+    generalized_str_lit: $ => seq(
+      $.ident,
+      token.immediate(/".[^"]/), // to disambiguate from GENERALIZED_TRIPLESTR_LIT
+      token.immediate(repeat(/[^\r\n"]|""/)),
+      token.immediate('"'),
+    ),
 
-function generalized_triplestr_lit() {
-  return seq(
-  identifier(),
-  '"""',
-  repeat(/./),
-  /"""[^"]/,
-)
-}
+    generalized_triplestr_lit: $ => seq(
+      $.ident,
+      token.immediate('"""'),
+      repeat( $._multi_string_content),
+      $._multi_string_end,
+    ),
 
-function nil() { return 'nil' }
-function bool_lit() { return choice('true', 'false',) }
+    nil: $ => 'nil',
+    bool_lit: $ => choice('true', 'false'),
 
-function literal() {
-  return choice(
-    int_lit(),
-    int8_lit(),
-    int16_lit(),
-    int32_lit(),
-    int64_lit(),
-    uint_lit(),
-    uint8_lit(),
-    uint16_lit(),
-    uint32_lit(),
-    uint64_lit(),
-    float_lit(),
-    float32_lit(),
-    float64_lit(),
-    char_lit(),
-    str_lit(),
-    rstr_lit(),
-    triplestr_lit(),
-    // generalized_str_lit(),
-    // generalized_triplestr_lit(),
-    custom_numeric_lit(),
-    nil(),
-    bool_lit(),
-)
-}
+  }
+});
+
+
+
 
 //-------------------------------------------------------------------------------
-
-function identifier() { return /[a-zA-Z\x80-\xff](_?[a-zA-Z0-9\x80-\xff])*/ }
 
 function keywords() { return prec(PREC.keyword, choice('addr', 'and', 'as', 'asm', 'bind', 'block', 'break', 'case', 'cast', 'concept', 'const', 'continue', 'converter', 'defer', 'discard', 'distinct', 'div', 'do', 'elif', 'else', 'end', 'enum', 'except', 'export', 'finally', 'for', 'from', 'func', 'if', 'import', 'in', 'include', 'interface', 'is', 'isnot', 'iterator', 'let', 'macro', 'method', 'mixin', 'mod', 'nil', 'not', 'notin', 'object', 'of', 'or', 'out', 'proc', 'ptr', 'raise', 'ref', 'return', 'shl', 'shr', 'static', 'template', 'try', 'tuple', 'type', 'using', 'var', 'when', 'while', 'xor', 'yield')) }
 function parKeywords() { return prec(PREC.keyword, choice('discard' , 'include' , 'if' , 'while' , 'case' , 'try', 'finally' , 'except' , 'for' , 'block' , 'const' , 'let')) }
@@ -683,12 +616,12 @@ function operators() {return choice(op0(), op1(), op2(), op3(), op4(), op5(), op
 
 function optInd($, content) {
   return seq(
-    optional($.COMMENT),
+    // optional($.comment),
     choice(
       seq(
-        $._INDENT,
+        $._indent,
         content,
-        $._DEDENT
+        $._dedent
       ),
       content,
     )
@@ -698,20 +631,55 @@ function optInd($, content) {
 function section($, content) {
   return prec.left(choice(
     seq(
-      optional($.COMMENT),
+      // optional($.comment),
       content,
     ),
     seq(
-      $._INDENT,
+      $._indent,
       repeat1(seq(
         choice(
           content,
-          $.COMMENT,
+          // $.comment,
         ),
-        $._NEWLINE,
+        $._samedent,
       )),
-      $._DEDENT,
+      $._dedent,
     ),
   ))
 }
 
+function sep_repeat1(content, separator) {
+  return seq(
+    content,
+    repeat(seq(
+      separator,
+      content,
+    )),
+    optional(separator),
+  )
+}
+
+function sep_repeat(content, separator) {
+  return optional(seq(
+    content,
+    repeat(seq(
+      separator,
+      content,
+    )),
+    optional(separator),
+  ))
+}
+
+function hex_lit() { return /0[xX][0-9A-Fa-f](_?[0-9A-Fa-f])*/ }
+function dec_lit() { return /[0-9](_?[0-9])*/ }
+function oct_lit() { return /0o[0-7](_?[0-7])*/ }
+function bin_lit() { return /0[bB][01](_?[01])*/ }
+
+/* TODO: 
+ * "For the unary_minus rule there are further restrictions that are not covered
+ * in the formal grammar. For - to be part of the number literal its immediately
+ * preceeding character has to be in the set 
+ * {' ', '\t', '\n', '\r', ',', ';', '(', '[', '{'}.
+ * This set was designed to cover most cases in a natural manner."
+ */
+// function unary_minus() { return prec(PREC.unary, /[ \t\n\r,;\(\[\{][-\+]/,) }
