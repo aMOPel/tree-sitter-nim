@@ -3,8 +3,9 @@ const PREC = {
   raw_string: 3,
 
   lit: 4,
-  keyword: 3,
+  keyword: -1,
   comment: 100,
+  stmt: 30,
 
   op0: 10,
   op1: 11,
@@ -24,14 +25,17 @@ module.exports = grammar({
   name: 'nim',
 
 
-  // inline: $ => [
-  //   $._section,
-  // ],
-  //
+  inline: $ => [
+    // $._section,
+    $._simpleStmt,
+    $.complexStmt,
+    $._suite,
+  ],
+
   
-  // conflicts: $ => [
-  //   [$.tryExpr,],
-  // ],
+  conflicts: $ => [
+    [$.ifExpr, $.ifStmt],
+  ],
 
   extras: $ => [
     $.normal_comment,
@@ -39,10 +43,10 @@ module.exports = grammar({
   ],
 
   externals: $ => [
-    $._newline,
-    $._indent,
-    $._samedent,
-    $._dedent,
+    $.newline,
+    $.indent,
+    $.samedent,
+    $.dedent,
     $._multi_string_content,
     $._multi_string_end,
   ],
@@ -50,9 +54,8 @@ module.exports = grammar({
   word: $ => $.ident,
   
   rules: {
-    module: $ => sep_repeat(
+    module: $ => repeat(
       $.stmt,
-      choice( ';', $._samedent,),
     ),
 
     _comma: $ => seq(
@@ -72,36 +75,55 @@ module.exports = grammar({
       // optional($.comment)
     ),
 
+    // stmt: $ => prec.left(choice(
+    //   seq(
+    //     repeat1(
+    //       $.complexStmt,
+    //       // optional(choice(';', $.samedent)),
+    //     ),
+    //   ),
+    //   seq(
+    //     $.indent,
+    //     repeat1(
+    //       $.complexStmt,
+    //       // optional(choice(';', $.samedent)),
+    //     ),
+    //     $.dedent,
+    //   ),
+    //   prec(-1, seq( 
+    //     sep_repeat1($._simpleStmt, ';'),
+    //     $.newline,
+    //   )),
+    // )),
+
     stmt: $ => choice(
-      prec.left(2, seq(
-        $._indent,
-        sep_repeat1(
-          $._complexOrSimpleStmt,
-          choice(';', $._samedent),
-        ),
-        $._dedent,
-      )),
-      prec.left(1, 
-        sep_repeat1($._simpleStmt, ';'),
-      ),
+      $.simpleStmts,
+      $.complexStmt,
     ),
+
+
+    simpleStmts: $ => prec.left(seq(
+      sep_repeat1($._simpleStmt, ';'),
+      $.newline,
+    )),
 
     expr: $ => choice(
       prec(2, choice(
         $.blockExpr,
         $.ifExpr,
         $.whenExpr,
-        // $.caseStmt,
+        $.caseExpr,
         $.forExpr,
-        $.tryExpr,
+        // $.tryExpr,
       )),
       prec(1, $._simpleExpr),
     ),
 
-    _complexOrSimpleStmt: $ => choice(
-      prec(2, choice(
-        // $.ifStmt,
-        // $.whenStmt,
+    complexStmt: $ => choice(
+      // choice(
+        $.ifStmt,
+        $.caseStmt,
+        $.whenStmt,
         // $.whileStmt,
         // $.tryStmt,
         // $.forStmt,
@@ -128,17 +150,39 @@ module.exports = grammar({
           ),
           section($, $.variable),
         ),
-      )),
-      prec(1, $._simpleStmt),
+      // ),
+      // prec(-2, seq(
+      //   sep_repeat1($._simpleStmt, ';'),
+      //   $.newline,
+      // )),
     ),
 
-    variable: $ => seq(
+    _suite: $ => choice(
+      alias($.simpleStmts, $.block),
+      seq($.indent, $.block),
+      alias($.newline, $.block)
+    ),
+
+    block: $ => seq(
+      repeat($.stmt),
+      $.dedent
+    ),
+
+    variable: $ => prec.left(seq(
       choice(
-        // $.varTuple,
-        $.identColonEquals,
+        prec(2, $.varTuple),
+        prec(1, $.identColonEquals),
       ),
       optional($.colonBody),
       // $.indAndComment,
+    )),
+
+    varTuple: $ => seq(
+      '(',
+      sep_repeat1($._identWithPragma, $._comma),
+      ')',
+      '=',
+      $.expr,
     ),
 
     identColonEquals: $ => prec.right(seq(
@@ -163,31 +207,65 @@ module.exports = grammar({
       )),
     )),
 
+    pragma: $ => prec.left(seq(
+      '{.',
+      repeat(
+        seq(
+          $.exprColonEqExpr,
+          optional($._comma),
+        ),
+      ),
+      choice('.}', '}'),
+    )),
+
+    exprColonEqExpr: $ => prec.left(seq(
+      $.expr,
+      optional(seq(
+        choice(':', '='),
+        $.expr,
+      ))
+    )),
+
     colonBody: $ => seq(
       $._colcom,
       $.stmt,
       // optional($.postExprBlocks),
     ),
 
-    _simpleStmt: $ => prec.left(seq(
+    _simpleStmt: $ => seq(
       choice(
         prec(2, choice(
-          // $.returnStmt,
-          // $.raiseStmt,
-          // $.yieldStmt,
+          $.returnStmt,
+          $.raiseStmt,
+          $.yieldStmt,
           $.discardStmt,
-          // $.breakStmt,
-          // $.continueStmt,
-          // $.pragmaStmt,
+          $.breakStmt,
+          $.continueStmt,
+          $.pragmaStmt,
           // $.importStmt,
           // $.exportStmt,
           // $.fromStmt,
           // $.includeStmt,
           // $.commentStmt,
         )), 
-        prec(1, $.exprStmt),
+        prec(-100, $.exprStmt),
       ), 
       // optional($.comment),
+    ),
+
+    returnStmt: $ => prec.left(seq(
+      alias('return', $.keyw), 
+      optional(optInd($, $.expr)),
+    )),
+
+    raiseStmt: $ => prec.left(seq(
+      alias('raise', $.keyw), 
+      optional(optInd($, $.expr)),
+    )),
+
+    yieldStmt: $ => prec.left(seq(
+      alias('yield', $.keyw), 
+      optional(optInd($, $.expr)),
     )),
 
     discardStmt: $ => prec.left(seq(
@@ -196,6 +274,78 @@ module.exports = grammar({
         optInd($, $.expr),
       ),
     )),
+
+    breakStmt: $ => prec.left(seq(
+      alias('break', $.keyw), 
+      optional(optInd($, $.expr)),
+    )),
+
+    continueStmt: $ => prec.left(seq(
+      alias('continue', $.keyw), 
+      optional(optInd($, $.expr)),
+    )),
+
+    pragmaStmt: $ => prec.left(seq(
+      $.pragma,
+      optional(seq(
+        ':',
+        $._suite,
+      )),
+    )),
+
+    // TODO:
+    // importStmt: $ => prec.left(seq(
+    //   alias('import', $.keyw),
+    //   choice(
+    //     sep_repeat1(
+    //       $.expr,
+    //       $._comma,
+    //     ),
+    //     seq(
+    //       $.expr,
+    //       alias('except', $.keyw),
+    //       sep_repeat1($.expr, $._comma),
+    //     ),
+    //   ),
+    // )),
+    // exportStmt: $ => prec.left(seq(
+    // fromStmt: $ => seq(
+    //   alias('from', $.keyw),
+    //   $.expr,
+    //   alias('import', $.keyw),
+    // ),
+    // includeStmt: $ => seq(
+
+    ifStmt: $ => seq(
+      'if',
+      $._condStmt,
+    ),
+
+    whenStmt: $ => seq(
+      'when',
+      $._condStmt,
+    ),
+
+    _condStmt: $ => prec.left(seq(
+      $.expr,
+      $._colcom,
+      $._suite,
+      repeat($.elifStmt),
+      optional($.elseStmt),
+    )),
+
+    elifStmt: $ => seq(
+      alias('elif', $.keyw), 
+      $.expr,
+      $._colcom,
+      $._suite,
+    ),
+
+    elseStmt: $ => seq(
+      alias('else', $.keyw), 
+      $._colcom,
+      $._suite,
+    ),
 
     forStmt: $ => seq(
       alias('for', $.keyw), 
@@ -213,13 +363,14 @@ module.exports = grammar({
           '=',
           optInd($, seq($.expr, optional($.colonBody)))
         )),
-        prec(1, seq(
-          $.expr,
-          // repeat(
-          //   $._comma,
-          //   $.postExprBlocks,
-          // ),
-        )),
+        // prec(1,
+        //
+        //   sep_repeat1(
+        //     $.expr,
+        //     $._comma,
+        //   ),
+        //   // $.postExprBlocks,
+        // ),
       )),
     )),
 
@@ -230,51 +381,67 @@ module.exports = grammar({
       $.stmt,
     ),
 
-    ifExpr: $ => seq(
-      alias('if', $.keyw), 
-      $.condExpr,
+    ifExpr: $ => alias($.ifStmt, 'if'),
+
+    whenExpr: $ => alias($.whenStmt, 'when'),
+    // whenExpr: $ => prec.left(seq(
+    //   'when',
+    //   $.expr,
+    //   $._colcom,
+    //   $._suite,
+    //   optInd($, seq(
+    //     repeat($.elifStmt),
+    //     optional($.elseStmt),
+    //   )),
+    // )),
+
+    caseExpr: $ => seq(
+      'case',
+      $.expr,
+      optional($._colcom),
+      $.newline,
+      optInd($, $._branches),
     ),
 
-    whenExpr: $ => seq(
-      alias('when', $.keyw), 
-      $.condExpr,
+    ofBranch: $ => seq(
+      'of',
+      $.exprList,
+      $._colcom,
+      $._suite,
     ),
+
+    caseStmt: $ => seq(
+      'case',
+      $.expr,
+      optional($._colcom),
+      $.newline,
+      $._branches,
+    ),
+
+    _branches: $ => prec.left(seq(
+      repeat1($.ofBranch),
+      repeat($.elifStmt),
+      optional($.elseStmt),
+    )),
 
     forExpr: $ => alias($.forStmt, 'for'),
 
-    tryExpr: $ => (seq(
-      alias('try', $.keyw),
-      $._colcom,
-      $.stmt,
-      repeat(optInd($, seq(
-        alias('except', $.keyw), 
-        $.exprList,
-        $._colcom,
-        $.stmt,
-      ))),
-      optional(optInd($, seq(
-        alias('finally', $.keyw),
-        $._colcom,
-        $.stmt,
-      ))),
-    )),
-
-    condExpr: $ => seq(
-      $.expr,
-      $._colcom,
-      $.expr,
-      repeat(optInd($, seq(
-        alias('elif', $.keyw), 
-        $.expr,
-        $._colcom,
-        $.expr,
-      ))),
-      optInd($, seq(
-        alias('else', $.keyw), 
-        $._colcom,
-        $.expr,
-      )),
-    ),
+    // tryExpr: $ => (seq(
+    //   alias('try', $.keyw),
+    //   $._colcom,
+    //   $.stmt,
+    //   repeat(optInd($, seq(
+    //     alias('except', $.keyw), 
+    //     $.exprList,
+    //     $._colcom,
+    //     $.stmt,
+    //   ))),
+    //   optional(optInd($, seq(
+    //     alias('finally', $.keyw),
+    //     $._colcom,
+    //     $.stmt,
+    //   ))),
+    // )),
 
     _simpleExpr: $ => prec.left(seq(
       $.primary,
@@ -325,7 +492,7 @@ module.exports = grammar({
     _identOrLiteral: $ => choice(
       $.literal,
       $.generalizedLit,
-      // $.symbol,
+      $.symbol,
       // $.par,
       // $.arrayConstr,
       // $.setOrTableConstr,
@@ -357,7 +524,7 @@ module.exports = grammar({
         '`',
         repeat1(choice(
           // /\s/,
-          $.keyw,
+          // $.keyw,
           $.ident,
           $.literal,
           prec.left(repeat1(choice(
@@ -368,24 +535,24 @@ module.exports = grammar({
         '`',
       ),
       $.ident,
-      $.keyw
+      // prec(-1, $.keyw),
     ),
 
 
-    operator: $ => choice(operators(), 'static'),
+    operator: $ => choice(operators(), prec(PREC.unary, 'static')),
     operatorB: $ => operators(),
 
 
     comment: $ => seq(
       /##.*/,
-      $._newline,
+      $.newline,
     ),
 
     normal_comment: $ => token(prec(-5, seq(
       /#[^#].*/,
     ))),
 
-    keyw: $ => prec(PREC.keyword, choice('addr', 'and', 'as', 'asm', 'bind', 'block', 'break', 'case', 'cast', 'concept', 'const', 'continue', 'converter', 'defer', 'discard', 'distinct', 'div', 'do', 'elif', 'else', 'end', 'enum', 'except', 'export', 'finally', 'for', 'from', 'func', 'if', 'import', 'in', 'include', 'interface', 'is', 'isnot', 'iterator', 'let', 'macro', 'method', 'mixin', 'mod', 'not', 'notin', 'object', 'of', 'or', 'out', 'proc', 'ptr', 'raise', 'ref', 'return', 'shl', 'shr', 'static', 'template', 'try', 'tuple', 'type', 'using', 'var', 'when', 'while', 'xor', 'yield')),
+    // keyw: $ => prec(PREC.keyword, choice('addr', 'and', 'as', 'asm', 'bind', 'block', 'break', 'case', 'cast', 'concept', 'const', 'continue', 'converter', 'defer', 'discard', 'distinct', 'div', 'do', 'elif', 'else', 'end', 'enum', 'except', 'export', 'finally', 'for', 'from', 'func', 'if', 'import', 'in', 'include', 'interface', 'is', 'isnot', 'iterator', 'let', 'macro', 'method', 'mixin', 'mod', 'not', 'notin', 'object', 'of', 'or', 'out', 'proc', 'ptr', 'raise', 'ref', 'return', 'shl', 'shr', 'static', 'template', 'try', 'tuple', 'type', 'using', 'var', 'when', 'while', 'xor', 'yield')),
     // KEYW: $ => prec(PREC.keyword, choice('addr', 'and', 'as', 'asm', 'bind', 'block', 'break', 'case', 'cast', 'concept', 'const', 'continue', 'converter', 'defer', 'discard', 'distinct', 'div', 'do', 'elif', 'else', 'end', 'enum', 'except', 'export', 'finally', 'for', 'from', 'func', 'if', 'import', 'in', 'include', 'interface', 'is', 'isnot', 'iterator', 'let', 'macro', 'method', 'mixin', 'mod', 'nil', 'not', 'notin', 'object', 'of', 'or', 'out', 'proc', 'ptr', 'raise', 'ref', 'return', 'shl', 'shr', 'static', 'template', 'try', 'tuple', 'type', 'using', 'var', 'when', 'while', 'xor', 'yield')),
 
     dotlikeop: $ => prec(PREC.op6, dotlikeop()),
@@ -559,8 +726,8 @@ module.exports = grammar({
 
 //-------------------------------------------------------------------------------
 
-function keywords() { return prec(PREC.keyword, choice('addr', 'and', 'as', 'asm', 'bind', 'block', 'break', 'case', 'cast', 'concept', 'const', 'continue', 'converter', 'defer', 'discard', 'distinct', 'div', 'do', 'elif', 'else', 'end', 'enum', 'except', 'export', 'finally', 'for', 'from', 'func', 'if', 'import', 'in', 'include', 'interface', 'is', 'isnot', 'iterator', 'let', 'macro', 'method', 'mixin', 'mod', 'nil', 'not', 'notin', 'object', 'of', 'or', 'out', 'proc', 'ptr', 'raise', 'ref', 'return', 'shl', 'shr', 'static', 'template', 'try', 'tuple', 'type', 'using', 'var', 'when', 'while', 'xor', 'yield')) }
-function parKeywords() { return prec(PREC.keyword, choice('discard' , 'include' , 'if' , 'while' , 'case' , 'try', 'finally' , 'except' , 'for' , 'block' , 'const' , 'let')) }
+// function keywords() { return prec(PREC.keyword, choice('addr', 'and', 'as', 'asm', 'bind', 'block', 'break', 'case', 'cast', 'concept', 'const', 'continue', 'converter', 'defer', 'discard', 'distinct', 'div', 'do', 'elif', 'else', 'end', 'enum', 'except', 'export', 'finally', 'for', 'from', 'func', 'if', 'import', 'in', 'include', 'interface', 'is', 'isnot', 'iterator', 'let', 'macro', 'method', 'mixin', 'mod', 'nil', 'not', 'notin', 'object', 'of', 'or', 'out', 'proc', 'ptr', 'raise', 'ref', 'return', 'shl', 'shr', 'static', 'template', 'try', 'tuple', 'type', 'using', 'var', 'when', 'while', 'xor', 'yield')) }
+// function parKeywords() { return prec(PREC.keyword, choice('discard' , 'include' , 'if' , 'while' , 'case' , 'try', 'finally' , 'except' , 'for' , 'block' , 'const' , 'let')) }
 
 function operator_signs() { return choice(
   /[+\-*/<>@$~&%|!?^\\]/, // no . = :
@@ -595,9 +762,10 @@ function op2() { return prec(PREC.op2, choice(
 )) }
 function op3() { return prec(PREC.op3, choice('or', 'xor')) }
 function op4() { return prec(PREC.op4, choice('and')) }
-function op5() { return prec(PREC.op5, choice('==', '<=', '<', '>=', '>', '!=', 'in', 'notin', 'is', 'isnot', 'not', 'of', 'as', 'from',
+// token(prec( because 'of' and 'from' can be used in other contexts
+function op5() { return prec(PREC.op5, token(prec(-100, choice('==', '<=', '<', '>=', '>', '!=', 'in', 'notin', 'is', 'isnot', 'not', 'of', 'as', 'from',
   /[=<>!][=+\-*\/<>@$~&%|!?^.:\\]+/, //no =
-)) }
+)))) }
 function op6() { return prec(PREC.op6, choice('..', dotlikeop())) }
 function op7() { return prec(PREC.op7, choice('&',
   /&[=+\-*\/<>@$~&%|!?^.:\\]+/,
@@ -615,16 +783,27 @@ function op10() { return prec(PREC.op10, choice(
 function operators() {return choice(op0(), op1(), op2(), op3(), op4(), op5(), op6(), op7(), op8(), op9(), )}
 
 function optInd($, content) {
-  return seq(
-    // optional($.comment),
-    choice(
-      seq(
-        $._indent,
-        content,
-        $._dedent
-      ),
+  return choice(
+    seq(
+      $.indent,
       content,
-    )
+      $.dedent
+    ),
+    content,
+  )
+}
+
+function optPar($, content) {
+  return choice(
+    seq(
+      $.indent,
+      content,
+    ),
+    seq(
+      // $.samedent,
+      content,
+    ),
+    content,
   )
 }
 
@@ -635,15 +814,15 @@ function section($, content) {
       content,
     ),
     seq(
-      $._indent,
+      $.indent,
       repeat1(seq(
         choice(
           content,
           // $.comment,
         ),
-        $._samedent,
+        // $.samedent,
       )),
-      $._dedent,
+      $.dedent,
     ),
   ))
 }

@@ -1,5 +1,60 @@
 [
   {
+    "type": "block",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "breakStmt",
+          "named": true
+        },
+        {
+          "type": "continueStmt",
+          "named": true
+        },
+        {
+          "type": "dedent",
+          "named": true
+        },
+        {
+          "type": "discardStmt",
+          "named": true
+        },
+        {
+          "type": "exprStmt",
+          "named": true
+        },
+        {
+          "type": "newline",
+          "named": true
+        },
+        {
+          "type": "pragmaStmt",
+          "named": true
+        },
+        {
+          "type": "raiseStmt",
+          "named": true
+        },
+        {
+          "type": "returnStmt",
+          "named": true
+        },
+        {
+          "type": "stmt",
+          "named": true
+        },
+        {
+          "type": "yieldStmt",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "blockExpr",
     "named": true,
     "fields": {},
@@ -26,6 +81,103 @@
     "type": "bool_lit",
     "named": true,
     "fields": {}
+  },
+  {
+    "type": "breakStmt",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "dedent",
+          "named": true
+        },
+        {
+          "type": "expr",
+          "named": true
+        },
+        {
+          "type": "indent",
+          "named": true
+        },
+        {
+          "type": "keyw",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "caseExpr",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "dedent",
+          "named": true
+        },
+        {
+          "type": "elifStmt",
+          "named": true
+        },
+        {
+          "type": "elseStmt",
+          "named": true
+        },
+        {
+          "type": "expr",
+          "named": true
+        },
+        {
+          "type": "indent",
+          "named": true
+        },
+        {
+          "type": "newline",
+          "named": true
+        },
+        {
+          "type": "ofBranch",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "caseStmt",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "elifStmt",
+          "named": true
+        },
+        {
+          "type": "elseStmt",
+          "named": true
+        },
+        {
+          "type": "expr",
+          "named": true
+        },
+        {
+          "type": "newline",
+          "named": true
+        },
+        {
+          "type": "ofBranch",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "char_lit",
@@ -58,7 +210,7 @@
     }
   },
   {
-    "type": "condExpr",
+    "type": "continueStmt",
     "named": true,
     "fields": {},
     "children": {
@@ -66,7 +218,15 @@
       "required": true,
       "types": [
         {
+          "type": "dedent",
+          "named": true
+        },
+        {
           "type": "expr",
+          "named": true
+        },
+        {
+          "type": "indent",
           "named": true
         },
         {
@@ -104,7 +264,65 @@
       "required": true,
       "types": [
         {
+          "type": "dedent",
+          "named": true
+        },
+        {
           "type": "expr",
+          "named": true
+        },
+        {
+          "type": "indent",
+          "named": true
+        },
+        {
+          "type": "keyw",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "elifStmt",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "block",
+          "named": true
+        },
+        {
+          "type": "expr",
+          "named": true
+        },
+        {
+          "type": "indent",
+          "named": true
+        },
+        {
+          "type": "keyw",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "elseStmt",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "block",
+          "named": true
+        },
+        {
+          "type": "indent",
           "named": true
         },
         {
@@ -127,11 +345,23 @@
           "named": true
         },
         {
+          "type": "caseExpr",
+          "named": true
+        },
+        {
+          "type": "dedent",
+          "named": true
+        },
+        {
           "type": "forExpr",
           "named": true
         },
         {
           "type": "ifExpr",
+          "named": true
+        },
+        {
+          "type": "indent",
           "named": true
         },
         {
@@ -143,11 +373,22 @@
           "named": true
         },
         {
-          "type": "tryExpr",
-          "named": true
-        },
-        {
           "type": "whenExpr",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "exprColonEqExpr",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "expr",
           "named": true
         }
       ]
@@ -181,7 +422,15 @@
           "named": true
         },
         {
+          "type": "dedent",
+          "named": true
+        },
+        {
           "type": "expr",
+          "named": true
+        },
+        {
+          "type": "indent",
           "named": true
         },
         {
@@ -294,11 +543,19 @@
       "required": true,
       "types": [
         {
+          "type": "dedent",
+          "named": true
+        },
+        {
           "type": "expr",
           "named": true
         },
         {
           "type": "ident",
+          "named": true
+        },
+        {
+          "type": "indent",
           "named": true
         },
         {
@@ -309,7 +566,43 @@
     }
   },
   {
+    "type": "if",
+    "named": false,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "block",
+          "named": true
+        },
+        {
+          "type": "elifStmt",
+          "named": true
+        },
+        {
+          "type": "elseStmt",
+          "named": true
+        },
+        {
+          "type": "expr",
+          "named": true
+        },
+        {
+          "type": "indent",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "ifExpr",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "ifStmt",
     "named": true,
     "fields": {},
     "children": {
@@ -317,11 +610,23 @@
       "required": true,
       "types": [
         {
-          "type": "condExpr",
+          "type": "block",
           "named": true
         },
         {
-          "type": "keyw",
+          "type": "elifStmt",
+          "named": true
+        },
+        {
+          "type": "elseStmt",
+          "named": true
+        },
+        {
+          "type": "expr",
+          "named": true
+        },
+        {
+          "type": "indent",
           "named": true
         }
       ]
@@ -329,11 +634,6 @@
   },
   {
     "type": "int_lit",
-    "named": true,
-    "fields": {}
-  },
-  {
-    "type": "keyw",
     "named": true,
     "fields": {}
   },
@@ -408,6 +708,29 @@
     }
   },
   {
+    "type": "ofBranch",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "block",
+          "named": true
+        },
+        {
+          "type": "exprList",
+          "named": true
+        },
+        {
+          "type": "indent",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "operator",
     "named": true,
     "fields": {}
@@ -421,6 +744,44 @@
     "type": "opr",
     "named": true,
     "fields": {}
+  },
+  {
+    "type": "pragma",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "exprColonEqExpr",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "pragmaStmt",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "block",
+          "named": true
+        },
+        {
+          "type": "indent",
+          "named": true
+        },
+        {
+          "type": "pragma",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "primary",
@@ -441,6 +802,64 @@
         {
           "type": "operator",
           "named": true
+        },
+        {
+          "type": "symbol",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "raiseStmt",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "dedent",
+          "named": true
+        },
+        {
+          "type": "expr",
+          "named": true
+        },
+        {
+          "type": "indent",
+          "named": true
+        },
+        {
+          "type": "keyw",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "returnStmt",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "dedent",
+          "named": true
+        },
+        {
+          "type": "expr",
+          "named": true
+        },
+        {
+          "type": "indent",
+          "named": true
+        },
+        {
+          "type": "keyw",
+          "named": true
         }
       ]
     }
@@ -451,13 +870,21 @@
     "fields": {}
   },
   {
-    "type": "stmt",
+    "type": "simpleStmts",
     "named": true,
     "fields": {},
     "children": {
       "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "breakStmt",
+          "named": true
+        },
+        {
+          "type": "continueStmt",
+          "named": true
+        },
         {
           "type": "discardStmt",
           "named": true
@@ -467,11 +894,66 @@
           "named": true
         },
         {
+          "type": "newline",
+          "named": true
+        },
+        {
+          "type": "pragmaStmt",
+          "named": true
+        },
+        {
+          "type": "raiseStmt",
+          "named": true
+        },
+        {
+          "type": "returnStmt",
+          "named": true
+        },
+        {
+          "type": "yieldStmt",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "stmt",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "caseStmt",
+          "named": true
+        },
+        {
+          "type": "dedent",
+          "named": true
+        },
+        {
+          "type": "ifStmt",
+          "named": true
+        },
+        {
+          "type": "indent",
+          "named": true
+        },
+        {
           "type": "keyw",
           "named": true
         },
         {
+          "type": "simpleStmts",
+          "named": true
+        },
+        {
           "type": "variable",
+          "named": true
+        },
+        {
+          "type": "whenStmt",
           "named": true
         }
       ]
@@ -505,10 +987,6 @@
           "named": true
         },
         {
-          "type": "keyw",
-          "named": true
-        },
-        {
           "type": "literal",
           "named": true
         },
@@ -525,29 +1003,6 @@
     "fields": {}
   },
   {
-    "type": "tryExpr",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "exprList",
-          "named": true
-        },
-        {
-          "type": "keyw",
-          "named": true
-        },
-        {
-          "type": "stmt",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
     "type": "typeDesc",
     "named": true,
     "fields": {},
@@ -556,7 +1011,15 @@
       "required": true,
       "types": [
         {
+          "type": "dedent",
+          "named": true
+        },
+        {
           "type": "expr",
+          "named": true
+        },
+        {
+          "type": "indent",
           "named": true
         },
         {
@@ -569,6 +1032,29 @@
         },
         {
           "type": "primary",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "varTuple",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "expr",
+          "named": true
+        },
+        {
+          "type": "opr",
+          "named": true
+        },
+        {
+          "type": "symbol",
           "named": true
         }
       ]
@@ -589,6 +1075,41 @@
         {
           "type": "identColonEquals",
           "named": true
+        },
+        {
+          "type": "varTuple",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "when",
+    "named": false,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "block",
+          "named": true
+        },
+        {
+          "type": "elifStmt",
+          "named": true
+        },
+        {
+          "type": "elseStmt",
+          "named": true
+        },
+        {
+          "type": "expr",
+          "named": true
+        },
+        {
+          "type": "indent",
+          "named": true
         }
       ]
     }
@@ -596,13 +1117,57 @@
   {
     "type": "whenExpr",
     "named": true,
+    "fields": {}
+  },
+  {
+    "type": "whenStmt",
+    "named": true,
     "fields": {},
     "children": {
       "multiple": true,
       "required": true,
       "types": [
         {
-          "type": "condExpr",
+          "type": "block",
+          "named": true
+        },
+        {
+          "type": "elifStmt",
+          "named": true
+        },
+        {
+          "type": "elseStmt",
+          "named": true
+        },
+        {
+          "type": "expr",
+          "named": true
+        },
+        {
+          "type": "indent",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "yieldStmt",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "dedent",
+          "named": true
+        },
+        {
+          "type": "expr",
+          "named": true
+        },
+        {
+          "type": "indent",
           "named": true
         },
         {
@@ -611,10 +1176,6 @@
         }
       ]
     }
-  },
-  {
-    "type": "!=",
-    "named": false
   },
   {
     "type": "\"",
@@ -634,6 +1195,14 @@
   },
   {
     "type": "'",
+    "named": false
+  },
+  {
+    "type": "(",
+    "named": false
+  },
+  {
+    "type": ")",
     "named": false
   },
   {
@@ -657,6 +1226,10 @@
     "named": false
   },
   {
+    "type": ".}",
+    "named": false
+  },
+  {
     "type": "/",
     "named": false
   },
@@ -669,27 +1242,7 @@
     "named": false
   },
   {
-    "type": "<",
-    "named": false
-  },
-  {
-    "type": "<=",
-    "named": false
-  },
-  {
     "type": "=",
-    "named": false
-  },
-  {
-    "type": "==",
-    "named": false
-  },
-  {
-    "type": ">",
-    "named": false
-  },
-  {
-    "type": ">=",
     "named": false
   },
   {
@@ -701,31 +1254,7 @@
     "named": false
   },
   {
-    "type": "addr",
-    "named": false
-  },
-  {
     "type": "and",
-    "named": false
-  },
-  {
-    "type": "as",
-    "named": false
-  },
-  {
-    "type": "asm",
-    "named": false
-  },
-  {
-    "type": "bind",
-    "named": false
-  },
-  {
-    "type": "block",
-    "named": false
-  },
-  {
-    "type": "break",
     "named": false
   },
   {
@@ -733,71 +1262,15 @@
     "named": false
   },
   {
-    "type": "cast",
-    "named": false
-  },
-  {
     "type": "char_esc_seq",
     "named": true
   },
   {
-    "type": "concept",
-    "named": false
-  },
-  {
-    "type": "const",
-    "named": false
-  },
-  {
-    "type": "continue",
-    "named": false
-  },
-  {
-    "type": "converter",
-    "named": false
-  },
-  {
-    "type": "defer",
-    "named": false
-  },
-  {
-    "type": "discard",
-    "named": false
-  },
-  {
-    "type": "distinct",
-    "named": false
+    "type": "dedent",
+    "named": true
   },
   {
     "type": "div",
-    "named": false
-  },
-  {
-    "type": "do",
-    "named": false
-  },
-  {
-    "type": "elif",
-    "named": false
-  },
-  {
-    "type": "else",
-    "named": false
-  },
-  {
-    "type": "end",
-    "named": false
-  },
-  {
-    "type": "enum",
-    "named": false
-  },
-  {
-    "type": "except",
-    "named": false
-  },
-  {
-    "type": "export",
     "named": false
   },
   {
@@ -805,24 +1278,8 @@
     "named": false
   },
   {
-    "type": "finally",
-    "named": false
-  },
-  {
     "type": "float_suffix",
     "named": true
-  },
-  {
-    "type": "for",
-    "named": false
-  },
-  {
-    "type": "from",
-    "named": false
-  },
-  {
-    "type": "func",
-    "named": false
   },
   {
     "type": "ident",
@@ -833,56 +1290,24 @@
     "named": false
   },
   {
-    "type": "import",
-    "named": false
-  },
-  {
-    "type": "in",
-    "named": false
-  },
-  {
-    "type": "include",
-    "named": false
+    "type": "indent",
+    "named": true
   },
   {
     "type": "int_suffix",
     "named": true
   },
   {
-    "type": "interface",
-    "named": false
-  },
-  {
-    "type": "is",
-    "named": false
-  },
-  {
-    "type": "isnot",
-    "named": false
-  },
-  {
-    "type": "iterator",
-    "named": false
-  },
-  {
-    "type": "let",
-    "named": false
-  },
-  {
-    "type": "macro",
-    "named": false
-  },
-  {
-    "type": "method",
-    "named": false
-  },
-  {
-    "type": "mixin",
-    "named": false
+    "type": "keyw",
+    "named": true
   },
   {
     "type": "mod",
     "named": false
+  },
+  {
+    "type": "newline",
+    "named": true
   },
   {
     "type": "nil",
@@ -893,18 +1318,6 @@
     "named": true
   },
   {
-    "type": "not",
-    "named": false
-  },
-  {
-    "type": "notin",
-    "named": false
-  },
-  {
-    "type": "object",
-    "named": false
-  },
-  {
     "type": "of",
     "named": false
   },
@@ -913,31 +1326,7 @@
     "named": false
   },
   {
-    "type": "out",
-    "named": false
-  },
-  {
-    "type": "proc",
-    "named": false
-  },
-  {
-    "type": "ptr",
-    "named": false
-  },
-  {
     "type": "r",
-    "named": false
-  },
-  {
-    "type": "raise",
-    "named": false
-  },
-  {
-    "type": "ref",
-    "named": false
-  },
-  {
-    "type": "return",
     "named": false
   },
   {
@@ -957,31 +1346,7 @@
     "named": true
   },
   {
-    "type": "template",
-    "named": false
-  },
-  {
     "type": "true",
-    "named": false
-  },
-  {
-    "type": "try",
-    "named": false
-  },
-  {
-    "type": "tuple",
-    "named": false
-  },
-  {
-    "type": "type",
-    "named": false
-  },
-  {
-    "type": "using",
-    "named": false
-  },
-  {
-    "type": "var",
     "named": false
   },
   {
@@ -989,15 +1354,15 @@
     "named": false
   },
   {
-    "type": "while",
-    "named": false
-  },
-  {
     "type": "xor",
     "named": false
   },
   {
-    "type": "yield",
+    "type": "{.",
+    "named": false
+  },
+  {
+    "type": "}",
     "named": false
   }
 ]
