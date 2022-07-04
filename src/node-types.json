@@ -566,8 +566,8 @@
     }
   },
   {
-    "type": "if",
-    "named": false,
+    "type": "ifExpr",
+    "named": true,
     "fields": {},
     "children": {
       "multiple": true,
@@ -595,11 +595,6 @@
         }
       ]
     }
-  },
-  {
-    "type": "ifExpr",
-    "named": true,
-    "fields": {}
   },
   {
     "type": "ifStmt",

@@ -33,9 +33,9 @@ module.exports = grammar({
   ],
 
   
-  conflicts: $ => [
-    [$.ifExpr, $.ifStmt],
-  ],
+  // conflicts: $ => [
+  //   [$.elifStmt, $.stmt],
+  // ],
 
   extras: $ => [
     $.normal_comment,
@@ -102,10 +102,10 @@ module.exports = grammar({
     ),
 
 
-    simpleStmts: $ => prec.left(seq(
+    simpleStmts: $ => seq(
       sep_repeat1($._simpleStmt, ';'),
       $.newline,
-    )),
+    ),
 
     expr: $ => choice(
       prec(2, choice(
@@ -253,27 +253,27 @@ module.exports = grammar({
       // optional($.comment),
     ),
 
-    returnStmt: $ => prec.left(seq(
+    returnStmt: $ => seq(
       alias('return', $.keyw), 
       optional(optInd($, $.expr)),
-    )),
+    ),
 
-    raiseStmt: $ => prec.left(seq(
+    raiseStmt: $ => seq(
       alias('raise', $.keyw), 
       optional(optInd($, $.expr)),
-    )),
+    ),
 
-    yieldStmt: $ => prec.left(seq(
+    yieldStmt: $ => seq(
       alias('yield', $.keyw), 
       optional(optInd($, $.expr)),
-    )),
+    ),
 
-    discardStmt: $ => prec.left(seq(
+    discardStmt: $ => seq(
       alias('discard', $.keyw), 
       optional(
         optInd($, $.expr),
       ),
-    )),
+    ),
 
     breakStmt: $ => prec.left(seq(
       alias('break', $.keyw), 
@@ -285,13 +285,13 @@ module.exports = grammar({
       optional(optInd($, $.expr)),
     )),
 
-    pragmaStmt: $ => prec.left(seq(
+    pragmaStmt: $ => seq(
       $.pragma,
       optional(seq(
         ':',
         $._suite,
       )),
-    )),
+    ),
 
     // TODO:
     // importStmt: $ => prec.left(seq(
@@ -326,13 +326,13 @@ module.exports = grammar({
       $._condStmt,
     ),
 
-    _condStmt: $ => prec.left(seq(
+    _condStmt: $ => seq(
       $.expr,
       $._colcom,
       $._suite,
       repeat($.elifStmt),
       optional($.elseStmt),
-    )),
+    ),
 
     elifStmt: $ => seq(
       alias('elif', $.keyw), 
@@ -356,7 +356,7 @@ module.exports = grammar({
       $.stmt,
     ),
 
-    exprStmt: $ => prec.left(seq(
+    exprStmt: $ => seq(
       $._simpleExpr,
       optional(choice(
         prec(2, seq(
@@ -372,7 +372,7 @@ module.exports = grammar({
         //   // $.postExprBlocks,
         // ),
       )),
-    )),
+    ),
 
     blockExpr: $ => seq(
       alias('block', $.keyw), 
@@ -381,7 +381,20 @@ module.exports = grammar({
       $.stmt,
     ),
 
-    ifExpr: $ => alias($.ifStmt, 'if'),
+    ifExpr: $ => seq(
+      'if',
+      $._condExpr,
+    ),
+
+    // TODO: _suite needs to match all on one line ifStmt etc.
+    _condExpr: $ => seq(
+      $.expr,
+      $._colcom,
+      $._suite,
+      repeat($.elifStmt),
+      $.elseStmt,
+    ),
+
 
     whenExpr: $ => alias($.whenStmt, 'when'),
     // whenExpr: $ => prec.left(seq(
@@ -418,11 +431,11 @@ module.exports = grammar({
       $._branches,
     ),
 
-    _branches: $ => prec.left(seq(
+    _branches: $ => seq(
       repeat1($.ofBranch),
       repeat($.elifStmt),
       optional($.elseStmt),
-    )),
+    ),
 
     forExpr: $ => alias($.forStmt, 'for'),
 
