@@ -1,4 +1,1 @@
-
-let me9 = """test
-whoo
-"""
+discard if true: true elif false: true else: true
