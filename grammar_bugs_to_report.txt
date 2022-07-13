@@ -56,3 +56,4 @@ which looks an awful lot like `condStmt`, so why not just do
 `ifExpr = ifStmt`, like you did with `forExpr`?
 * `caseStmt` only appears as part of an `expr`, there is no definition for a 
 normal `caseStmt`
+* `blockStmt` and `blockExpr` are excactly the same. why not define one with the other, like with the forStmt

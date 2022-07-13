@@ -1,0 +1,704 @@
+==================
+returnStmt
+==================
+
+return
+return true
+return 
+  true
+
+---
+
+(module
+  (stmt
+    (returnStmt
+      (keyw)))
+  (stmt
+    (returnStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (bool_lit))))))
+  (stmt
+    (returnStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (bool_lit)))))))
+
+==================
+raiseStmt
+==================
+
+raise
+raise true
+raise 
+  true
+
+---
+
+(module
+  (stmt
+    (raiseStmt
+      (keyw)))
+  (stmt
+    (raiseStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (bool_lit))))))
+  (stmt
+    (raiseStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (bool_lit)))))))
+
+==================
+yieldStmt
+==================
+
+yield
+yield true
+yield 
+  true
+
+---
+
+(module
+  (stmt
+    (yieldStmt
+      (keyw)))
+  (stmt
+    (yieldStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (bool_lit))))))
+  (stmt
+    (yieldStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (bool_lit)))))))
+
+==================
+discardStmt
+==================
+
+discard
+discard true
+discard 
+  true
+
+---
+
+(module
+  (stmt
+    (discardStmt
+      (keyw)))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (bool_lit))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (bool_lit)))))))
+
+==================
+breakStmt
+==================
+
+break
+break true
+break 
+  true
+
+---
+
+(module
+  (stmt
+    (breakStmt
+      (keyw)))
+  (stmt
+    (breakStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (bool_lit))))))
+  (stmt
+    (breakStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (bool_lit)))))))
+
+==================
+continueStmt
+==================
+
+continue
+continue true
+continue 
+  true
+
+---
+
+(module
+  (stmt
+    (continueStmt
+      (keyw)))
+  (stmt
+    (continueStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (bool_lit))))))
+  (stmt
+    (continueStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (bool_lit)))))))
+
+==================
+importStmt
+==================
+
+import std/strutils
+import
+
+  std/strutils
+import 
+  std/strutils,
+    std/sequtils
+import std/strutils except isDigit, other
+import 
+  std/strutils 
+  except 
+    isDigit,
+    other
+import 
+  std/strutils 
+except 
+  isDigit,
+  other
+
+---
+
+(module
+  (stmt
+    (importStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operatorB)
+        (primary
+          (symbol
+            (ident))))))
+  (stmt
+    (importStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operatorB)
+        (primary
+          (symbol
+            (ident))))))
+  (stmt
+    (importStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operatorB)
+        (primary
+          (symbol
+            (ident))))
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operatorB)
+        (primary
+          (symbol
+            (ident))))))
+  (stmt
+    (importStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operatorB)
+        (primary
+          (symbol
+            (ident))))
+      (importExceptStmt
+        (keyw)
+        (expr
+          (primary
+            (symbol
+              (ident))))
+        (expr
+          (primary
+            (symbol
+              (ident)))))))
+  (stmt
+    (importStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operatorB)
+        (primary
+          (symbol
+            (ident))))))
+  (stmt
+    (importExceptStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident))))
+      (expr
+        (primary
+          (symbol
+            (ident))))))
+  (stmt
+    (importStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operatorB)
+        (primary
+          (symbol
+            (ident))))))
+  (stmt
+    (importExceptStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident))))
+      (expr
+        (primary
+          (symbol
+            (ident)))))))
+
+==================
+exportStmt
+==================
+
+export std/strutils
+export
+
+  std/strutils
+export 
+  std/strutils,
+    std/sequtils
+export std/strutils except isDigit, other
+export 
+  std/strutils 
+  except 
+    isDigit,
+    other
+export 
+  std/strutils 
+except 
+  isDigit,
+  other
+
+---
+
+(module
+  (stmt
+    (exportStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operatorB)
+        (primary
+          (symbol
+            (ident))))))
+  (stmt
+    (exportStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operatorB)
+        (primary
+          (symbol
+            (ident))))))
+  (stmt
+    (exportStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operatorB)
+        (primary
+          (symbol
+            (ident))))
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operatorB)
+        (primary
+          (symbol
+            (ident))))))
+  (stmt
+    (exportStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operatorB)
+        (primary
+          (symbol
+            (ident))))
+      (importExceptStmt
+        (keyw)
+        (expr
+          (primary
+            (symbol
+              (ident))))
+        (expr
+          (primary
+            (symbol
+              (ident)))))))
+  (stmt
+    (exportStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operatorB)
+        (primary
+          (symbol
+            (ident))))))
+  (stmt
+    (importExceptStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident))))
+      (expr
+        (primary
+          (symbol
+            (ident))))))
+  (stmt
+    (exportStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operatorB)
+        (primary
+          (symbol
+            (ident))))))
+  (stmt
+    (importExceptStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident))))
+      (expr
+        (primary
+          (symbol
+            (ident)))))))
+
+==================
+fromStmt
+==================
+
+from std/strutils import isDigit, join
+from 
+  std/strutils 
+  import 
+    isDigit,
+    join
+from 
+  std/strutils 
+import 
+  isDigit,
+  join
+
+---
+
+(module
+  (stmt
+    (fromStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operatorB)
+        (primary
+          (symbol
+            (ident))))
+      (importStmt
+        (keyw)
+        (expr
+          (primary
+            (symbol
+              (ident))))
+        (expr
+          (primary
+            (symbol
+              (ident)))))))
+  (stmt
+    (fromStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operatorB)
+        (primary
+          (symbol
+            (ident))))
+      (importStmt
+        (keyw)
+        (expr
+          (primary
+            (symbol
+              (ident))))
+        (expr
+          (primary
+            (symbol
+              (ident)))))))
+  (stmt
+    (fromStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operatorB)
+        (primary
+          (symbol
+            (ident))))
+      (importStmt
+        (keyw)
+        (expr
+          (primary
+            (symbol
+              (ident))))
+        (expr
+          (primary
+            (symbol
+              (ident))))))))
+
+==================
+includeStmt
+==================
+
+include test
+include test, othertest
+include 
+
+  test,
+  othertest
+
+---
+
+(module
+  (stmt
+    (includeStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident))))))
+  (stmt
+    (includeStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident))))
+      (expr
+        (primary
+          (symbol
+            (ident))))))
+  (stmt
+    (includeStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident))))
+      (expr
+        (primary
+          (symbol
+            (ident)))))))
+
+==================
+pragmaStmt
+==================
+
+{.pragma: rtl, exportc, dynlib, cdecl.}: discard true
+{.
+  pragma: rtl,
+  importc,
+  dynlib: "client.dll",
+  cdecl
+  .}
+{. pragma: rtl, importc,
+  dynlib: "client.dll",
+  cdecl}:
+    discard true; discard true
+
+
+---
+
+(module
+  (stmt
+    (pragmaStmt
+      (pragma
+        (exprColonEqExpr
+          (expr
+            (primary
+              (symbol
+                (ident))))
+          (expr
+            (primary
+              (symbol
+                (ident)))))
+        (exprColonEqExpr
+          (expr
+            (primary
+              (symbol
+                (ident)))))
+        (exprColonEqExpr
+          (expr
+            (primary
+              (symbol
+                (ident)))))
+        (exprColonEqExpr
+          (expr
+            (primary
+              (symbol
+                (ident))))))
+      (block
+        (discardStmt
+          (keyw)
+          (expr
+            (primary
+              (literal
+                (bool_lit))))))))
+  (stmt
+    (pragmaStmt
+      (pragma
+        (exprColonEqExpr
+          (expr
+            (primary
+              (symbol
+                (ident))))
+          (expr
+            (primary
+              (symbol
+                (ident)))))
+        (exprColonEqExpr
+          (expr
+            (primary
+              (symbol
+                (ident)))))
+        (exprColonEqExpr
+          (expr
+            (primary
+              (symbol
+                (ident))))
+          (expr
+            (primary
+              (literal
+                (str_lit)))))
+        (exprColonEqExpr
+          (expr
+            (primary
+              (symbol
+                (ident))))))))
+  (stmt
+    (pragmaStmt
+      (pragma
+        (exprColonEqExpr
+          (expr
+            (primary
+              (symbol
+                (ident))))
+          (expr
+            (primary
+              (symbol
+                (ident)))))
+        (exprColonEqExpr
+          (expr
+            (primary
+              (symbol
+                (ident)))))
+        (exprColonEqExpr
+          (expr
+            (primary
+              (symbol
+                (ident))))
+          (expr
+            (primary
+              (literal
+                (str_lit)))))
+        (exprColonEqExpr
+          (expr
+            (primary
+              (symbol
+                (ident))))))
+      (block
+        (stmt
+          (discardStmt
+            (keyw)
+            (expr
+              (primary
+                (literal
+                  (bool_lit)))))
+          (discardStmt
+            (keyw)
+            (expr
+              (primary
+                (literal
+                  (bool_lit))))))))))
+
