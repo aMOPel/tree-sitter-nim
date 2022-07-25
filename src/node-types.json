@@ -263,6 +263,37 @@
     }
   },
   {
+    "type": "declColonEquals",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "expr",
+          "named": true
+        },
+        {
+          "type": "opr",
+          "named": true
+        },
+        {
+          "type": "pragma",
+          "named": true
+        },
+        {
+          "type": "symbol",
+          "named": true
+        },
+        {
+          "type": "typeDesc",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "deferStmt",
     "named": true,
     "fields": {},
@@ -660,6 +691,59 @@
       "types": [
         {
           "type": "ident",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "genericParam",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "expr",
+          "named": true
+        },
+        {
+          "type": "symbol",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "genericParamList",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "genericParam",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ident",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "opr",
+          "named": true
+        },
+        {
+          "type": "symbol",
           "named": true
         }
       ]
@@ -1134,6 +1218,51 @@
     "fields": {}
   },
   {
+    "type": "paramList",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "declColonEquals",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "paramListColon",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "typeDesc",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "pattern",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "block",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "pragma",
     "named": true,
     "fields": {},
@@ -1242,6 +1371,45 @@
         },
         {
           "type": "keyw",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "routine",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "block",
+          "named": true
+        },
+        {
+          "type": "genericParamList",
+          "named": true
+        },
+        {
+          "type": "ident",
+          "named": true
+        },
+        {
+          "type": "paramList",
+          "named": true
+        },
+        {
+          "type": "paramListColon",
+          "named": true
+        },
+        {
+          "type": "pattern",
+          "named": true
+        },
+        {
+          "type": "pragma",
           "named": true
         }
       ]
@@ -1373,6 +1541,10 @@
         },
         {
           "type": "returnStmt",
+          "named": true
+        },
+        {
+          "type": "routine",
           "named": true
         },
         {
@@ -1797,6 +1969,14 @@
     "named": false
   },
   {
+    "type": "[",
+    "named": false
+  },
+  {
+    "type": "]",
+    "named": false
+  },
+  {
     "type": "`",
     "named": false
   },
@@ -1825,10 +2005,6 @@
     "named": true
   },
   {
-    "type": "ident",
-    "named": true
-  },
-  {
     "type": "if",
     "named": false
   },
@@ -1854,6 +2030,10 @@
   },
   {
     "type": "or",
+    "named": false
+  },
+  {
+    "type": "proc",
     "named": false
   },
   {
@@ -1886,6 +2066,10 @@
   },
   {
     "type": "xor",
+    "named": false
+  },
+  {
+    "type": "{",
     "named": false
   },
   {

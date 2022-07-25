@@ -140,13 +140,13 @@ module.exports = grammar({
         $.asmStmt,
         $.bindStmt,
         $.mixinStmt,
-        // seq('proc', $.routine),
-        // seq('method', $.routine),
-        // seq('func', $.routine),
-        // seq('iterator', $.routine),
-        // seq('macro', $.routine),
-        // seq('template', $.routine),
-        // seq('converter', $.routine),
+        seq('proc', $.routine),
+        seq('method', $.routine),
+        seq('func', $.routine),
+        seq('iterator', $.routine),
+        seq('macro', $.routine),
+        seq('template', $.routine),
+        seq('converter', $.routine),
         // seq('type', section($.typeDef)),
         // seq('const', section($.constant)),
         seq(
@@ -619,6 +619,79 @@ module.exports = grammar({
       repeat(seq($.operatorB, optInd($, $.primary))),
       // optional($.pragma),
     )),
+
+    // TODO:
+    routine: $ => prec.left(optInd($, seq(
+      alias($._identVis, $.ident),
+      optional($.pattern),
+      optional($.genericParamList),
+      seq(optional($.paramList), optional($.paramListColon)),
+      optional($.pragma),
+      optional(seq(
+        '=',
+        $._suite,
+      )),
+    ))),
+
+    pattern: $ => seq(
+      '{',
+      $._suite,
+      '}',
+    ),
+
+    genericParam: $ => prec.left(seq(
+      sep_repeat1(
+        $.symbol,
+        $._comma,
+      ),
+      optional(seq(
+        $._colon,
+        $.expr,
+      )),
+      optional(seq(
+        '=',
+        optInd($, $.expr),
+      )),
+    )),
+
+    paramList: $ => seq(
+      '(',
+      sep_repeat(
+        $.declColonEquals,
+        choice($._comma, $._semicolon),
+      ),
+      ')',
+    ),
+
+    declColonEquals: $ => prec.left(seq(
+      sep_repeat1(
+        $._identWithPragma,
+        $._comma,
+      ),
+      optional(seq(
+        ':',
+        optInd($, $.typeDesc),
+      )),
+      optional(seq(
+        '=',
+        optInd($, $.expr),
+      )),
+      
+    )),
+
+    // use seq(optional($.paramList), optional($.paramListColon)) instead of paramListColon from grammar
+    paramListColon: $ => seq(
+      ':',
+      optInd($, $.typeDesc)
+    ),
+
+    genericParamList: $ => seq(
+      '[',
+      optInd($, seq(
+        sep_repeat($.genericParam, choice($._comma, $._semicolon)),
+      )),
+      ']',
+    ),
 
     exprList: $ => sep_repeat1( $.expr, $._comma),
 
