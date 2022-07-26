@@ -67,3 +67,9 @@ this could  be shortened to
 declColonEquals = identWithPragma ^+ comma
                   (':' optInd typeDesc)? ('=' optInd expr)?
 ```
+* experimental feature: parameter constraints are not mentioned in the syntax, even though term rewriting macros are (called 'pattern')
+* the definition of `variable` doesn't allow for pragmas like so:
+```nim
+var x {.deprecated.}: char
+```
+since it uses `identColonEquals`

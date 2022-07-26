@@ -140,13 +140,13 @@ module.exports = grammar({
         $.asmStmt,
         $.bindStmt,
         $.mixinStmt,
-        seq('proc', $.routine),
-        seq('method', $.routine),
-        seq('func', $.routine),
-        seq('iterator', $.routine),
-        seq('macro', $.routine),
-        seq('template', $.routine),
-        seq('converter', $.routine),
+        seq(alias('proc', $.keyw), $.routine),
+        seq(alias('method', $.keyw), $.routine),
+        seq(alias('func', $.keyw), $.routine),
+        seq(alias('iterator', $.keyw), $.routine),
+        seq(alias('macro', $.keyw), $.routine),
+        seq(alias('template', $.keyw), $.routine),
+        seq(alias('converter', $.keyw), $.routine),
         // seq('type', section($.typeDef)),
         // seq('const', section($.constant)),
         seq(
@@ -178,7 +178,7 @@ module.exports = grammar({
     variable: $ => prec.left(seq(
       choice(
         prec(2, $.varTuple),
-        prec(1, $.identColonEquals),
+        prec(1, $._identWithPragma),
       ),
       optional($.colonBody),
       // $.indAndComment,
@@ -210,7 +210,7 @@ module.exports = grammar({
       $._simpleExpr,
       repeat(seq(
         alias('not', $.keyw), 
-        $.expr
+        $.nil_lit
       )),
     )),
 
@@ -620,8 +620,8 @@ module.exports = grammar({
       // optional($.pragma),
     )),
 
-    // TODO:
-    routine: $ => prec.left(optInd($, seq(
+    // TODO: parameter constraints https://nim-lang.org/docs/manual_experimental.html#term-rewriting-macros-parameter-constraints
+    routine: $ => prec.right(seq(
       alias($._identVis, $.ident),
       optional($.pattern),
       optional($.genericParamList),
@@ -631,12 +631,14 @@ module.exports = grammar({
         '=',
         $._suite,
       )),
-    ))),
+    )),
 
     pattern: $ => seq(
       '{',
-      $._suite,
-      '}',
+      choice(
+        inlineSimpleStmts($, '}'),
+        seq($._suite, '}')
+      ),
     ),
 
     genericParam: $ => prec.left(seq(
@@ -663,18 +665,18 @@ module.exports = grammar({
       ')',
     ),
 
-    declColonEquals: $ => prec.left(seq(
+    declColonEquals: $ => prec.right(seq(
       sep_repeat1(
         $._identWithPragma,
         $._comma,
       ),
       optional(seq(
         ':',
-        optInd($, $.typeDesc),
+        $.typeDesc,
       )),
       optional(seq(
         '=',
-        optInd($, $.expr),
+        $.expr,
       )),
       
     )),
@@ -682,14 +684,15 @@ module.exports = grammar({
     // use seq(optional($.paramList), optional($.paramListColon)) instead of paramListColon from grammar
     paramListColon: $ => seq(
       ':',
-      optInd($, $.typeDesc)
+      $.typeDesc
     ),
 
     genericParamList: $ => seq(
       '[',
-      optInd($, seq(
-        sep_repeat($.genericParam, choice($._comma, $._semicolon)),
-      )),
+      sep_repeat(
+        $.genericParam,
+        choice($._comma, $._semicolon),
+      ),
       ']',
     ),
 
@@ -723,10 +726,10 @@ module.exports = grammar({
       ),
     ),
 
-    _identWithPragma: $ => seq(
+    _identWithPragma: $ => prec.right(seq(
       $._identVis,
       optional($.pragma),
-    ),
+    )),
 
     _identVis: $ => seq(
       $.symbol,
@@ -754,7 +757,7 @@ module.exports = grammar({
       $.str_lit,
       $.rstr_lit,
       $.triplestr_lit,
-      $.nil,
+      $.nil_lit,
       $.bool_lit,
     ),
 
@@ -985,7 +988,7 @@ module.exports = grammar({
       $._multi_string_end,
     ),
 
-    nil: $ => 'nil',
+    nil_lit: $ => 'nil',
     bool_lit: $ => choice('true', 'false'),
 
   }

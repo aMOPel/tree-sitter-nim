@@ -1445,7 +1445,7 @@ discard nil
       (expr
         (primary
           (literal
-            (nil)))))))
+            (nil_lit)))))))
 
 ==================
 bool literal

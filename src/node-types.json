@@ -750,29 +750,6 @@
     }
   },
   {
-    "type": "identColonEquals",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "expr",
-          "named": true
-        },
-        {
-          "type": "ident",
-          "named": true
-        },
-        {
-          "type": "typeDesc",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
     "type": "ifStmt",
     "named": true,
     "fields": {},
@@ -1127,7 +1104,7 @@
           "named": true
         },
         {
-          "type": "nil",
+          "type": "nil_lit",
           "named": true
         },
         {
@@ -1252,11 +1229,63 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
         {
           "type": "block",
+          "named": true
+        },
+        {
+          "type": "breakStmt",
+          "named": true
+        },
+        {
+          "type": "continueStmt",
+          "named": true
+        },
+        {
+          "type": "discardStmt",
+          "named": true
+        },
+        {
+          "type": "exportStmt",
+          "named": true
+        },
+        {
+          "type": "exprStmt",
+          "named": true
+        },
+        {
+          "type": "fromStmt",
+          "named": true
+        },
+        {
+          "type": "importExceptStmt",
+          "named": true
+        },
+        {
+          "type": "importStmt",
+          "named": true
+        },
+        {
+          "type": "includeStmt",
+          "named": true
+        },
+        {
+          "type": "pragmaStmt",
+          "named": true
+        },
+        {
+          "type": "raiseStmt",
+          "named": true
+        },
+        {
+          "type": "returnStmt",
+          "named": true
+        },
+        {
+          "type": "yieldStmt",
           "named": true
         }
       ]
@@ -1755,11 +1784,11 @@
       "required": true,
       "types": [
         {
-          "type": "expr",
+          "type": "keyw",
           "named": true
         },
         {
-          "type": "keyw",
+          "type": "nil_lit",
           "named": true
         },
         {
@@ -1813,7 +1842,15 @@
           "named": true
         },
         {
-          "type": "identColonEquals",
+          "type": "opr",
+          "named": true
+        },
+        {
+          "type": "pragma",
+          "named": true
+        },
+        {
+          "type": "symbol",
           "named": true
         },
         {
@@ -2021,7 +2058,7 @@
     "named": false
   },
   {
-    "type": "nil",
+    "type": "nil_lit",
     "named": true
   },
   {
@@ -2030,10 +2067,6 @@
   },
   {
     "type": "or",
-    "named": false
-  },
-  {
-    "type": "proc",
     "named": false
   },
   {
