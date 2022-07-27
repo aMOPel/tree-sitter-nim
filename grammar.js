@@ -858,16 +858,14 @@ module.exports = grammar({
       optional($.objectPart),
     )),
 
-    objectPart: $ => seq(
-      $._indent,
-      repeat1(choice(
-        // $.objectWhen,
-        // $.objectCase,
-        alias('nil', $.keyw),
-        alias('discard', $.keyw),
-        $.declColonEquals,
-      )),
-      $._dedent,
+    objectPart: $ => section($,
+      prec.right(repeat1(choice(
+        // token(prec(0, $.objectWhen)),
+        prec(-1, $.objectCase),
+        prec(-2, alias('nil', $.keyw)),
+        prec(-3, alias('discard', $.keyw)),
+        prec(-4, $.declColonEquals),
+      ))),
     ),
 
     // objectWhen: $ => seq(
@@ -876,43 +874,43 @@ module.exports = grammar({
     //   
     // ),
 
-    // TODO: 
-    // objectCase: $ => seq(
-    //   alias(token(prec(-1, 'case')), $.keyw),
-    //   $._identWithPragma,
-    //   ':',
-    //   $.typeDesc,
-    //   optional(':'),
-    //   $._newline,
-    //   $.objectBranches,
-    // ),
-    //
-    // objectBranches: $ => prec.left(seq(
-    //   repeat1($.objectBranch),
-    //   repeat($.objectElif),
-    //   optional($.objectElse),
-    // )),
-    //
-    // objectBranch: $ => seq(
-    //   alias('of', $.keyw),
-    //   $.exprList,
-    //   $._colcom,
-    //   $.objectPart,
-    // ),
-    //
-    // objectElif: $ => seq(
-    //   alias('elif', $.keyw),
-    //   $.expr,
-    //   $._colcom,
-    //   $.objectPart,
-    // ),
-    //
-    // objectElse: $ => seq(
-    //   alias('else', $.keyw),
-    //   $._colcom,
-    //   $.objectPart,
-    // ),
-    //
+    // TODO: this works, but it slows down the parser compilation immensely
+    objectCase: $ => seq(
+      alias('case', $.keyw),
+      $._identWithPragma,
+      ':',
+      $.typeDesc,
+      optional(':'),
+      // $._newline,
+      $.objectBranches,
+    ),
+
+    objectBranches: $ => prec.left(seq(
+      repeat1($.objectBranch),
+      repeat($.objectElif),
+      optional($.objectElse),
+    )),
+
+    objectBranch: $ => seq(
+      alias('of', $.keyw),
+      $.exprList,
+      $._colcom,
+      $.objectPart,
+    ),
+
+    objectElif: $ => seq(
+      alias('elif', $.keyw),
+      $.expr,
+      $._colcom,
+      $.objectPart,
+    ),
+
+    objectElse: $ => seq(
+      alias('else', $.keyw),
+      $._colcom,
+      $.objectPart,
+    ),
+
     _identWithPragma: $ => prec.right(seq(
       $._identVis,
       optional($.pragma),
@@ -1236,7 +1234,7 @@ function optPar($, content) {
 }
 
 function section($, content) {
-  return prec.right(choice(
+  return choice(
     // seq(
       // optional($.comment),
     content,
@@ -1252,7 +1250,7 @@ function section($, content) {
       )),
       $._dedent,
     ),
-  ))
+  )
 }
 
 function sep_repeat1(content, separator, allow_trailing=true) {

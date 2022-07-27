@@ -1,9 +1,9 @@
-1. bool literal isn't mentioned anywhere, `BOOL_LIT` should be added to `literal`
-2. `NIL` should be `NIL_LIT` for consistency
+1. bool literal isn't mentioned anywhere, I propose `BOOL_LIT` should be added to `literal`
+2. I propose `NIL` should be `NIL_LIT` for consistency
 3. `colcom` is identical to `colon`. Why differentiate?
 4. `IND` without curly braces / `optInd` is not explained exactly
-5. `COMMENT` should be defined as the doc string comment
-6. for expression isn't explained in the manual, or elsewhere
+5. I propose `COMMENT` should be changed to `DOC_COMMENT` or similar to be more explicit about its actual meaning
+6. `forExpr` isn't explained in the manual, or elsewhere
 7. `^+` and `^*` is not defined to include and optional trailing separator, but
     in reality it does, eg: `simpleStmt ^+ ';'`
 8. there are many instances where the `^+` and `^*` are paraphrased in some way, for example:
@@ -11,7 +11,7 @@
   identColonEquals = IDENT (comma IDENT)* comma?
   ```
   sometimes with and sometimes without trailing separator.
-  my proposition would be to change it to:
+  My proposition would be to change it to:
   `^+` and `^*` __don't__ allow optional trailing separators and
   `^+?` and `^*?` __do__ allow optional trailing separators.
   rewriting the example to:
@@ -49,7 +49,7 @@
            'else' colcom expr
   ifExpr = 'if' condExpr
   ```
-  is completely wrong, since 
+  is incorrect, since 
   ```
   discard if true:
     true
@@ -66,7 +66,7 @@
   ```
   which looks an awful lot like `condStmt`, so why not just do
   `ifExpr = ifStmt`, like you did with `forExpr`?
-  `stmt` can be an `expr` after all, via `exprStmt`
+  `stmt` can be an `expr` after all, via `exprStmt`.
 13. `caseStmt` only appears as part of an `expr`. It should be part of the `complexOrSimpleStmt` 
   definition as well (maybe renamed to `caseExpr` for the use in `expr` for constistency)
 14. `blockStmt` and `blockExpr` are excactly the same. why not define one with the other, like with the `forStmt`?
@@ -78,7 +78,7 @@
   declColonEquals = identWithPragma ^+? comma
                     (':' optInd typeDesc)? ('=' optInd expr)?
   ```
-16. experimental feature: parameter constraints are not mentioned in the syntax, even though term rewriting macros are (called `pattern`)
+16. experimental feature: parameter constraints are not mentioned in the syntax, even though term rewriting macros are (they are called `pattern`)
     this could be done by:
   ```
   # changing
@@ -94,7 +94,7 @@
   ```nim
   var x {.deprecated.}: char
   ```
-  since it uses `identColonEquals`, it should probably be changed to use `declColonEquals`, this would also solve 23.
+  since it uses `identColonEquals`, it could probably be changed to use `declColonEquals`, this would also solve 23.
 18. the operator precedence table should mention single '|' and '~' in the `OP8` row
 19. `typeDesc` and `typeDefAux` have the same definition, why differentiate?
 20. the definition of `typeDef` is incorrect and unnecessarily long
@@ -126,7 +126,11 @@
   # it should be
   constant = varTuple / (identWithPragma (colon typeDesc)? '=' optInd expr) indAndComment
   ```
-23. `identColonEquals` should use `symbol` instead of `IDENT`, otherwise this would be invalid syntax:
+23. `identColonEquals` should use `symbol` instead of `IDENT`, or not used in places were the 
+  ```
+  `symbol`
+  ```
+  is valid (see 17), otherwise this would be invalid syntax:
   ```nim
   var `b` = 9
   ```
@@ -140,37 +144,32 @@
   ```nim
   type a = object
   ```
-25. the definition of `objectPart` is incorrect
-```
-objectPart = IND{>} objectPart^+IND{=} DED
-           / objectWhen / objectCase / 'nil' / 'discard' / declColonEquals
-# to
-objectPart = IND{>} (objectPart / objectWhen / objectCase / 
-          'nil' / 'discard' / declColonEquals) ^+IND{=} DED
-```
-since the indentation is required for the other options too.
-```nim
-# valid syntax
-type a = object 
-  discard
-# invalid syntax
-type a = object discard
-```
-26. the recursive definition of `objectPart` is inconsistent with other definitions and wrong
+25. the recursive definition of `objectPart` is inconsistent with other definitions and wrong,
 ```
 objectPart = IND{>} objectPart^+IND{=} DED
            / objectWhen / objectCase / 'nil' / 'discard' / declColonEquals
 ```
-would allow for syntax like:
+since it would allow for syntax like:
 ```nim
 type a = object 
   a: int
     b: int
 ```
-so with 25. it should be changed to:
+I propose a change to:
 ```
-objectPart = IND{>} (objectWhen / objectCase / 
-          'nil' / 'discard' / declColonEquals) ^+ IND{=} DED
+objectPart = section(objectWhen / objectCase / 'nil' / 'discard' / declColonEquals)
+```
+which covers all cases and is much simpler and constistent with prior conventions
+
+QUESTION:
+what is this about?
+`colonBody = colcom stmt postExprBlocks?`
+A:
+template and macro call bodys
+```nim
+template d(b: int, c: untyped): int =
+  0
+var a: int = d(3): discard true
 ```
 
 
@@ -183,6 +182,19 @@ type a = object
   nil
 ```
 
+A:
+for objectCase and objectWhen
+```nim
+type a = object
+  case kind: bool
+  of true:
+    a: int
+  of false:
+    discard # used to be nil as well
+```
+
 QUESTION:
 
-postExprBlocks
+`postExprBlocks`
+A:
+macro related

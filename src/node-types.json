@@ -1309,6 +1309,87 @@
     "fields": {}
   },
   {
+    "type": "objectBranch",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "exprList",
+          "named": true
+        },
+        {
+          "type": "keyw",
+          "named": true
+        },
+        {
+          "type": "objectPart",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "objectBranches",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "objectBranch",
+          "named": true
+        },
+        {
+          "type": "objectElif",
+          "named": true
+        },
+        {
+          "type": "objectElse",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "objectCase",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "keyw",
+          "named": true
+        },
+        {
+          "type": "objectBranches",
+          "named": true
+        },
+        {
+          "type": "opr",
+          "named": true
+        },
+        {
+          "type": "pragma",
+          "named": true
+        },
+        {
+          "type": "symbol",
+          "named": true
+        },
+        {
+          "type": "typeDesc",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "objectDecl",
     "named": true,
     "fields": {},
@@ -1336,6 +1417,48 @@
     }
   },
   {
+    "type": "objectElif",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "expr",
+          "named": true
+        },
+        {
+          "type": "keyw",
+          "named": true
+        },
+        {
+          "type": "objectPart",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "objectElse",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "keyw",
+          "named": true
+        },
+        {
+          "type": "objectPart",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "objectPart",
     "named": true,
     "fields": {},
@@ -1349,6 +1472,10 @@
         },
         {
           "type": "keyw",
+          "named": true
+        },
+        {
+          "type": "objectCase",
           "named": true
         }
       ]

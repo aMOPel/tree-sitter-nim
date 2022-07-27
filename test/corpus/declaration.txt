@@ -742,6 +742,155 @@ type c{.deprecated.} = object
                 (keyw)
                 (keyw)))))))))
 
+==================
+objectCase
+==================
+
+type a = object
+  case kind: uint8:
+  of 0:
+    a: int
+  of 1:
+    b: string
+  elif false:
+    c: char
+  else:
+    d: char
+type b = object 
+  case kind: bool:
+  of true:
+    a: int
+  of false:
+    b: float
+
+---
+
+(module
+  (stmt
+    (declaration
+      (typeDef
+        (keyw)
+        (symbol
+          (ident))
+        (typeDesc
+          (primary
+            (objectDecl
+              (keyw)
+              (objectPart
+                (objectCase
+                  (keyw)
+                  (symbol
+                    (ident))
+                  (typeDesc
+                    (primary
+                      (symbol
+                        (ident))))
+                  (objectBranches
+                    (objectBranch
+                      (keyw)
+                      (exprList
+                        (expr
+                          (primary
+                            (literal
+                              (int_lit)))))
+                      (objectPart
+                        (declColonEquals
+                          (symbol
+                            (ident))
+                          (typeDesc
+                            (primary
+                              (symbol
+                                (ident)))))))
+                    (objectBranch
+                      (keyw)
+                      (exprList
+                        (expr
+                          (primary
+                            (literal
+                              (int_lit)))))
+                      (objectPart
+                        (declColonEquals
+                          (symbol
+                            (ident))
+                          (typeDesc
+                            (primary
+                              (symbol
+                                (ident)))))))
+                    (objectElif
+                      (keyw)
+                      (expr
+                        (primary
+                          (literal
+                            (bool_lit))))
+                      (objectPart
+                        (declColonEquals
+                          (symbol
+                            (ident))
+                          (typeDesc
+                            (primary
+                              (symbol
+                                (ident)))))))
+                    (objectElse
+                      (keyw)
+                      (objectPart
+                        (declColonEquals
+                          (symbol
+                            (ident))
+                          (typeDesc
+                            (primary
+                              (symbol
+                                (ident))))))))))))))))
+  (stmt
+    (declaration
+      (typeDef
+        (keyw)
+        (symbol
+          (ident))
+        (typeDesc
+          (primary
+            (objectDecl
+              (keyw)
+              (objectPart
+                (objectCase
+                  (keyw)
+                  (symbol
+                    (ident))
+                  (typeDesc
+                    (primary
+                      (symbol
+                        (ident))))
+                  (objectBranches
+                    (objectBranch
+                      (keyw)
+                      (exprList
+                        (expr
+                          (primary
+                            (literal
+                              (bool_lit)))))
+                      (objectPart
+                        (declColonEquals
+                          (symbol
+                            (ident))
+                          (typeDesc
+                            (primary
+                              (symbol
+                                (ident)))))))
+                    (objectBranch
+                      (keyw)
+                      (exprList
+                        (expr
+                          (primary
+                            (literal
+                              (bool_lit)))))
+                      (objectPart
+                        (declColonEquals
+                          (symbol
+                            (ident))
+                          (typeDesc
+                            (primary
+                              (symbol
+                                (ident)))))))))))))))))
+
 
 
 
