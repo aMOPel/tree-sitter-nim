@@ -140,28 +140,19 @@ module.exports = grammar({
         $.asmStmt,
         $.bindStmt,
         $.mixinStmt,
-        seq(alias('proc', $.keyw), $.routine),
-        seq(alias('method', $.keyw), $.routine),
-        seq(alias('func', $.keyw), $.routine),
-        seq(alias('iterator', $.keyw), $.routine),
-        seq(alias('macro', $.keyw), $.routine),
-        seq(alias('template', $.keyw), $.routine),
-        seq(alias('converter', $.keyw), $.routine),
-        // seq('type', section($.typeDef)),
-        // seq('const', section($.constant)),
-        seq(
-          choice(
-            alias('let', $.keyw), 
-            alias('var', $.keyw), 
-            alias('using', $.keyw), 
-          ),
-          section($, $.variable),
-        ),
+        $.routine,
+        $.declaration,
       // ),
       // prec(-2, seq(
       //   sep_repeat1($._simpleStmt, ';'),
       //   $._newline,
       // )),
+    ),
+
+    declaration: $ => choice(
+      $.typeDef,
+      $.constant,
+      $.variable,
     ),
 
     _suite: $ => choice(
@@ -175,14 +166,47 @@ module.exports = grammar({
       $._dedent
     ),
 
-    variable: $ => prec.left(seq(
-      choice(
-        prec(2, $.varTuple),
-        prec(1, $._identWithPragma),
-      ),
-      optional($.colonBody),
-      // $.indAndComment,
-    )),
+    typeDef: $ => seq(
+      alias('type', $.keyw),
+      section($, seq(
+        $._identVisDot,
+        optional($.pragma),
+        optional($.genericParamList),
+        optional($.pragma),
+        '=',
+        $.typeDesc,
+      )),
+    ),
+
+    constant: $ => seq(
+      alias('const', $.keyw),
+      section($, seq(
+        choice(
+          prec(0, $.varTuple),
+          prec(-1, seq(
+            $._identWithPragma,
+            optional(seq(
+              $._colon,
+              $.typeDesc,
+            )),
+            '=',
+            $.expr,
+          )),
+        ),
+      )),
+    ),
+
+    variable: $ => seq(
+      alias(choice('let', 'var', 'using'), $.keyw),
+      section($, seq(
+        choice(
+          prec(0, $.varTuple),
+          prec(-1, $.declColonEquals),
+        ),
+        optional($.colonBody),
+        // $.indAndComment,
+      )),
+    ),
 
     varTuple: $ => seq(
       '(',
@@ -192,10 +216,8 @@ module.exports = grammar({
       $.expr,
     ),
 
-    identColonEquals: $ => prec.right(seq(
-      $.ident,
-      repeat(seq($._comma, $.ident)),
-      optional($._comma),
+    identColonEquals: $ => prec.right(2, seq(
+      sep_repeat1($.ident, $._comma),
       optional(seq(
         ':',
         optInd($, $.typeDesc)
@@ -206,9 +228,18 @@ module.exports = grammar({
       )),
     )),
 
-    typeDesc: $ => prec.left(seq(
+    typeDesc: $ => prec.left(1, seq(
       $._simpleExpr,
-      repeat(seq(
+      optional(seq(
+        alias('not', $.keyw), 
+        $.nil_lit
+      )),
+    )),
+
+    paramTypeDesc: $ => prec.right(seq(
+      $._simpleExpr,
+      optional($.paramConstraint),
+      optional(seq(
         alias('not', $.keyw), 
         $.nil_lit
       )),
@@ -235,8 +266,32 @@ module.exports = grammar({
 
     colonBody: $ => seq(
       $._colcom,
-      $.stmt,
+      $._suite,
       // optional($.postExprBlocks),
+    ),
+
+    postExprBlocks: $ => seq(
+      ':',
+      optional($._suite),
+      repeat(choice(
+        $.doBlock,
+        // seq(alias('of', $.keyw), $.exprList, ':', $._suite),
+        // seq(alias('elif', $.keyw), $.expr, ':', $._suite),
+        // seq(alias('except', $.keyw), $.exprList, ':', $._suite),
+        // seq(alias('finally', $.keyw), ':', $._suite),
+        // seq(alias('else', $.keyw), ':', $._suite),
+      )),
+    ),
+
+    doBlock: $ => seq(
+      alias('do', $.keyw),
+      seq(
+        optional($.paramList),
+        optional($.paramListSuffix),
+      ),
+      optional($.pragma),
+      $._colcom,
+      $._suite,
     ),
 
     returnStmt: $ => seq(
@@ -328,12 +383,12 @@ module.exports = grammar({
     ),
 
     ifStmt: $ => seq(
-      'if',
+      alias('if', $.keyw),
       $._condStmt,
     ),
 
     whenStmt: $ => seq(
-      'when',
+      alias('when', $.keyw),
       $._condStmt,
     ),
 
@@ -362,12 +417,12 @@ module.exports = grammar({
     // it's necessary because the $.simpleStmts end in $._newline, that doesn't fly for inline statements. 
     // However removing the $._newline from $.simpleStmts leads to a great deal of problems
     inlineIfStmt: $ => seq(
-      'if',
+      alias('if', $.keyw),
       $._inlineCondStmt,
     ),
 
     inlineWhenStmt: $ => seq(
-      'when',
+      alias('when', $.keyw),
       $._inlineCondStmt,
     ),
 
@@ -620,12 +675,20 @@ module.exports = grammar({
       // optional($.pragma),
     )),
 
-    // TODO: parameter constraints https://nim-lang.org/docs/manual_experimental.html#term-rewriting-macros-parameter-constraints
     routine: $ => prec.right(seq(
+      alias(choice(
+        'proc',
+        'method',
+        'func',
+        'iterator',
+        'macro',
+        'template',
+        'converter',
+      ), $.keyw),
       alias($._identVis, $.ident),
       optional($.pattern),
       optional($.genericParamList),
-      seq(optional($.paramList), optional($.paramListColon)),
+      seq(optional($.paramList), optional($.paramListSuffix)),
       optional($.pragma),
       optional(seq(
         '=',
@@ -659,11 +722,34 @@ module.exports = grammar({
     paramList: $ => seq(
       '(',
       sep_repeat(
-        $.declColonEquals,
+        $.paramColonEquals,
         choice($._comma, $._semicolon),
       ),
       ')',
     ),
+
+    paramColonEquals: $ => prec.right(seq(
+      sep_repeat1(
+        $._identWithPragma,
+        $._comma,
+      ),
+      optional(seq(
+        ':',
+        alias($.paramTypeDesc, $.typeDesc),
+      )),
+      optional(seq(
+        '=',
+        $.expr,
+      )),
+      
+    )),
+
+    paramConstraint: $ => seq(
+      '{',
+      $.expr,
+      '}',
+    ),
+
 
     declColonEquals: $ => prec.right(seq(
       sep_repeat1(
@@ -681,9 +767,10 @@ module.exports = grammar({
       
     )),
 
-    // use seq(optional($.paramList), optional($.paramListColon)) instead of paramListColon from grammar
-    paramListColon: $ => seq(
-      ':',
+    // use seq(optional($.paramList), optional($.paramListSuffix)) instead of
+    // paramListSuffix or paramListArrow from grammar
+    paramListSuffix: $ => seq(
+      choice(':', '->'),
       $.typeDesc
     ),
 
@@ -699,52 +786,172 @@ module.exports = grammar({
     exprList: $ => sep_repeat1( $.expr, $._comma),
 
     primary: $ => choice(
-      choice(
+      prec(0, choice(
         // seq(
         //   $.operatorB,
         //   $.primary,
         //   repeat($.primarySuffix),
         // ),
-      //   $.tupleDecl,
+        $.tupleDecl,
       //   $.routineExpr,
-      //   $.enumDecl,
-      //   $.objectDecl,
+        $.enumDecl,
+        $.objectDecl,
       //   $.conceptDecl,
       //   seq(
       //     'bind',
       //     $.primary,
       //   ),
-      //   seq(
-      //     choice('var', 'out', 'ref', 'ptr', 'distinct'),
-      //     $.primary,
-      //   ),
-      ),
-      seq(
+        seq(
+          // gotta make sure it doesn't confuse this 'var' with the declaration 'var'
+          alias(choice(token(prec(-1, 'var')), 'out', 'ref', 'ptr', 'distinct'), $.keyw),
+          $.primary,
+        ),
+      )),
+      prec(-1, seq(
         repeat($.operator),
         $._identOrLiteral,
         // $.primarySuffix,
+      )),
+    ),
+
+    tupleDecl: $ => seq(
+      alias('tuple', $.keyw),
+      choice(
+        seq(
+          '[',
+          sep_repeat(
+            $.identColonEquals,
+            choice($._comma, $._semicolon)
+          ),
+          ']',
+        ),
+        seq(
+          $._indent,
+          repeat1($.identColonEquals),
+          $._dedent,
+        ),
       ),
     ),
 
+    enumDecl: $ => prec.right(seq(
+      alias('enum', $.keyw),
+      sep_repeat1(
+        // declColonEquals is a superset of the actual grammar here
+        $.declColonEquals,
+        // $.symbol,
+        // optional($.pragma),
+        // optional(seq(
+        //   '=',
+        //   $.expr
+        // )),
+        optional($._comma),
+      ),
+    )),
+
+    objectDecl: $ => prec.right(seq(
+      alias('object', $.keyw),
+      optional($.pragma),
+      optional(seq(
+        alias('of', $.keyw),
+        $.typeDesc,
+      )),
+      optional($.objectPart),
+    )),
+
+    objectPart: $ => seq(
+      $._indent,
+      repeat1(choice(
+        // $.objectWhen,
+        // $.objectCase,
+        alias('nil', $.keyw),
+        alias('discard', $.keyw),
+        $.declColonEquals,
+      )),
+      $._dedent,
+    ),
+
+    // objectWhen: $ => seq(
+    //   alias('when', $.keyw),
+    //
+    //   
+    // ),
+
+    // TODO: 
+    // objectCase: $ => seq(
+    //   alias(token(prec(-1, 'case')), $.keyw),
+    //   $._identWithPragma,
+    //   ':',
+    //   $.typeDesc,
+    //   optional(':'),
+    //   $._newline,
+    //   $.objectBranches,
+    // ),
+    //
+    // objectBranches: $ => prec.left(seq(
+    //   repeat1($.objectBranch),
+    //   repeat($.objectElif),
+    //   optional($.objectElse),
+    // )),
+    //
+    // objectBranch: $ => seq(
+    //   alias('of', $.keyw),
+    //   $.exprList,
+    //   $._colcom,
+    //   $.objectPart,
+    // ),
+    //
+    // objectElif: $ => seq(
+    //   alias('elif', $.keyw),
+    //   $.expr,
+    //   $._colcom,
+    //   $.objectPart,
+    // ),
+    //
+    // objectElse: $ => seq(
+    //   alias('else', $.keyw),
+    //   $._colcom,
+    //   $.objectPart,
+    // ),
+    //
     _identWithPragma: $ => prec.right(seq(
       $._identVis,
       optional($.pragma),
     )),
+
+    _identWithPragmaDot: $ => prec.left(seq(
+      $._identVisDot,
+      optional($.pragma),
+    )),
+
+    _identVisDot: $ => seq(
+      $.symbol,
+      optional(seq(
+        '.',
+        $.symbol,
+      )),
+      optional($.opr)
+    ),
 
     _identVis: $ => seq(
       $.symbol,
       optional($.opr),
     ),
 
-    _identOrLiteral: $ => choice(
+    _identOrLiteral: $ => prec(1, choice(
       $.literal,
       $.generalizedLit,
       $.symbol,
       // $.par,
       // $.arrayConstr,
       // $.setOrTableConstr,
-      // $.tuplesConstr,
+      $.tupleConstr,
       // $.castExpr,
+    )),
+
+    tupleConstr: $ => seq(
+      '(',
+      sep_repeat($.exprColonEqExpr, $._comma),
+      ')',
     ),
 
     literal: $ => choice(
@@ -829,7 +1036,7 @@ module.exports = grammar({
     _op7: $ => prec(PREC.op7, choice('&',
       /&[=+\-*\/<>@$~&%|!?^.:\\]+/,
     )) ,
-    _op8: $ => prec(PREC.op8, choice('+', '-',
+    _op8: $ => prec(PREC.op8, choice('+', '-', '|', '~',
       /[+\-~|][=+\-*\/<>@$~&%|!?^.:\\]+/,
     )) ,
     _op9: $ => prec(PREC.op9, choice('*', '/', '%', 'div', 'mod', 'shl', 'shr',
@@ -1029,11 +1236,11 @@ function optPar($, content) {
 }
 
 function section($, content) {
-  return prec.left(choice(
-    seq(
+  return prec.right(choice(
+    // seq(
       // optional($.comment),
-      content,
-    ),
+    content,
+    // ),
     seq(
       $._indent,
       repeat1(seq(

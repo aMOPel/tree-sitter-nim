@@ -218,7 +218,46 @@
       "required": true,
       "types": [
         {
-          "type": "stmt",
+          "type": "block",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "constant",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "expr",
+          "named": true
+        },
+        {
+          "type": "keyw",
+          "named": true
+        },
+        {
+          "type": "opr",
+          "named": true
+        },
+        {
+          "type": "pragma",
+          "named": true
+        },
+        {
+          "type": "symbol",
+          "named": true
+        },
+        {
+          "type": "typeDesc",
+          "named": true
+        },
+        {
+          "type": "varTuple",
           "named": true
         }
       ]
@@ -294,6 +333,29 @@
     }
   },
   {
+    "type": "declaration",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "constant",
+          "named": true
+        },
+        {
+          "type": "typeDef",
+          "named": true
+        },
+        {
+          "type": "variable",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "deferStmt",
     "named": true,
     "fields": {},
@@ -326,6 +388,37 @@
         },
         {
           "type": "keyw",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "doBlock",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "block",
+          "named": true
+        },
+        {
+          "type": "keyw",
+          "named": true
+        },
+        {
+          "type": "paramList",
+          "named": true
+        },
+        {
+          "type": "paramListSuffix",
+          "named": true
+        },
+        {
+          "type": "pragma",
           "named": true
         }
       ]
@@ -480,6 +573,25 @@
         },
         {
           "type": "yieldStmt",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "enumDecl",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "declColonEquals",
+          "named": true
+        },
+        {
+          "type": "keyw",
           "named": true
         }
       ]
@@ -750,6 +862,29 @@
     }
   },
   {
+    "type": "identColonEquals",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "expr",
+          "named": true
+        },
+        {
+          "type": "ident",
+          "named": true
+        },
+        {
+          "type": "typeDesc",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "ifStmt",
     "named": true,
     "fields": {},
@@ -771,6 +906,10 @@
         },
         {
           "type": "expr",
+          "named": true
+        },
+        {
+          "type": "keyw",
           "named": true
         }
       ]
@@ -891,6 +1030,10 @@
         },
         {
           "type": "includeStmt",
+          "named": true
+        },
+        {
+          "type": "keyw",
           "named": true
         },
         {
@@ -1044,6 +1187,10 @@
           "named": true
         },
         {
+          "type": "keyw",
+          "named": true
+        },
+        {
           "type": "pragmaStmt",
           "named": true
         },
@@ -1157,6 +1304,57 @@
     }
   },
   {
+    "type": "nil_lit",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "objectDecl",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "keyw",
+          "named": true
+        },
+        {
+          "type": "objectPart",
+          "named": true
+        },
+        {
+          "type": "pragma",
+          "named": true
+        },
+        {
+          "type": "typeDesc",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "objectPart",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "declColonEquals",
+          "named": true
+        },
+        {
+          "type": "keyw",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "ofBranch",
     "named": true,
     "fields": {},
@@ -1195,6 +1393,52 @@
     "fields": {}
   },
   {
+    "type": "paramColonEquals",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "expr",
+          "named": true
+        },
+        {
+          "type": "opr",
+          "named": true
+        },
+        {
+          "type": "pragma",
+          "named": true
+        },
+        {
+          "type": "symbol",
+          "named": true
+        },
+        {
+          "type": "typeDesc",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "paramConstraint",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "expr",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "paramList",
     "named": true,
     "fields": {},
@@ -1203,14 +1447,14 @@
       "required": false,
       "types": [
         {
-          "type": "declColonEquals",
+          "type": "paramColonEquals",
           "named": true
         }
       ]
     }
   },
   {
-    "type": "paramListColon",
+    "type": "paramListSuffix",
     "named": true,
     "fields": {},
     "children": {
@@ -1334,7 +1578,15 @@
       "required": true,
       "types": [
         {
+          "type": "enumDecl",
+          "named": true
+        },
+        {
           "type": "generalizedLit",
+          "named": true
+        },
+        {
+          "type": "keyw",
           "named": true
         },
         {
@@ -1342,11 +1594,27 @@
           "named": true
         },
         {
+          "type": "objectDecl",
+          "named": true
+        },
+        {
           "type": "operator",
           "named": true
         },
         {
+          "type": "primary",
+          "named": true
+        },
+        {
           "type": "symbol",
+          "named": true
+        },
+        {
+          "type": "tupleConstr",
+          "named": true
+        },
+        {
+          "type": "tupleDecl",
           "named": true
         }
       ]
@@ -1426,11 +1694,15 @@
           "named": true
         },
         {
+          "type": "keyw",
+          "named": true
+        },
+        {
           "type": "paramList",
           "named": true
         },
         {
-          "type": "paramListColon",
+          "type": "paramListSuffix",
           "named": true
         },
         {
@@ -1501,6 +1773,10 @@
           "named": true
         },
         {
+          "type": "declaration",
+          "named": true
+        },
+        {
           "type": "deferStmt",
           "named": true
         },
@@ -1553,10 +1829,6 @@
           "named": true
         },
         {
-          "type": "keyw",
-          "named": true
-        },
-        {
           "type": "mixinStmt",
           "named": true
         },
@@ -1590,10 +1862,6 @@
         },
         {
           "type": "tryStmt",
-          "named": true
-        },
-        {
-          "type": "variable",
           "named": true
         },
         {
@@ -1776,6 +2044,75 @@
     }
   },
   {
+    "type": "tupleConstr",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "exprColonEqExpr",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "tupleDecl",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "identColonEquals",
+          "named": true
+        },
+        {
+          "type": "keyw",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "typeDef",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "genericParamList",
+          "named": true
+        },
+        {
+          "type": "keyw",
+          "named": true
+        },
+        {
+          "type": "opr",
+          "named": true
+        },
+        {
+          "type": "pragma",
+          "named": true
+        },
+        {
+          "type": "symbol",
+          "named": true
+        },
+        {
+          "type": "typeDesc",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "typeDesc",
     "named": true,
     "fields": {},
@@ -1793,6 +2130,10 @@
         },
         {
           "type": "operatorB",
+          "named": true
+        },
+        {
+          "type": "paramConstraint",
           "named": true
         },
         {
@@ -1842,15 +2183,11 @@
           "named": true
         },
         {
-          "type": "opr",
+          "type": "declColonEquals",
           "named": true
         },
         {
-          "type": "pragma",
-          "named": true
-        },
-        {
-          "type": "symbol",
+          "type": "keyw",
           "named": true
         },
         {
@@ -1882,6 +2219,10 @@
         },
         {
           "type": "expr",
+          "named": true
+        },
+        {
+          "type": "keyw",
           "named": true
         }
       ]
@@ -1974,6 +2315,10 @@
     "named": false
   },
   {
+    "type": "->",
+    "named": false
+  },
+  {
     "type": ".",
     "named": false
   },
@@ -2042,10 +2387,6 @@
     "named": true
   },
   {
-    "type": "if",
-    "named": false
-  },
-  {
     "type": "int_suffix",
     "named": true
   },
@@ -2058,8 +2399,8 @@
     "named": false
   },
   {
-    "type": "nil_lit",
-    "named": true
+    "type": "nil",
+    "named": false
   },
   {
     "type": "normal_comment",
@@ -2094,10 +2435,6 @@
     "named": false
   },
   {
-    "type": "when",
-    "named": false
-  },
-  {
     "type": "xor",
     "named": false
   },
@@ -2110,7 +2447,15 @@
     "named": false
   },
   {
+    "type": "|",
+    "named": false
+  },
+  {
     "type": "}",
+    "named": false
+  },
+  {
+    "type": "~",
     "named": false
   }
 ]

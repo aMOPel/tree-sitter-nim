@@ -24,6 +24,7 @@ if true: discard true; discard true elif true: discard true; discard true elif t
 (module
   (stmt
     (ifStmt
+      (keyw)
       (expr
         (primary
           (literal
@@ -94,6 +95,7 @@ if true: discard true; discard true elif true: discard true; discard true elif t
                   (bool_lit)))))))))
   (stmt
     (inlineIfStmt
+      (keyw)
       (expr
         (primary
           (literal
@@ -106,6 +108,7 @@ if true: discard true; discard true elif true: discard true; discard true elif t
               (bool_lit)))))))
   (stmt
     (ifStmt
+      (keyw)
       (expr
         (primary
           (literal
@@ -129,6 +132,7 @@ if true: discard true; discard true elif true: discard true; discard true elif t
                     (bool_lit))))))))))
   (stmt
     (inlineIfStmt
+      (keyw)
       (expr
         (primary
           (literal
@@ -141,6 +145,7 @@ if true: discard true; discard true elif true: discard true; discard true elif t
               (bool_lit)))))))
   (stmt
     (inlineIfStmt
+      (keyw)
       (expr
         (primary
           (literal
@@ -171,6 +176,7 @@ if true: discard true; discard true elif true: discard true; discard true elif t
                 (bool_lit))))))))
   (stmt
     (inlineIfStmt
+      (keyw)
       (expr
         (primary
           (literal
@@ -197,6 +203,7 @@ if true: discard true; discard true elif true: discard true; discard true elif t
                 (bool_lit))))))))
   (stmt
     (inlineIfStmt
+      (keyw)
       (expr
         (primary
           (literal
@@ -278,6 +285,7 @@ when true: discard true; discard true elif true: discard true; discard true elif
 (module
   (stmt
     (whenStmt
+      (keyw)
       (expr
         (primary
           (literal
@@ -348,6 +356,7 @@ when true: discard true; discard true elif true: discard true; discard true elif
                   (bool_lit)))))))))
   (stmt
     (inlineWhenStmt
+      (keyw)
       (expr
         (primary
           (literal
@@ -360,6 +369,7 @@ when true: discard true; discard true elif true: discard true; discard true elif
               (bool_lit)))))))
   (stmt
     (whenStmt
+      (keyw)
       (expr
         (primary
           (literal
@@ -383,6 +393,7 @@ when true: discard true; discard true elif true: discard true; discard true elif
                     (bool_lit))))))))))
   (stmt
     (inlineWhenStmt
+      (keyw)
       (expr
         (primary
           (literal
@@ -395,6 +406,7 @@ when true: discard true; discard true elif true: discard true; discard true elif
               (bool_lit)))))))
   (stmt
     (inlineWhenStmt
+      (keyw)
       (expr
         (primary
           (literal
@@ -425,6 +437,7 @@ when true: discard true; discard true elif true: discard true; discard true elif
                 (bool_lit))))))))
   (stmt
     (inlineWhenStmt
+      (keyw)
       (expr
         (primary
           (literal
@@ -451,6 +464,7 @@ when true: discard true; discard true elif true: discard true; discard true elif
                 (bool_lit))))))))
   (stmt
     (inlineWhenStmt
+      (keyw)
       (expr
         (primary
           (literal
