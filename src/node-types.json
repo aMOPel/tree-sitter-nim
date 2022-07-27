@@ -1477,6 +1477,41 @@
         {
           "type": "objectCase",
           "named": true
+        },
+        {
+          "type": "objectWhen",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "objectWhen",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "expr",
+          "named": true
+        },
+        {
+          "type": "keyw",
+          "named": true
+        },
+        {
+          "type": "objectElif",
+          "named": true
+        },
+        {
+          "type": "objectElse",
+          "named": true
+        },
+        {
+          "type": "objectPart",
+          "named": true
         }
       ]
     }

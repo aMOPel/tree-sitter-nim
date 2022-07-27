@@ -859,20 +859,23 @@ module.exports = grammar({
     )),
 
     objectPart: $ => section($,
-      prec.right(repeat1(choice(
-        // token(prec(0, $.objectWhen)),
+      choice(
+        prec(0, $.objectWhen),
         prec(-1, $.objectCase),
         prec(-2, alias('nil', $.keyw)),
         prec(-3, alias('discard', $.keyw)),
         prec(-4, $.declColonEquals),
-      ))),
+      ),
     ),
 
-    // objectWhen: $ => seq(
-    //   alias('when', $.keyw),
-    //
-    //   
-    // ),
+    objectWhen: $ => prec.right(seq(
+      alias('when', $.keyw),
+      $.expr,
+      $._colcom,
+      $.objectPart,
+      repeat($.objectElif),
+      optional($.objectElse),
+    )),
 
     // TODO: this works, but it slows down the parser compilation immensely
     objectCase: $ => seq(
@@ -1241,13 +1244,15 @@ function section($, content) {
     // ),
     seq(
       $._indent,
-      repeat1(seq(
-        choice(
-          content,
-          // $.comment,
-        ),
-        // $._samedent,
-      )),
+      repeat1(
+        // seq(
+        //   choice(
+            content,
+            // $.comment,
+          // ),
+          // $._samedent,
+        // ),
+      ),
       $._dedent,
     ),
   )

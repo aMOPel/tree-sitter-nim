@@ -891,6 +891,114 @@ type b = object
                               (symbol
                                 (ident)))))))))))))))))
 
+==================
+objectWhen
+==================
+
+type a = object
+  when true:
+  a: int
+type b = object
+  when true: a: int
+  elif false:
+    a: float
+  elif false:
+  a: float
+  else:
+    a: uint
+
+---
+
+(module
+  (stmt
+    (declaration
+      (typeDef
+        (keyw)
+        (symbol
+          (ident))
+        (typeDesc
+          (primary
+            (objectDecl
+              (keyw)
+              (objectPart
+                (objectWhen
+                  (keyw)
+                  (expr
+                    (primary
+                      (literal
+                        (bool_lit))))
+                  (objectPart
+                    (declColonEquals
+                      (symbol
+                        (ident))
+                      (typeDesc
+                        (primary
+                          (symbol
+                            (ident))))))))))))))
+  (stmt
+    (declaration
+      (typeDef
+        (keyw)
+        (symbol
+          (ident))
+        (typeDesc
+          (primary
+            (objectDecl
+              (keyw)
+              (objectPart
+                (objectWhen
+                  (keyw)
+                  (expr
+                    (primary
+                      (literal
+                        (bool_lit))))
+                  (objectPart
+                    (declColonEquals
+                      (symbol
+                        (ident))
+                      (typeDesc
+                        (primary
+                          (symbol
+                            (ident))))))
+                  (objectElif
+                    (keyw)
+                    (expr
+                      (primary
+                        (literal
+                          (bool_lit))))
+                    (objectPart
+                      (declColonEquals
+                        (symbol
+                          (ident))
+                        (typeDesc
+                          (primary
+                            (symbol
+                              (ident)))))))
+                  (objectElif
+                    (keyw)
+                    (expr
+                      (primary
+                        (literal
+                          (bool_lit))))
+                    (objectPart
+                      (declColonEquals
+                        (symbol
+                          (ident))
+                        (typeDesc
+                          (primary
+                            (symbol
+                              (ident)))))))
+                  (objectElse
+                    (keyw)
+                    (objectPart
+                      (declColonEquals
+                        (symbol
+                          (ident))
+                        (typeDesc
+                          (primary
+                            (symbol
+                              (ident))))))))))))))))
+
 
 
 
