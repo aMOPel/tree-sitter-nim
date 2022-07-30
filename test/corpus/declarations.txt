@@ -1,0 +1,773 @@
+==================
+typeDef simple types
+==================
+
+type a = int
+type c.b = int
+type
+  e = int
+  d = int
+type f[T] = int
+type g[T] = int
+type h{.deprecated.} = int
+type i[T]{.deprecated.} = int
+type j{.deprecated.}[T] = var ref int not nil
+
+---
+
+(module
+  (stmt
+    (declaration
+      (typeDef
+        (keyw)
+        (symbol
+          (ident))
+        (typeDesc
+          (primary
+            (symbol
+              (ident)))))))
+  (stmt
+    (declaration
+      (typeDef
+        (keyw)
+        (symbol
+          (ident))
+        (symbol
+          (ident))
+        (typeDesc
+          (primary
+            (symbol
+              (ident)))))))
+  (stmt
+    (declaration
+      (typeDef
+        (keyw)
+        (symbol
+          (ident))
+        (typeDesc
+          (primary
+            (symbol
+              (ident))))
+        (symbol
+          (ident))
+        (typeDesc
+          (primary
+            (symbol
+              (ident)))))))
+  (stmt
+    (declaration
+      (typeDef
+        (keyw)
+        (symbol
+          (ident))
+        (genericParamList
+          (genericParam
+            (symbol
+              (ident))))
+        (typeDesc
+          (primary
+            (symbol
+              (ident)))))))
+  (stmt
+    (declaration
+      (typeDef
+        (keyw)
+        (symbol
+          (ident))
+        (genericParamList
+          (genericParam
+            (symbol
+              (ident))))
+        (typeDesc
+          (primary
+            (symbol
+              (ident)))))))
+  (stmt
+    (declaration
+      (typeDef
+        (keyw)
+        (symbol
+          (ident))
+        (pragma
+          (exprColonEqExpr
+            (expr
+              (primary
+                (symbol
+                  (ident))))))
+        (typeDesc
+          (primary
+            (symbol
+              (ident)))))))
+  (stmt
+    (declaration
+      (typeDef
+        (keyw)
+        (symbol
+          (ident))
+        (genericParamList
+          (genericParam
+            (symbol
+              (ident))))
+        (pragma
+          (exprColonEqExpr
+            (expr
+              (primary
+                (symbol
+                  (ident))))))
+        (typeDesc
+          (primary
+            (symbol
+              (ident)))))))
+  (stmt
+    (declaration
+      (typeDef
+        (keyw)
+        (symbol
+          (ident))
+        (pragma
+          (exprColonEqExpr
+            (expr
+              (primary
+                (symbol
+                  (ident))))))
+        (genericParamList
+          (genericParam
+            (symbol
+              (ident))))
+        (typeDesc
+          (primary
+            (keyw)
+            (keyw)
+            (symbol
+              (ident)))
+          (keyw)
+          (nil_lit))))))
+
+==================
+constant simple
+==================
+
+const a = 9
+const b:int = 9
+const c{.deprecated.} = 9
+const 
+  d{.deprecated.}:int = 9
+  (e, f) = (9, 9)
+  (g{.deprecated.}, h) = (9, 9)
+
+---
+
+(module
+  (stmt
+    (declaration
+      (constant
+        (keyw)
+        (symbol
+          (ident))
+        (expr
+          (primary
+            (literal
+              (int_lit)))))))
+  (stmt
+    (declaration
+      (constant
+        (keyw)
+        (symbol
+          (ident))
+        (typeDesc
+          (primary
+            (symbol
+              (ident))))
+        (expr
+          (primary
+            (literal
+              (int_lit)))))))
+  (stmt
+    (declaration
+      (constant
+        (keyw)
+        (symbol
+          (ident))
+        (pragma
+          (exprColonEqExpr
+            (expr
+              (primary
+                (symbol
+                  (ident))))))
+        (expr
+          (primary
+            (literal
+              (int_lit)))))))
+  (stmt
+    (declaration
+      (constant
+        (keyw)
+        (symbol
+          (ident))
+        (pragma
+          (exprColonEqExpr
+            (expr
+              (primary
+                (symbol
+                  (ident))))))
+        (typeDesc
+          (primary
+            (symbol
+              (ident))))
+        (expr
+          (primary
+            (literal
+              (int_lit))))
+        (varTuple
+          (symbol
+            (ident))
+          (symbol
+            (ident))
+          (expr
+            (primary
+              (tupleConstr
+                (exprColonEqExprList
+                    (expr
+                      (primary
+                        (literal
+                          (int_lit))))
+                    (expr
+                      (primary
+                        (literal
+                          (int_lit)))))))))
+        (varTuple
+          (symbol
+            (ident))
+          (pragma
+            (exprColonEqExpr
+              (expr
+                (primary
+                  (symbol
+                    (ident))))))
+          (symbol
+            (ident))
+          (expr
+            (primary
+              (tupleConstr
+                (exprColonEqExprList
+                    (expr
+                      (primary
+                        (literal
+                          (int_lit))))
+                    (expr
+                      (primary
+                        (literal
+                          (int_lit)))))))))))))
+
+
+==================
+variable simple
+==================
+
+let a = 9
+var `b` = 9
+using c: int
+var (d) = (9,)
+var (dd,) = (9,)
+var (e, f) = (9, 9)
+let (`g`{.deprecated.}, h) = (9, 9)
+var 
+  i{.deprecated.}:int = 9
+  (j, k) = (9, 9)
+  (l{.deprecated.}, m) = (9, 9)
+
+---
+
+(module
+  (stmt
+    (declaration
+      (variable
+        (keyw)
+        (declColonEquals
+          (symbol
+            (ident))
+          (expr
+            (primary
+              (literal
+                (int_lit))))))))
+  (stmt
+    (declaration
+      (variable
+        (keyw)
+        (declColonEquals
+          (symbol
+            (ident))
+          (expr
+            (primary
+              (literal
+                (int_lit))))))))
+  (stmt
+    (declaration
+      (variable
+        (keyw)
+        (declColonEquals
+          (symbol
+            (ident))
+          (typeDesc
+            (primary
+              (symbol
+                (ident))))))))
+  (stmt
+    (declaration
+      (variable
+        (keyw)
+        (varTuple
+          (symbol
+            (ident))
+          (expr
+            (primary
+              (tupleConstr
+                (exprColonEqExprList
+                    (expr
+                      (primary
+                        (literal
+                          (int_lit))))))))))))
+  (stmt
+    (declaration
+      (variable
+        (keyw)
+        (varTuple
+          (symbol
+            (ident))
+          (expr
+            (primary
+              (tupleConstr
+                (exprColonEqExprList
+                    (expr
+                      (primary
+                        (literal
+                          (int_lit))))))))))))
+  (stmt
+    (declaration
+      (variable
+        (keyw)
+        (varTuple
+          (symbol
+            (ident))
+          (symbol
+            (ident))
+          (expr
+            (primary
+              (tupleConstr
+                (exprColonEqExprList
+                    (expr
+                      (primary
+                        (literal
+                          (int_lit))))
+                    (expr
+                      (primary
+                        (literal
+                          (int_lit))))))))))))
+  (stmt
+    (declaration
+      (variable
+        (keyw)
+        (varTuple
+          (symbol
+            (ident))
+          (pragma
+            (exprColonEqExpr
+              (expr
+                (primary
+                  (symbol
+                    (ident))))))
+          (symbol
+            (ident))
+          (expr
+            (primary
+              (tupleConstr
+                (exprColonEqExprList
+                    (expr
+                      (primary
+                        (literal
+                          (int_lit))))
+                    (expr
+                      (primary
+                        (literal
+                          (int_lit))))))))))))
+  (stmt
+    (declaration
+      (variable
+        (keyw)
+        (declColonEquals
+          (symbol
+            (ident))
+          (pragma
+            (exprColonEqExpr
+              (expr
+                (primary
+                  (symbol
+                    (ident))))))
+          (typeDesc
+            (primary
+              (symbol
+                (ident))))
+          (expr
+            (primary
+              (literal
+                (int_lit)))))
+        (varTuple
+          (symbol
+            (ident))
+          (symbol
+            (ident))
+          (expr
+            (primary
+              (tupleConstr
+                (exprColonEqExprList
+                    (expr
+                      (primary
+                        (literal
+                          (int_lit))))
+                    (expr
+                      (primary
+                        (literal
+                          (int_lit)))))))))
+        (varTuple
+          (symbol
+            (ident))
+          (pragma
+            (exprColonEqExpr
+              (expr
+                (primary
+                  (symbol
+                    (ident))))))
+          (symbol
+            (ident))
+          (expr
+            (primary
+              (tupleConstr
+                (exprColonEqExprList
+                    (expr
+                      (primary
+                        (literal
+                          (int_lit))))
+                    (expr
+                      (primary
+                        (literal
+                          (int_lit)))))))))))))
+
+==================
+tupleDecl
+==================
+
+type a = tuple
+  x: int
+type b = tuple[x: int, y,z: int; w: int]
+type 
+  c = tuple
+    x: int
+  d = tuple[x: int]
+var x: tuple[x: int; y, z: int]
+
+---
+
+(module
+  (stmt
+    (declaration
+      (typeDef
+        (keyw)
+        (symbol
+          (ident))
+        (typeDesc
+          (primary
+            (tupleDecl
+              (keyw)
+              (identColonEquals
+                (ident)
+                (typeDesc
+                  (primary
+                    (symbol
+                      (ident)))))))))))
+  (stmt
+    (declaration
+      (typeDef
+        (keyw)
+        (symbol
+          (ident))
+        (typeDesc
+          (primary
+            (tupleDecl
+              (keyw)
+              (identColonEquals
+                (ident)
+                (typeDesc
+                  (primary
+                    (symbol
+                      (ident)))))
+              (identColonEquals
+                (ident)
+                (ident)
+                (typeDesc
+                  (primary
+                    (symbol
+                      (ident)))))
+              (identColonEquals
+                (ident)
+                (typeDesc
+                  (primary
+                    (symbol
+                      (ident)))))))))))
+  (stmt
+    (declaration
+      (typeDef
+        (keyw)
+        (symbol
+          (ident))
+        (typeDesc
+          (primary
+            (tupleDecl
+              (keyw)
+              (identColonEquals
+                (ident)
+                (typeDesc
+                  (primary
+                    (symbol
+                      (ident))))))))
+        (symbol
+          (ident))
+        (typeDesc
+          (primary
+            (tupleDecl
+              (keyw)
+              (identColonEquals
+                (ident)
+                (typeDesc
+                  (primary
+                    (symbol
+                      (ident)))))))))))
+  (stmt
+    (declaration
+      (variable
+        (keyw)
+        (declColonEquals
+          (symbol
+            (ident))
+          (typeDesc
+            (primary
+              (tupleDecl
+                (keyw)
+                (identColonEquals
+                  (ident)
+                  (typeDesc
+                    (primary
+                      (symbol
+                        (ident)))))
+                (identColonEquals
+                  (ident)
+                  (ident)
+                  (typeDesc
+                    (primary
+                      (symbol
+                        (ident)))))))))))))
+
+==================
+enumDecl
+==================
+
+type a = enum
+  A{.deprecated.} = 9,
+  B{.deprecated.}
+  C
+  D = 17
+type b {.pure.} = enum A{.deprecated.} = 9, B{.deprecated.} C D = 17
+
+---
+
+(module
+  (stmt
+    (declaration
+      (typeDef
+        (keyw)
+        (symbol
+          (ident))
+        (typeDesc
+          (primary
+            (enumDecl
+              (keyw)
+              (declColonEquals
+                (symbol
+                  (ident))
+                (pragma
+                  (exprColonEqExpr
+                    (expr
+                      (primary
+                        (symbol
+                          (ident))))))
+                (expr
+                  (primary
+                    (literal
+                      (int_lit)))))
+              (declColonEquals
+                (symbol
+                  (ident))
+                (pragma
+                  (exprColonEqExpr
+                    (expr
+                      (primary
+                        (symbol
+                          (ident)))))))
+              (declColonEquals
+                (symbol
+                  (ident)))
+              (declColonEquals
+                (symbol
+                  (ident))
+                (expr
+                  (primary
+                    (literal
+                      (int_lit)))))))))))
+  (stmt
+    (declaration
+      (typeDef
+        (keyw)
+        (symbol
+          (ident))
+        (pragma
+          (exprColonEqExpr
+            (expr
+              (primary
+                (symbol
+                  (ident))))))
+        (typeDesc
+          (primary
+            (enumDecl
+              (keyw)
+              (declColonEquals
+                (symbol
+                  (ident))
+                (pragma
+                  (exprColonEqExpr
+                    (expr
+                      (primary
+                        (symbol
+                          (ident))))))
+                (expr
+                  (primary
+                    (literal
+                      (int_lit)))))
+              (declColonEquals
+                (symbol
+                  (ident))
+                (pragma
+                  (exprColonEqExpr
+                    (expr
+                      (primary
+                        (symbol
+                          (ident)))))))
+              (declColonEquals
+                (symbol
+                  (ident)))
+              (declColonEquals
+                (symbol
+                  (ident))
+                (expr
+                  (primary
+                    (literal
+                      (int_lit))))))))))))
+
+==================
+primary keyword disambiguation
+==================
+
+bind a
+discard bind a
+static:
+static a
+var a
+discard var a
+ref a
+ptr a
+distinct a
+out a
+type a
+type a = int
+
+---
+
+(module
+  (stmt
+    (bindStmt
+      (keyw)
+      (primary
+        (symbol
+          (ident)))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (keyw)
+          (symbol
+            (ident))))))
+  (stmt
+    (staticStmt
+      (keyw)
+      (block)))
+  (stmt
+    (exprStmt
+      (primary
+        (keyw)
+        (symbol
+          (ident)))))
+  (stmt
+    (declaration
+      (variable
+        (keyw)
+        (declColonEquals
+          (symbol
+            (ident))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (keyw)
+          (symbol
+            (ident))))))
+  (stmt
+    (exprStmt
+      (primary
+        (keyw)
+        (symbol
+          (ident)))))
+  (stmt
+    (exprStmt
+      (primary
+        (keyw)
+        (symbol
+          (ident)))))
+  (stmt
+    (exprStmt
+      (primary
+        (keyw)
+        (symbol
+          (ident)))))
+  (stmt
+    (exprStmt
+      (primary
+        (keyw)
+        (symbol
+          (ident)))))
+  (stmt
+    (exprStmt
+      (primary
+        (keyw)
+        (symbol
+          (ident)))))
+  (stmt
+    (declaration
+      (typeDef
+        (keyw)
+        (symbol
+          (ident))
+        (typeDesc
+          (primary
+            (symbol
+              (ident))))))))
+

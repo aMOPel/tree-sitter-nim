@@ -1423,33 +1423,39 @@ bind a.
   (stmt
     (bindStmt
       (keyw)
-      (qualifiedIdent
+      (primary
         (symbol
           (ident))
-        (symbol
-          (ident)))
-      (qualifiedIdent
+        (primarySuffix
+          (qualifiedSuffix
+            (symbol
+              (ident)))))
+      (primary
         (symbol
           (ident)))))
   (stmt
     (bindStmt
       (keyw)
-      (qualifiedIdent
+      (primary
         (symbol
           (ident))
-        (symbol
-          (ident)))
-      (qualifiedIdent
+        (primarySuffix
+          (qualifiedSuffix
+            (symbol
+              (ident)))))
+      (primary
         (symbol
           (ident)))))
   (stmt
     (bindStmt
       (keyw)
-      (qualifiedIdent
+      (primary
         (symbol
           (ident))
-        (symbol
-          (ident))))))
+        (primarySuffix
+          (qualifiedSuffix
+            (symbol
+              (ident))))))))
 
 ==================
 mixinStmt
@@ -1468,33 +1474,40 @@ mixin a.
   (stmt
     (mixinStmt
       (keyw)
-      (qualifiedIdent
+      (primary
         (symbol
           (ident))
-        (symbol
-          (ident)))
-      (qualifiedIdent
+        (primarySuffix
+          (qualifiedSuffix
+            (symbol
+              (ident)))))
+      (primary
         (symbol
           (ident)))))
   (stmt
     (mixinStmt
       (keyw)
-      (qualifiedIdent
+      (primary
         (symbol
           (ident))
-        (symbol
-          (ident)))
-      (qualifiedIdent
+        (primarySuffix
+          (qualifiedSuffix
+            (symbol
+              (ident)))))
+      (primary
         (symbol
           (ident)))))
   (stmt
     (mixinStmt
       (keyw)
-      (qualifiedIdent
+      (primary
         (symbol
           (ident))
-        (symbol
-          (ident))))))
+        (primarySuffix
+          (qualifiedSuffix
+            (symbol
+              (ident))))))))
+
 
 
 

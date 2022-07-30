@@ -1,5 +1,20 @@
 [
   {
+    "type": "arrayConstr",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "exprColonEqExprList",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "asmStmt",
     "named": true,
     "fields": {},
@@ -43,7 +58,7 @@
           "named": true
         },
         {
-          "type": "qualifiedIdent",
+          "type": "primary",
           "named": true
         }
       ]
@@ -204,6 +219,29 @@
       "types": [
         {
           "type": "char_esc_seq",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "cmdCall",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "operator",
+          "named": true
+        },
+        {
+          "type": "pragma",
+          "named": true
+        },
+        {
+          "type": "primary",
           "named": true
         }
       ]
@@ -629,7 +667,11 @@
       "required": true,
       "types": [
         {
-          "type": "operatorB",
+          "type": "operator",
+          "named": true
+        },
+        {
+          "type": "pragma",
           "named": true
         },
         {
@@ -641,7 +683,7 @@
   },
   {
     "type": "exprColonEqExpr",
-    "named": true,
+    "named": false,
     "fields": {},
     "children": {
       "multiple": true,
@@ -653,6 +695,11 @@
         }
       ]
     }
+  },
+  {
+    "type": "exprColonEqExprList",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "exprList",
@@ -686,7 +733,11 @@
           "named": true
         },
         {
-          "type": "operatorB",
+          "type": "operator",
+          "named": true
+        },
+        {
+          "type": "pragma",
           "named": true
         },
         {
@@ -754,6 +805,21 @@
         },
         {
           "type": "keyw",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "functionCall",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "exprColonEqExprList",
           "named": true
         }
       ]
@@ -971,6 +1037,21 @@
         },
         {
           "type": "keyw",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "indexSuffix",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "exprColonEqExprList",
           "named": true
         }
       ]
@@ -1282,7 +1363,7 @@
           "named": true
         },
         {
-          "type": "qualifiedIdent",
+          "type": "primary",
           "named": true
         }
       ]
@@ -1304,217 +1385,14 @@
     }
   },
   {
-    "type": "nil_lit",
+    "type": "multilineComment",
     "named": true,
     "fields": {}
   },
   {
-    "type": "objectBranch",
+    "type": "multilineDocComment",
     "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "exprList",
-          "named": true
-        },
-        {
-          "type": "keyw",
-          "named": true
-        },
-        {
-          "type": "objectPart",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "objectBranches",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "objectBranch",
-          "named": true
-        },
-        {
-          "type": "objectElif",
-          "named": true
-        },
-        {
-          "type": "objectElse",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "objectCase",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "keyw",
-          "named": true
-        },
-        {
-          "type": "objectBranches",
-          "named": true
-        },
-        {
-          "type": "opr",
-          "named": true
-        },
-        {
-          "type": "pragma",
-          "named": true
-        },
-        {
-          "type": "symbol",
-          "named": true
-        },
-        {
-          "type": "typeDesc",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "objectDecl",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "keyw",
-          "named": true
-        },
-        {
-          "type": "objectPart",
-          "named": true
-        },
-        {
-          "type": "pragma",
-          "named": true
-        },
-        {
-          "type": "typeDesc",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "objectElif",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "expr",
-          "named": true
-        },
-        {
-          "type": "keyw",
-          "named": true
-        },
-        {
-          "type": "objectPart",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "objectElse",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "keyw",
-          "named": true
-        },
-        {
-          "type": "objectPart",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "objectPart",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "declColonEquals",
-          "named": true
-        },
-        {
-          "type": "keyw",
-          "named": true
-        },
-        {
-          "type": "objectCase",
-          "named": true
-        },
-        {
-          "type": "objectWhen",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "objectWhen",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "expr",
-          "named": true
-        },
-        {
-          "type": "keyw",
-          "named": true
-        },
-        {
-          "type": "objectElif",
-          "named": true
-        },
-        {
-          "type": "objectElse",
-          "named": true
-        },
-        {
-          "type": "objectPart",
-          "named": true
-        }
-      ]
-    }
+    "fields": {}
   },
   {
     "type": "ofBranch",
@@ -1542,17 +1420,45 @@
   {
     "type": "operator",
     "named": true,
-    "fields": {}
-  },
-  {
-    "type": "operatorB",
-    "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "dotlikeop",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "opr",
     "named": true,
     "fields": {}
+  },
+  {
+    "type": "par",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "block",
+          "named": true
+        },
+        {
+          "type": "closeParen",
+          "named": true
+        },
+        {
+          "type": "openParen",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "paramColonEquals",
@@ -1740,6 +1646,10 @@
       "required": true,
       "types": [
         {
+          "type": "arrayConstr",
+          "named": true
+        },
+        {
           "type": "enumDecl",
           "named": true
         },
@@ -1756,15 +1666,19 @@
           "named": true
         },
         {
-          "type": "objectDecl",
-          "named": true
-        },
-        {
           "type": "operator",
           "named": true
         },
         {
-          "type": "primary",
+          "type": "par",
+          "named": true
+        },
+        {
+          "type": "primarySuffix",
+          "named": true
+        },
+        {
+          "type": "setOrTableConstr",
           "named": true
         },
         {
@@ -1783,13 +1697,52 @@
     }
   },
   {
-    "type": "qualifiedIdent",
+    "type": "primarySuffix",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "cmdCall",
+          "named": true
+        },
+        {
+          "type": "exprColonEqExprList",
+          "named": true
+        },
+        {
+          "type": "functionCall",
+          "named": true
+        },
+        {
+          "type": "indexSuffix",
+          "named": true
+        },
+        {
+          "type": "qualifiedSuffix",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "qualifiedSuffix",
     "named": true,
     "fields": {},
     "children": {
       "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "dotlikeop",
+          "named": true
+        },
+        {
+          "type": "generalizedLit",
+          "named": true
+        },
         {
           "type": "symbol",
           "named": true
@@ -1882,6 +1835,21 @@
     "type": "rstr_lit",
     "named": true,
     "fields": {}
+  },
+  {
+    "type": "setOrTableConstr",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "exprColonEqExprList",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "staticStmt",
@@ -2073,7 +2041,7 @@
           "named": true
         },
         {
-          "type": "operatorB",
+          "type": "operator",
           "named": true
         }
       ]
@@ -2210,11 +2178,11 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": true,
+      "multiple": false,
       "required": false,
       "types": [
         {
-          "type": "exprColonEqExpr",
+          "type": "exprColonEqExprList",
           "named": true
         }
       ]
@@ -2291,11 +2259,15 @@
           "named": true
         },
         {
-          "type": "operatorB",
+          "type": "operator",
           "named": true
         },
         {
           "type": "paramConstraint",
+          "named": true
+        },
+        {
+          "type": "pragma",
           "named": true
         },
         {
@@ -2441,6 +2413,14 @@
     "named": false
   },
   {
+    "type": "##[",
+    "named": false
+  },
+  {
+    "type": "#[",
+    "named": false
+  },
+  {
     "type": "%",
     "named": false
   },
@@ -2466,10 +2446,6 @@
   },
   {
     "type": "+",
-    "named": false
-  },
-  {
-    "type": ",",
     "named": false
   },
   {
@@ -2509,15 +2485,19 @@
     "named": false
   },
   {
-    "type": "R",
-    "named": false
-  },
-  {
     "type": "[",
     "named": false
   },
   {
     "type": "]",
+    "named": false
+  },
+  {
+    "type": "]#",
+    "named": false
+  },
+  {
+    "type": "]##",
     "named": false
   },
   {
@@ -2533,11 +2513,23 @@
     "named": true
   },
   {
+    "type": "closeParen",
+    "named": true
+  },
+  {
+    "type": "comment",
+    "named": true
+  },
+  {
     "type": "div",
     "named": false
   },
   {
-    "type": "doc_comment",
+    "type": "docComment",
+    "named": true
+  },
+  {
+    "type": "dotlikeop",
     "named": true
   },
   {
@@ -2561,19 +2553,15 @@
     "named": false
   },
   {
-    "type": "nil",
-    "named": false
+    "type": "nil_lit",
+    "named": true
   },
   {
-    "type": "normal_comment",
+    "type": "openParen",
     "named": true
   },
   {
     "type": "or",
-    "named": false
-  },
-  {
-    "type": "r",
     "named": false
   },
   {
@@ -2582,10 +2570,6 @@
   },
   {
     "type": "shr",
-    "named": false
-  },
-  {
-    "type": "static",
     "named": false
   },
   {

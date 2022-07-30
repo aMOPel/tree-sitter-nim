@@ -1,0 +1,477 @@
+==================
+objectDecl simple
+==================
+
+type a = object 
+type b = object of RootObj
+type c{.deprecated.} = object 
+  a: int
+  nil
+  discard
+
+---
+
+(module
+  (stmt
+    (declaration
+      (typeDef
+        (keyw)
+        (symbol
+          (ident))
+        (typeDesc
+          (primary
+            (objectDecl
+              (keyw)))))))
+  (stmt
+    (declaration
+      (typeDef
+        (keyw)
+        (symbol
+          (ident))
+        (typeDesc
+          (primary
+            (objectDecl
+              (keyw)
+              (keyw)
+              (typeDesc
+                (primary
+                  (symbol
+                    (ident))))))))))
+  (stmt
+    (declaration
+      (typeDef
+        (keyw)
+        (symbol
+          (ident))
+        (pragma
+          (exprColonEqExpr
+            (expr
+              (primary
+                (symbol
+                  (ident))))))
+        (typeDesc
+          (primary
+            (objectDecl
+              (keyw)
+              (objectPart
+                (declColonEquals
+                  (symbol
+                    (ident))
+                  (typeDesc
+                    (primary
+                      (symbol
+                        (ident)))))
+                (keyw)
+                (keyw)))))))))
+
+==================
+objectCase
+==================
+
+type a = object
+  case kind: uint8:
+  of 0:
+    a: int
+  of 1:
+    b: string
+  elif false:
+    c: char
+  else:
+    d: char
+type b = object 
+  case kind: bool:
+  of true:
+    a: int
+  of false:
+    b: float
+
+---
+
+(module
+  (stmt
+    (declaration
+      (typeDef
+        (keyw)
+        (symbol
+          (ident))
+        (typeDesc
+          (primary
+            (objectDecl
+              (keyw)
+              (objectPart
+                (objectCase
+                  (keyw)
+                  (symbol
+                    (ident))
+                  (typeDesc
+                    (primary
+                      (symbol
+                        (ident))))
+                  (objectBranches
+                    (objectBranch
+                      (keyw)
+                      (exprList
+                        (expr
+                          (primary
+                            (literal
+                              (int_lit)))))
+                      (objectPart
+                        (declColonEquals
+                          (symbol
+                            (ident))
+                          (typeDesc
+                            (primary
+                              (symbol
+                                (ident)))))))
+                    (objectBranch
+                      (keyw)
+                      (exprList
+                        (expr
+                          (primary
+                            (literal
+                              (int_lit)))))
+                      (objectPart
+                        (declColonEquals
+                          (symbol
+                            (ident))
+                          (typeDesc
+                            (primary
+                              (symbol
+                                (ident)))))))
+                    (objectElif
+                      (keyw)
+                      (expr
+                        (primary
+                          (literal
+                            (bool_lit))))
+                      (objectPart
+                        (declColonEquals
+                          (symbol
+                            (ident))
+                          (typeDesc
+                            (primary
+                              (symbol
+                                (ident)))))))
+                    (objectElse
+                      (keyw)
+                      (objectPart
+                        (declColonEquals
+                          (symbol
+                            (ident))
+                          (typeDesc
+                            (primary
+                              (symbol
+                                (ident))))))))))))))))
+  (stmt
+    (declaration
+      (typeDef
+        (keyw)
+        (symbol
+          (ident))
+        (typeDesc
+          (primary
+            (objectDecl
+              (keyw)
+              (objectPart
+                (objectCase
+                  (keyw)
+                  (symbol
+                    (ident))
+                  (typeDesc
+                    (primary
+                      (symbol
+                        (ident))))
+                  (objectBranches
+                    (objectBranch
+                      (keyw)
+                      (exprList
+                        (expr
+                          (primary
+                            (literal
+                              (bool_lit)))))
+                      (objectPart
+                        (declColonEquals
+                          (symbol
+                            (ident))
+                          (typeDesc
+                            (primary
+                              (symbol
+                                (ident)))))))
+                    (objectBranch
+                      (keyw)
+                      (exprList
+                        (expr
+                          (primary
+                            (literal
+                              (bool_lit)))))
+                      (objectPart
+                        (declColonEquals
+                          (symbol
+                            (ident))
+                          (typeDesc
+                            (primary
+                              (symbol
+                                (ident)))))))))))))))))
+
+==================
+objectWhen
+==================
+
+type a = object
+  when true:
+  a: int
+type b = object
+  when true: a: int
+  elif false:
+    a: float
+  elif false:
+  a: float
+  else:
+    a: uint
+
+---
+
+(module
+  (stmt
+    (declaration
+      (typeDef
+        (keyw)
+        (symbol
+          (ident))
+        (typeDesc
+          (primary
+            (objectDecl
+              (keyw)
+              (objectPart
+                (objectWhen
+                  (keyw)
+                  (expr
+                    (primary
+                      (literal
+                        (bool_lit))))
+                  (objectPart
+                    (declColonEquals
+                      (symbol
+                        (ident))
+                      (typeDesc
+                        (primary
+                          (symbol
+                            (ident))))))))))))))
+  (stmt
+    (declaration
+      (typeDef
+        (keyw)
+        (symbol
+          (ident))
+        (typeDesc
+          (primary
+            (objectDecl
+              (keyw)
+              (objectPart
+                (objectWhen
+                  (keyw)
+                  (expr
+                    (primary
+                      (literal
+                        (bool_lit))))
+                  (objectPart
+                    (declColonEquals
+                      (symbol
+                        (ident))
+                      (typeDesc
+                        (primary
+                          (symbol
+                            (ident))))))
+                  (objectElif
+                    (keyw)
+                    (expr
+                      (primary
+                        (literal
+                          (bool_lit))))
+                    (objectPart
+                      (declColonEquals
+                        (symbol
+                          (ident))
+                        (typeDesc
+                          (primary
+                            (symbol
+                              (ident)))))))
+                  (objectElif
+                    (keyw)
+                    (expr
+                      (primary
+                        (literal
+                          (bool_lit))))
+                    (objectPart
+                      (declColonEquals
+                        (symbol
+                          (ident))
+                        (typeDesc
+                          (primary
+                            (symbol
+                              (ident)))))))
+                  (objectElse
+                    (keyw)
+                    (objectPart
+                      (declColonEquals
+                        (symbol
+                          (ident))
+                        (typeDesc
+                          (primary
+                            (symbol
+                              (ident))))))))))))))))
+
+==================
+conceptDecl
+==================
+
+type a = concept x
+type b = concept x, var v, ref r, ptr p, static s, type T, out o
+type c = concept x, var v{.deprecated.} 
+type d = concept x, var v of RootObj
+type e = concept x, var v{.deprecated.} of RootObj, RootRef
+type f = concept x
+  discard
+  discard
+
+---
+
+(module
+  (stmt
+    (declaration
+      (typeDef
+        (keyw)
+        (symbol
+          (ident))
+        (typeDesc
+          (primary
+            (conceptDecl
+              (keyw)
+              (symbol
+                (ident))
+              (block)))))))
+  (stmt
+    (declaration
+      (typeDef
+        (keyw)
+        (symbol
+          (ident))
+        (typeDesc
+          (primary
+            (conceptDecl
+              (keyw)
+              (symbol
+                (ident))
+              (keyw)
+              (symbol
+                (ident))
+              (keyw)
+              (symbol
+                (ident))
+              (keyw)
+              (symbol
+                (ident))
+              (keyw)
+              (symbol
+                (ident))
+              (keyw)
+              (symbol
+                (ident))
+              (keyw)
+              (symbol
+                (ident))
+              (block)))))))
+  (stmt
+    (declaration
+      (typeDef
+        (keyw)
+        (symbol
+          (ident))
+        (typeDesc
+          (primary
+            (conceptDecl
+              (keyw)
+              (symbol
+                (ident))
+              (keyw)
+              (symbol
+                (ident))
+              (pragma
+                (exprColonEqExpr
+                  (expr
+                    (primary
+                      (symbol
+                        (ident))))))
+              (block)))))))
+  (stmt
+    (declaration
+      (typeDef
+        (keyw)
+        (symbol
+          (ident))
+        (typeDesc
+          (primary
+            (conceptDecl
+              (keyw)
+              (symbol
+                (ident))
+              (keyw)
+              (symbol
+                (ident))
+              (keyw)
+              (typeDesc
+                (primary
+                  (symbol
+                    (ident))))
+              (block)))))))
+  (stmt
+    (declaration
+      (typeDef
+        (keyw)
+        (symbol
+          (ident))
+        (typeDesc
+          (primary
+            (conceptDecl
+              (keyw)
+              (symbol
+                (ident))
+              (keyw)
+              (symbol
+                (ident))
+              (pragma
+                (exprColonEqExpr
+                  (expr
+                    (primary
+                      (symbol
+                        (ident))))))
+              (keyw)
+              (typeDesc
+                (primary
+                  (symbol
+                    (ident))))
+              (typeDesc
+                (primary
+                  (symbol
+                    (ident))))
+              (block)))))))
+  (stmt
+    (declaration
+      (typeDef
+        (keyw)
+        (symbol
+          (ident))
+        (typeDesc
+          (primary
+            (conceptDecl
+              (keyw)
+              (symbol
+                (ident))
+              (block
+                (stmt
+                  (discardStmt
+                    (keyw)))
+                (stmt
+                  (discardStmt
+                    (keyw)))))))))))
+

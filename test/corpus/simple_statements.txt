@@ -211,7 +211,7 @@ except
         (primary
           (symbol
             (ident)))
-        (operatorB)
+        (operator)
         (primary
           (symbol
             (ident))))))
@@ -222,7 +222,7 @@ except
         (primary
           (symbol
             (ident)))
-        (operatorB)
+        (operator)
         (primary
           (symbol
             (ident))))))
@@ -233,7 +233,7 @@ except
         (primary
           (symbol
             (ident)))
-        (operatorB)
+        (operator)
         (primary
           (symbol
             (ident))))
@@ -241,7 +241,7 @@ except
         (primary
           (symbol
             (ident)))
-        (operatorB)
+        (operator)
         (primary
           (symbol
             (ident))))))
@@ -252,7 +252,7 @@ except
         (primary
           (symbol
             (ident)))
-        (operatorB)
+        (operator)
         (primary
           (symbol
             (ident))))
@@ -273,7 +273,7 @@ except
         (primary
           (symbol
             (ident)))
-        (operatorB)
+        (operator)
         (primary
           (symbol
             (ident))))))
@@ -295,7 +295,7 @@ except
         (primary
           (symbol
             (ident)))
-        (operatorB)
+        (operator)
         (primary
           (symbol
             (ident))))))
@@ -344,7 +344,7 @@ except
         (primary
           (symbol
             (ident)))
-        (operatorB)
+        (operator)
         (primary
           (symbol
             (ident))))))
@@ -355,7 +355,7 @@ except
         (primary
           (symbol
             (ident)))
-        (operatorB)
+        (operator)
         (primary
           (symbol
             (ident))))))
@@ -366,7 +366,7 @@ except
         (primary
           (symbol
             (ident)))
-        (operatorB)
+        (operator)
         (primary
           (symbol
             (ident))))
@@ -374,7 +374,7 @@ except
         (primary
           (symbol
             (ident)))
-        (operatorB)
+        (operator)
         (primary
           (symbol
             (ident))))))
@@ -385,7 +385,7 @@ except
         (primary
           (symbol
             (ident)))
-        (operatorB)
+        (operator)
         (primary
           (symbol
             (ident))))
@@ -406,7 +406,7 @@ except
         (primary
           (symbol
             (ident)))
-        (operatorB)
+        (operator)
         (primary
           (symbol
             (ident))))))
@@ -428,7 +428,7 @@ except
         (primary
           (symbol
             (ident)))
-        (operatorB)
+        (operator)
         (primary
           (symbol
             (ident))))))
@@ -443,6 +443,7 @@ except
         (primary
           (symbol
             (ident)))))))
+
 
 ==================
 fromStmt
@@ -470,7 +471,7 @@ import
         (primary
           (symbol
             (ident)))
-        (operatorB)
+        (operator)
         (primary
           (symbol
             (ident))))
@@ -491,7 +492,7 @@ import
         (primary
           (symbol
             (ident)))
-        (operatorB)
+        (operator)
         (primary
           (symbol
             (ident))))
@@ -512,7 +513,7 @@ import
         (primary
           (symbol
             (ident)))
-        (operatorB)
+        (operator)
         (primary
           (symbol
             (ident))))
@@ -526,6 +527,7 @@ import
           (primary
             (symbol
               (ident))))))))
+
 
 ==================
 includeStmt

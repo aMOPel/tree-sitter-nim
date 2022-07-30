@@ -4,7 +4,6 @@ const PREC = {
 
   lit: 4,
   keyword: -1,
-  comment: 100,
   stmt: 30,
 
   op0: 10,
@@ -19,27 +18,49 @@ const PREC = {
   op9: 19,
   op10: 20,
   unary: 21,
+
+  simpleStmtsNewline: -100,
+}
+
+const TOKEN_PREC = {
+  par: -1,
+  tupleConstr: 0,
+  op5: -100,
+
+  comment: -4,
+  multilineComment: -3,
+  docComment: -2,
+  multilineDocComment: -1,
+
+  conceptOf: 100,
+}
+
+const DYNAMIC_PREC = {
+  primaryKeyw: -1,
+  typeDef: 1,
 }
 
 module.exports = grammar({
   name: 'nim',
 
-
   inline: $ => [
-    // $._section,
     $._simpleStmt,
     $._complexStmt,
     $._suite,
   ],
 
   
-  // conflicts: $ => [
-  //   [$.elifStmt, $.stmt],
-  // ],
+  conflicts: $ => [
+    [$.bindStmt, $.primary],
+    [$.variable, $.primary],
+    [$.typeDef, $.primary],
+  ],
 
   extras: $ => [
-    $.normal_comment,
-    $.doc_comment,
+    $.comment,
+    $.docComment,
+    $.multilineComment,
+    $.multilineDocComment,
     /[\s\f\uFEFF\u2060\u200B]|\r?\n/,
   ],
 
@@ -55,25 +76,12 @@ module.exports = grammar({
   word: $ => $.ident,
   
   rules: {
+
+    // ========================================================================
+    // central rules
+
     module: $ => repeat(
       $.stmt,
-    ),
-
-    _comma: $ => seq(
-      ',',
-      // optional($.comment)
-    ),
-    _semicolon: $ => seq(
-      ';',
-      // optional($.comment)
-    ),
-    _colon: $ => seq(
-      ':',
-      // optional($.comment)
-    ),
-    _colcom: $ => seq(
-      ':',
-      // optional($.comment)
     ),
 
     stmt: $ => choice(
@@ -81,73 +89,63 @@ module.exports = grammar({
       $._complexStmt,
     ),
 
-
     _simpleStmts: $ => seq(
       sep_repeat1($._simpleStmt, ';'),
-      prec(-100, $._newline),
+      prec(PREC.simpleStmtsNewline, $._newline),
     ),
 
-    _simpleStmt: $ => seq(
-      choice(
-        prec(0, choice(
-          $.returnStmt,
-          $.raiseStmt,
-          $.yieldStmt,
-          $.discardStmt,
-          $.breakStmt,
-          $.continueStmt,
-          $.pragmaStmt,
-          $.importStmt,
-          $.importExceptStmt,
-          $.exportStmt,
-          $.fromStmt,
-          $.includeStmt,
-          // $.commentStmt,
-        )), 
-        prec(-100, $.exprStmt),
-      ), 
-      // optional($.comment),
-    ),
+    _simpleStmt: $ => choice(
+      $.returnStmt,
+      $.raiseStmt,
+      $.yieldStmt,
+      $.discardStmt,
+      $.breakStmt,
+      $.continueStmt,
+      $.pragmaStmt,
+      $.importStmt,
+      $.importExceptStmt,
+      $.exportStmt,
+      $.fromStmt,
+      $.includeStmt,
+      $.exprStmt,
+    ), 
 
     expr: $ => choice(
-      prec(2, choice(
-        // $.blockExpr,
-        // $.ifExpr,
-        // $.whenExpr,
-        // $.caseExpr,
-        // $.forExpr,
-        // $.tryExpr,
-      )),
-      prec(1, $._simpleExpr),
+      // choice(
+      //   $.blockExpr,
+      //   $.ifExpr,
+      //   $.whenExpr,
+      //   $.caseExpr,
+      //   $.forExpr,
+      //   $.tryExpr,
+      // ),
+      $._simpleExpr,
     ),
 
     _complexStmt: $ => choice(
-      // choice(
-        $.ifStmt,
-        prec(-1, $.inlineIfStmt),
-        $.whenStmt,
-        prec(-1, $.inlineWhenStmt),
-        $.caseStmt,
-        $.whileStmt,
-        $.tryStmt,
-        prec(-1, $.inlineTryStmt),
-        $.tryExceptStmt,
-        $.tryFinallyStmt,
-        $.forStmt,
-        $.blockStmt,
-        $.staticStmt,
-        $.deferStmt,
-        $.asmStmt,
-        $.bindStmt,
-        $.mixinStmt,
-        $.routine,
-        $.declaration,
-      // ),
-      // prec(-2, seq(
-      //   sep_repeat1($._simpleStmt, ';'),
-      //   $._newline,
-      // )),
+      $.ifStmt,
+      prec(-1, $.inlineIfStmt),
+      $.whenStmt,
+      prec(-1, $.inlineWhenStmt),
+      $.caseStmt,
+      $.whileStmt,
+      $.tryStmt,
+      prec(-1, $.inlineTryStmt),
+      $.tryExceptStmt,
+      $.tryFinallyStmt,
+      $.forStmt,
+      $.blockStmt,
+      $.staticStmt,
+      $.deferStmt,
+      $.asmStmt,
+      $.bindStmt,
+      $.mixinStmt,
+      $.routine,
+      $.declaration,
     ),
+
+    // ========================================================================
+    // declarations
 
     declaration: $ => choice(
       $.typeDef,
@@ -155,19 +153,8 @@ module.exports = grammar({
       $.variable,
     ),
 
-    _suite: $ => choice(
-      alias($._simpleStmts, $.block),
-      seq($._indent, $.block),
-      alias($._newline, $.block)
-    ),
-
-    block: $ => seq(
-      repeat($.stmt),
-      $._dedent
-    ),
-
     typeDef: $ => seq(
-      alias('type', $.keyw),
+      alias(prec.dynamic(DYNAMIC_PREC.typeDef, 'type'), $.keyw),
       section($, seq(
         $._identVisDot,
         optional($.pragma),
@@ -200,11 +187,10 @@ module.exports = grammar({
       alias(choice('let', 'var', 'using'), $.keyw),
       section($, seq(
         choice(
-          prec(0, $.varTuple),
-          prec(-1, $.declColonEquals),
+          $.varTuple,
+          $.declColonEquals,
         ),
         optional($.colonBody),
-        // $.indAndComment,
       )),
     ),
 
@@ -216,83 +202,123 @@ module.exports = grammar({
       $.expr,
     ),
 
-    identColonEquals: $ => prec.right(2, seq(
-      sep_repeat1($.ident, $._comma),
-      optional(seq(
-        ':',
-        optInd($, $.typeDesc)
-      )),
-      optional(seq(
-        '=',
-        optInd($, $.expr)
-      )),
-    )),
-
-    typeDesc: $ => prec.left(1, seq(
-      $._simpleExpr,
-      optional(seq(
-        alias('not', $.keyw), 
-        $.nil_lit
-      )),
-    )),
-
-    paramTypeDesc: $ => prec.right(seq(
-      $._simpleExpr,
-      optional($.paramConstraint),
-      optional(seq(
-        alias('not', $.keyw), 
-        $.nil_lit
-      )),
-    )),
-
-    pragma: $ => prec.left(seq(
-      '{.',
-      repeat(
+    tupleDecl: $ => seq(
+      alias('tuple', $.keyw),
+      choice(
         seq(
-          $.exprColonEqExpr,
-          optional($._comma),
+          '[',
+          sep_repeat(
+            $.identColonEquals,
+            choice($._comma, $._semicolon)
+          ),
+          ']',
+        ),
+        seq(
+          $._indent,
+          repeat1($.identColonEquals),
+          $._dedent,
         ),
       ),
-      choice('.}', '}'),
-    )),
-
-    exprColonEqExpr: $ => prec.left(seq(
-      $.expr,
-      optional(seq(
-        choice(':', '='),
-        $.expr,
-      ))
-    )),
-
-    colonBody: $ => seq(
-      $._colcom,
-      $._suite,
-      // optional($.postExprBlocks),
     ),
 
-    postExprBlocks: $ => seq(
-      ':',
-      optional($._suite),
-      repeat(choice(
-        $.doBlock,
-        // seq(alias('of', $.keyw), $.exprList, ':', $._suite),
-        // seq(alias('elif', $.keyw), $.expr, ':', $._suite),
-        // seq(alias('except', $.keyw), $.exprList, ':', $._suite),
-        // seq(alias('finally', $.keyw), ':', $._suite),
-        // seq(alias('else', $.keyw), ':', $._suite),
-      )),
-    ),
-
-    doBlock: $ => seq(
-      alias('do', $.keyw),
-      seq(
-        optional($.paramList),
-        optional($.paramListSuffix),
+    enumDecl: $ => prec.right(seq(
+      alias('enum', $.keyw),
+      sep_repeat1(
+        // declColonEquals is a superset of the actual grammar here
+        $.declColonEquals,
+        // $.symbol,
+        // optional($.pragma),
+        // optional(seq(
+        //   '=',
+        //   $.expr
+        // )),
+        optional($._comma),
       ),
-      optional($.pragma),
-      $._colcom,
-      $._suite,
-    ),
+    )),
+
+    // objectDecl: $ => prec.right(seq(
+    //   alias('object', $.keyw),
+    //   optional($.pragma),
+    //   optional(seq(
+    //     alias(token(prec(-1, 'of')), $.keyw),
+    //     $.typeDesc,
+    //   )),
+    //   optional($.objectPart),
+    // )),
+    //
+    // objectPart: $ => section($,
+    //   choice(
+    //     prec(0, $.objectWhen),
+    //     prec(-1, $.objectCase),
+    //     prec(-2, alias('nil', $.keyw)),
+    //     prec(-3, alias('discard', $.keyw)),
+    //     prec(-4, $.declColonEquals),
+    //   ),
+    // ),
+    //
+    // objectWhen: $ => prec.right(seq(
+    //   alias(token(prec(-1, 'when')), $.keyw),
+    //   $.expr,
+    //   $._colcom,
+    //   $.objectPart,
+    //   repeat($.objectElif),
+    //   optional($.objectElse),
+    // )),
+    //
+    // // TODO: this works, but it slows down the parser compilation immensely
+    // objectCase: $ => seq(
+    //   alias(token(prec(-1, 'case')), $.keyw),
+    //   $._identWithPragma,
+    //   ':',
+    //   $.typeDesc,
+    //   optional(':'),
+    //   // $._newline,
+    //   $.objectBranches,
+    // ),
+    //
+    // objectBranches: $ => prec.left(seq(
+    //   repeat1($.objectBranch),
+    //   repeat($.objectElif),
+    //   optional($.objectElse),
+    // )),
+    //
+    // objectBranch: $ => seq(
+    //   alias(token(prec(-1, 'of')), $.keyw),
+    //   $.exprList,
+    //   $._colcom,
+    //   $.objectPart,
+    // ),
+    //
+    // objectElif: $ => seq(
+    //   alias(token(prec(-1, 'elif')), $.keyw),
+    //   $.expr,
+    //   $._colcom,
+    //   $.objectPart,
+    // ),
+    //
+    // objectElse: $ => seq(
+    //   alias(token(prec(-1, 'else')), $.keyw),
+    //   $._colcom,
+    //   $.objectPart,
+    // ),
+
+    // conceptDecl: $ => seq(
+    //   alias('concept', $.keyw),
+    //   sep_repeat(
+    //     $.primary,
+    //     ',',
+    //   ),
+    //   optional($.pragma),
+    //   optional(seq(
+    //     alias(token(prec(TOKEN_PREC.conceptOf, 'of')), $.keyw),
+    //     sep_repeat($.typeDesc, ','),
+    //   )),
+    //   $._newline,
+    //   $._suite,
+    // ),
+
+    // ========================================================================
+    // simple statements 
 
     returnStmt: $ => seq(
       alias('return', $.keyw), 
@@ -382,6 +408,9 @@ module.exports = grammar({
       ),
     ),
 
+    // ========================================================================
+    // complex statements 
+
     ifStmt: $ => seq(
       alias('if', $.keyw),
       $._condStmt,
@@ -392,13 +421,13 @@ module.exports = grammar({
       $._condStmt,
     ),
 
-    _condStmt: $ => prec.left(seq(
+    _condStmt: $ => seq(
       $.expr,
       $._colcom,
       $._suite,
       repeat($.elifStmt),
       optional($.elseStmt),
-    )),
+    ),
 
     elifStmt: $ => seq(
       alias('elif', $.keyw), 
@@ -416,6 +445,7 @@ module.exports = grammar({
     // this is kinda a nasty hack, but I'm so happy it works, couldn't find another way
     // it's necessary because the $.simpleStmts end in $._newline, that doesn't fly for inline statements. 
     // However removing the $._newline from $.simpleStmts leads to a great deal of problems
+    // TODO: this doesn't handle a hybrid case, where some ifs and elifs are on the same line and some aren't
     inlineIfStmt: $ => seq(
       alias('if', $.keyw),
       $._inlineCondStmt,
@@ -426,7 +456,7 @@ module.exports = grammar({
       $._inlineCondStmt,
     ),
 
-    _inlineCondStmt: $ => prec.left(seq(
+    _inlineCondStmt: $ => seq(
       $.expr,
       $._colcom,
       inlineSimpleStmts($,
@@ -436,9 +466,7 @@ module.exports = grammar({
           $._newline
         )
       ),
-      // repeat(alias($._inlineElifStmt, $.elifStmt)),
-      // optional(alias($._inlineElseStmt, $.elseStmt)),
-    )),
+    ),
 
     _inlineElifStmt: $ => seq(
       alias('elif', $.keyw),
@@ -467,11 +495,11 @@ module.exports = grammar({
       $._branches,
     ),
 
-    _branches: $ => prec.left(seq(
+    _branches: $ => seq(
       repeat1($.ofBranch),
       repeat($.elifStmt),
       optional($.elseStmt),
-    )),
+    ),
 
     ofBranch: $ => seq(
       alias('of', $.keyw),
@@ -491,6 +519,19 @@ module.exports = grammar({
       alias('try', $.keyw),
       $._colcom,
       $._suite,
+    ),
+
+    tryExceptStmt: $ => seq(
+      alias('except', $.keyw),
+      optional($.exprList),
+      $._colcom,
+      $._suite
+    ),
+
+    tryFinallyStmt: $ => seq(
+      alias('finally', $.keyw),
+      $._colcom,
+      $._suite
     ),
 
     inlineTryStmt: $ => seq(
@@ -518,19 +559,6 @@ module.exports = grammar({
       alias('finally', $.keyw),
       $._colcom,
       $._suite,
-    ),
-
-    tryExceptStmt: $ => seq(
-      alias('except', $.keyw),
-      optional($.exprList),
-      $._colcom,
-      $._suite
-    ),
-
-    tryFinallyStmt: $ => seq(
-      alias('finally', $.keyw),
-      $._colcom,
-      $._suite
     ),
 
     forStmt: $ => seq(
@@ -571,24 +599,16 @@ module.exports = grammar({
       ),
     ),
 
-    // TODO: some edge cases done work
+    // TODO: some edge cases don't work
     bindStmt: $ => prec.right(seq(
-      alias('bind', $.keyw), 
-      optInd($, sep_repeat1($.qualifiedIdent, $._comma))
+      alias(prec.dynamic(2, 'bind'), $.keyw), 
+      optInd($, sep_repeat1($.primary, $._comma))
     )),
 
     mixinStmt: $ => prec.right(seq(
       alias('mixin', $.keyw), 
-      optInd($, sep_repeat1($.qualifiedIdent, $._comma))
+      optInd($, sep_repeat1($.primary, $._comma))
     )),
-
-    qualifiedIdent: $ => seq(
-      $.symbol,
-      optional(seq(
-        '.',
-        optInd($, $.symbol),
-      )),
-    ),
 
     exprStmt: $ => seq(
       $._simpleExpr,
@@ -607,6 +627,104 @@ module.exports = grammar({
         // ),
       )),
     ),
+
+    // ========================================================================
+    // routine
+
+    routine: $ => prec.right(seq(
+      alias(choice(
+        'proc',
+        'method',
+        'func',
+        'iterator',
+        'macro',
+        'template',
+        'converter',
+      ), $.keyw),
+      alias($._identVis, $.ident),
+      optional($.pattern),
+      optional($.genericParamList),
+      seq(optional($.paramList), optional($.paramListSuffix)),
+      optional($.pragma),
+      optional(seq(
+        '=',
+        $._suite,
+      )),
+    )),
+
+    pattern: $ => seq(
+      '{',
+      choice(
+        inlineSimpleStmts($, '}'),
+        seq($._suite, '}')
+      ),
+    ),
+
+    genericParam: $ => prec.left(seq(
+      sep_repeat1(
+        $.symbol,
+        $._comma,
+      ),
+      optional(seq(
+        $._colon,
+        $.expr,
+      )),
+      optional(seq(
+        '=',
+        optInd($, $.expr),
+      )),
+    )),
+
+    genericParamList: $ => seq(
+      '[',
+      sep_repeat(
+        $.genericParam,
+        choice($._comma, $._semicolon),
+      ),
+      ']',
+    ),
+
+    paramList: $ => seq(
+      '(',
+      sep_repeat(
+        $.paramColonEquals,
+        choice($._comma, $._semicolon),
+      ),
+      ')',
+    ),
+
+    // use seq(optional($.paramList), optional($.paramListSuffix)) instead of
+    // paramListSuffix or paramListArrow from grammar
+    paramListSuffix: $ => seq(
+      choice(':', '->'),
+      $.typeDesc
+    ),
+
+    paramColonEquals: $ => prec.right(seq(
+      sep_repeat1(
+        $._identWithPragma,
+        $._comma,
+      ),
+      optional(seq(
+        ':',
+        alias($.paramTypeDesc, $.typeDesc),
+      )),
+      optional(seq(
+        '=',
+        $.expr,
+      )),
+      
+    )),
+
+    // TODO: primarySuffix hijacking paramConstraint
+    paramConstraint: $ => prec(100, seq(
+      '{',
+      $.expr,
+      '}',
+    )),
+
+    // ========================================================================
+    // expressions
 
     // blockExpr: $ => seq(
     //   alias('block', $.keyw), 
@@ -670,86 +788,16 @@ module.exports = grammar({
     // )),
 
     _simpleExpr: $ => prec.left(seq(
-      $.primary,
-      repeat(seq($.operatorB, optInd($, $.primary))),
-      // optional($.pragma),
-    )),
-
-    routine: $ => prec.right(seq(
-      alias(choice(
-        'proc',
-        'method',
-        'func',
-        'iterator',
-        'macro',
-        'template',
-        'converter',
-      ), $.keyw),
-      alias($._identVis, $.ident),
-      optional($.pattern),
-      optional($.genericParamList),
-      seq(optional($.paramList), optional($.paramListSuffix)),
+      sep_repeat1(
+        $.primary,
+        $.operator,
+        false,
+      ),
       optional($.pragma),
-      optional(seq(
-        '=',
-        $._suite,
-      )),
     )),
 
-    pattern: $ => seq(
-      '{',
-      choice(
-        inlineSimpleStmts($, '}'),
-        seq($._suite, '}')
-      ),
-    ),
-
-    genericParam: $ => prec.left(seq(
-      sep_repeat1(
-        $.symbol,
-        $._comma,
-      ),
-      optional(seq(
-        $._colon,
-        $.expr,
-      )),
-      optional(seq(
-        '=',
-        optInd($, $.expr),
-      )),
-    )),
-
-    paramList: $ => seq(
-      '(',
-      sep_repeat(
-        $.paramColonEquals,
-        choice($._comma, $._semicolon),
-      ),
-      ')',
-    ),
-
-    paramColonEquals: $ => prec.right(seq(
-      sep_repeat1(
-        $._identWithPragma,
-        $._comma,
-      ),
-      optional(seq(
-        ':',
-        alias($.paramTypeDesc, $.typeDesc),
-      )),
-      optional(seq(
-        '=',
-        $.expr,
-      )),
-      
-    )),
-
-    paramConstraint: $ => seq(
-      '{',
-      $.expr,
-      '}',
-    ),
-
+    // ========================================================================
+    // tidbits
 
     declColonEquals: $ => prec.right(seq(
       sep_repeat1(
@@ -767,152 +815,155 @@ module.exports = grammar({
       
     )),
 
-    // use seq(optional($.paramList), optional($.paramListSuffix)) instead of
-    // paramListSuffix or paramListArrow from grammar
-    paramListSuffix: $ => seq(
-      choice(':', '->'),
-      $.typeDesc
+    identColonEquals: $ => prec.right(seq(
+      sep_repeat1($.ident, $._comma),
+      optional(seq(
+        ':',
+        optInd($, $.typeDesc)
+      )),
+      optional(seq(
+        '=',
+        optInd($, $.expr)
+      )),
+    )),
+
+    typeDesc: $ => prec.right(seq(
+      $._simpleExpr,
+      optional(seq(
+        alias('not', $.keyw), 
+        $.nil_lit
+      )),
+    )),
+
+    paramTypeDesc: $ => seq(
+      $._simpleExpr,
+      optional($.paramConstraint),
+      optional(seq(
+        alias('not', $.keyw), 
+        $.nil_lit
+      )),
     ),
 
-    genericParamList: $ => seq(
-      '[',
-      sep_repeat(
-        $.genericParam,
-        choice($._comma, $._semicolon),
+    pragma: $ => seq(
+      '{.',
+      repeat(
+        seq(
+          $.exprColonEqExpr,
+          optional($._comma),
+        ),
       ),
-      ']',
+      choice('.}', '}'),
+    ),
+
+    exprColonEqExpr: $ => seq(
+      $.expr,
+      optional(seq(
+        choice(':', '='),
+        $.expr,
+      ))
+    ),
+
+    exprColonEqExprList: $ => sep_repeat1(
+      alias($.exprColonEqExpr, 'exprColonEqExpr'),
+      $._comma,
+    ),
+
+    colonBody: $ => seq(
+      $._colcom,
+      $._suite,
+      // optional($.postExprBlocks),
+    ),
+
+    postExprBlocks: $ => seq(
+      ':',
+      optional($._suite),
+      repeat(choice(
+        $.doBlock,
+        // seq(alias('of', $.keyw), $.exprList, ':', $._suite),
+        // seq(alias('elif', $.keyw), $.expr, ':', $._suite),
+        // seq(alias('except', $.keyw), $.exprList, ':', $._suite),
+        // seq(alias('finally', $.keyw), ':', $._suite),
+        // seq(alias('else', $.keyw), ':', $._suite),
+      )),
+    ),
+
+    doBlock: $ => seq(
+      alias('do', $.keyw),
+      seq(
+        optional($.paramList),
+        optional($.paramListSuffix),
+      ),
+      optional($.pragma),
+      $._colcom,
+      $._suite,
     ),
 
     exprList: $ => sep_repeat1( $.expr, $._comma),
 
-    primary: $ => choice(
-      prec(0, choice(
-        // seq(
-        //   $.operatorB,
-        //   $.primary,
-        //   repeat($.primarySuffix),
-        // ),
+    // ========================================================================
+    // primary
+
+    primary: $ => prec.left(seq(
+      repeat(alias(
+        prec.dynamic(DYNAMIC_PREC.primaryKeyw, choice(
+          'bind',
+          'static',
+          'var',
+          'ref',
+          'ptr',
+          'distinct',
+          'out',
+          'type',
+        )),
+        $.keyw,
+      )),
+      repeat($.operator),
+      choice(
         $.tupleDecl,
-      //   $.routineExpr,
+        // $.routineExpr,
         $.enumDecl,
-        $.objectDecl,
-      //   $.conceptDecl,
-      //   seq(
-      //     'bind',
-      //     $.primary,
-      //   ),
-        seq(
-          // gotta make sure it doesn't confuse this 'var' with the declaration 'var'
-          alias(choice(token(prec(-1, 'var')), 'out', 'ref', 'ptr', 'distinct'), $.keyw),
-          $.primary,
-        ),
-      )),
-      prec(-1, seq(
-        repeat($.operator),
+        // $.objectDecl,
+        // $.conceptDecl,
         $._identOrLiteral,
-        // $.primarySuffix,
+      ),
+      repeat($.primarySuffix),
+    )),
+
+    primarySuffix: $ => prec.right(-1, choice(
+      $.functionCall,
+      $.qualifiedSuffix,
+      $.indexSuffix,
+      prec(1, seq(
+        '{',
+        $.exprColonEqExprList,
+        '}',
       )),
-    ),
+      alias(prec(-100, $.expr), $.cmdCall),
+    )),
 
-    tupleDecl: $ => seq(
-      alias('tuple', $.keyw),
+    functionCall: $ => prec(1, seq(
+      '(',
+      $.exprColonEqExprList,
+      ')',
+    )),
+
+    qualifiedSuffix: $ => prec.right(seq(
       choice(
-        seq(
-          '[',
-          sep_repeat(
-            $.identColonEquals,
-            choice($._comma, $._semicolon)
-          ),
-          ']',
-        ),
-        seq(
-          $._indent,
-          repeat1($.identColonEquals),
-          $._dedent,
-        ),
+        '.',
+        $.dotlikeop,
       ),
-    ),
-
-    enumDecl: $ => prec.right(seq(
-      alias('enum', $.keyw),
-      sep_repeat1(
-        // declColonEquals is a superset of the actual grammar here
-        $.declColonEquals,
-        // $.symbol,
-        // optional($.pragma),
-        // optional(seq(
-        //   '=',
-        //   $.expr
-        // )),
-        optional($._comma),
-      ),
+      $.symbol,
+      optional($.generalizedLit),
     )),
 
-    objectDecl: $ => prec.right(seq(
-      alias('object', $.keyw),
-      optional($.pragma),
-      optional(seq(
-        alias('of', $.keyw),
-        $.typeDesc,
-      )),
-      optional($.objectPart),
-    )),
-
-    objectPart: $ => section($,
-      choice(
-        prec(0, $.objectWhen),
-        prec(-1, $.objectCase),
-        prec(-2, alias('nil', $.keyw)),
-        prec(-3, alias('discard', $.keyw)),
-        prec(-4, $.declColonEquals),
-      ),
+    indexSuffix: $ => seq(
+      token.immediate(choice('[', '[:')),
+      $.exprColonEqExprList,
+      ']',
     ),
 
-    objectWhen: $ => prec.right(seq(
-      alias('when', $.keyw),
-      $.expr,
-      $._colcom,
-      $.objectPart,
-      repeat($.objectElif),
-      optional($.objectElse),
-    )),
-
-    // TODO: this works, but it slows down the parser compilation immensely
-    objectCase: $ => seq(
-      alias('case', $.keyw),
-      $._identWithPragma,
-      ':',
-      $.typeDesc,
-      optional(':'),
-      // $._newline,
-      $.objectBranches,
-    ),
-
-    objectBranches: $ => prec.left(seq(
-      repeat1($.objectBranch),
-      repeat($.objectElif),
-      optional($.objectElse),
-    )),
-
-    objectBranch: $ => seq(
-      alias('of', $.keyw),
-      $.exprList,
-      $._colcom,
-      $.objectPart,
-    ),
-
-    objectElif: $ => seq(
-      alias('elif', $.keyw),
-      $.expr,
-      $._colcom,
-      $.objectPart,
-    ),
-
-    objectElse: $ => seq(
-      alias('else', $.keyw),
-      $._colcom,
-      $.objectPart,
-    ),
+    // ========================================================================
+    // identifier
 
     _identWithPragma: $ => prec.right(seq(
       $._identVis,
@@ -941,25 +992,68 @@ module.exports = grammar({
     _identOrLiteral: $ => prec(1, choice(
       $.literal,
       $.generalizedLit,
-      $.symbol,
-      // $.par,
-      // $.arrayConstr,
-      // $.setOrTableConstr,
       $.tupleConstr,
+      $.par,
+      $.symbol,
+      $.arrayConstr,
+      $.setOrTableConstr,
       // $.castExpr,
     )),
 
+    par: $ => seq(
+      alias(token(prec(TOKEN_PREC.par, '(')), $.openParen),
+      $._suite,
+      alias(')', $.closeParen),
+    ),
+
+    symbol: $ => choice(
+      seq(
+        '`',
+        repeat1(choice(
+          $.ident,
+          $.literal,
+          prec.left(repeat1(choice(
+            $.operator,
+            /[\(\)\[\]\{\}]/
+          ))),
+        )),
+        '`',
+      ),
+      $.ident,
+    ),
+
+    ident: $ => /[a-zA-Z\x80-\xff](_?[a-zA-Z0-9\x80-\xff])*/,
+
+    // ========================================================================
+    // constructors
+
+    arrayConstr: $ => seq(
+      '[',
+      optional($.exprColonEqExprList),
+      ']',
+    ),
+
+    setOrTableConstr: $ => seq(
+      '{',
+      optional(choice(
+        $.exprColonEqExprList,
+        ':',
+      )),
+      '}',
+    ),
+
     tupleConstr: $ => seq(
-      '(',
-      sep_repeat($.exprColonEqExpr, $._comma),
+      token(prec(TOKEN_PREC.tupleConstr, '(')),
+      optional($.exprColonEqExprList),
       ')',
     ),
+
+    // ========================================================================
+    // literals
 
     literal: $ => choice(
       seq($.int_lit, optional(choice($.int_suffix, $.float_suffix))),
       seq($.float_lit, optional($.float_suffix)),
-      // alias($.float32_lit, $.float_lit),
-      // alias($.float64_lit, $.float_lit),
       $.custom_numeric_lit,
       $.char_lit,
       $.str_lit,
@@ -973,84 +1067,6 @@ module.exports = grammar({
       $.generalized_str_lit,
       $.generalized_triplestr_lit,
     ),
-
-    symbol: $ => choice(
-      seq(
-        '`',
-        repeat1(choice(
-          // /\s/,
-          // $.keyw,
-          $.ident,
-          $.literal,
-          prec.left(repeat1(choice(
-            $.operatorB,
-            /[\(\)\[\]\{\}]/
-          ))),
-        )),
-        '`',
-      ),
-      $.ident,
-      // prec(-1, $.keyw),
-    ),
-
-
-    operator: $ => choice($._operators, prec(PREC.unary, 'static')),
-    operatorB: $ => $._operators,
-
-
-    doc_comment: $ => token(prec(-5, /##.*/)),
-
-    normal_comment: $ => token(prec(-5, /#[^#].*/)),
-
-    // keyw: $ => prec(PREC.keyword, choice('addr', 'and', 'as', 'asm', 'bind', 'block', 'break', 'case', 'cast', 'concept', 'const', 'continue', 'converter', 'defer', 'discard', 'distinct', 'div', 'do', 'elif', 'else', 'end', 'enum', 'except', 'export', 'finally', 'for', 'from', 'func', 'if', 'import', 'in', 'include', 'interface', 'is', 'isnot', 'iterator', 'let', 'macro', 'method', 'mixin', 'mod', 'not', 'notin', 'object', 'of', 'or', 'out', 'proc', 'ptr', 'raise', 'ref', 'return', 'shl', 'shr', 'static', 'template', 'try', 'tuple', 'type', 'using', 'var', 'when', 'while', 'xor', 'yield')),
-    // KEYW: $ => prec(PREC.keyword, choice('addr', 'and', 'as', 'asm', 'bind', 'block', 'break', 'case', 'cast', 'concept', 'const', 'continue', 'converter', 'defer', 'discard', 'distinct', 'div', 'do', 'elif', 'else', 'end', 'enum', 'except', 'export', 'finally', 'for', 'from', 'func', 'if', 'import', 'in', 'include', 'interface', 'is', 'isnot', 'iterator', 'let', 'macro', 'method', 'mixin', 'mod', 'nil', 'not', 'notin', 'object', 'of', 'or', 'out', 'proc', 'ptr', 'raise', 'ref', 'return', 'shl', 'shr', 'static', 'template', 'try', 'tuple', 'type', 'using', 'var', 'when', 'while', 'xor', 'yield')),
-
-    opr: $ => choice(
-        /[+\-*/<>@$~&%|!?^\\]/, // no . = :
-        /[=+\-*/<>@$~&%|!?^\\][=+\-*/<>@$~&%|!?^.:\\]/, // no ::
-        /[=+\-*/<>@$~&%|!?^:\\][=+\-*/<>@$~&%|!?^.\\]/, // no ::
-        /[=+\-*/<>@$~&%|!?^:\\][=+\-*/<>@$~&%|!?^.:\\][=+\-*/<>@$~&%|!?^.:\\]+/,
-    ),
-    _op0: $ => prec(PREC.op0, choice(/[\-~=]>/, /[=+\-*/<>@$~&%|!?^:\\][=+\-*/<>@$~&%|!?^.:\\]*[\-~=]>/, )) ,
-    _op1: $ => prec(PREC.op1, choice( /[+\-*/@$&%|^:\\][=+\-*/<>@$~&%|!?^.:\\]*=/)) ,
-    _op2: $ => prec(PREC.op2, choice(
-      /[@:?][=+\-*\/<>@$~&%|!?^.\\]/, //no :: or :
-      /[@:?][=+\-*\/<>@$~&%|!?^.:\\][=+\-*\/<>@$~&%|!?^.:\\]+/,
-    )) ,
-    _op3: $ => prec(PREC.op3, choice('or', 'xor')) ,
-    _op4: $ => prec(PREC.op4, choice('and')) ,
-    // token(prec( because 'of' and 'from' can be used in other contexts
-    _op5: $ => prec(PREC.op5, token(prec(-100, choice('==', '<=', '<', '>=', '>', '!=', 'in', 'notin', 'is', 'isnot', 'not', 'of', 'as', 'from',
-      /[=<>!][=+\-*\/<>@$~&%|!?^.:\\]+/, //no =
-    )))) ,
-    _op6: $ => prec(PREC.op6, choice(
-      '..',
-      $._dotlikeop,
-    )),
-    _dotlikeop: $ => token(seq(
-      '.',
-      choice(
-        /[=+\-*\/<>@$~&%|!?^:\\]/,
-        /[=+\-*\/<>@$~&%|!?^.:\\][=+\-*\/<>@$~&%|!?^.:\\]+/
-      ),
-    )) ,
-    _op7: $ => prec(PREC.op7, choice('&',
-      /&[=+\-*\/<>@$~&%|!?^.:\\]+/,
-    )) ,
-    _op8: $ => prec(PREC.op8, choice('+', '-', '|', '~',
-      /[+\-~|][=+\-*\/<>@$~&%|!?^.:\\]+/,
-    )) ,
-    _op9: $ => prec(PREC.op9, choice('*', '/', '%', 'div', 'mod', 'shl', 'shr',
-      /[*%/\\][=+\-*\/<>@$~&%|!?^.:\\]+/
-    )) ,
-    _op10: $ => prec(PREC.op10, choice(
-      /[\$\^][=+\-*\/<>@$~&%|!?^.:\\]*/
-    )) ,
-
-    _operators: $ => choice($._op0, $._op1, $._op2, $._op3, $._op4, $._op5, $._op6, $._op7, $._op8, $._op9, $._op10),
-
-
-    ident: $ => /[a-zA-Z\x80-\xff](_?[a-zA-Z0-9\x80-\xff])*/,
 
     int_lit: $ => choice(
       hex_lit(),
@@ -1159,26 +1175,18 @@ module.exports = grammar({
     ))),
 
     // TODO: TRIPLESTR_LIT continues matching when it's not closed, instead of throwing an error
-      // TODO: do strings with externals, like python
     triplestr_lit: $ => seq(
-      optional(choice('r', 'R')),
-      '"""',
+      /[rR]?"""/,
       repeat( $._multi_string_content),
       $._multi_string_end,
     ),
 
-    rstr_lit: $ => seq(
-      choice('r', 'R'),
-      choice(
-        seq(
-          token.immediate('"'),
-          token.immediate('"'),
-        ),
-        seq(
-          token.immediate(/"[^\r\n"]/),
-          token.immediate(repeat(/[^\r\n"]|""/)),
-          token.immediate('"'),
-        ),
+    rstr_lit: $ => choice(
+      /[rR]""/,
+      seq(
+        /[rR]"[^\r\n"]/,
+        token.immediate(repeat(/[^\r\n"]|""/)),
+        token.immediate('"'),
       ),
     ),
 
@@ -1197,7 +1205,107 @@ module.exports = grammar({
     ),
 
     nil_lit: $ => 'nil',
+
     bool_lit: $ => choice('true', 'false'),
+
+    // ========================================================================
+    // operators
+
+    operator: $ => $._operators,
+
+    opr: $ => choice(
+        /[+\-*/<>@$~&%|!?^\\]/, // no . = :
+        /[=+\-*/<>@$~&%|!?^\\][=+\-*/<>@$~&%|!?^.:\\]/, // no ::
+        /[=+\-*/<>@$~&%|!?^:\\][=+\-*/<>@$~&%|!?^.\\]/, // no ::
+        /[=+\-*/<>@$~&%|!?^:\\][=+\-*/<>@$~&%|!?^.:\\][=+\-*/<>@$~&%|!?^.:\\]+/,
+    ),
+
+    _op0: $ => prec(PREC.op0, choice(/[\-~=]>/, /[=+\-*/<>@$~&%|!?^:\\][=+\-*/<>@$~&%|!?^.:\\]*[\-~=]>/, )) ,
+    _op1: $ => prec(PREC.op1, choice( /[+\-*/@$&%|^:\\][=+\-*/<>@$~&%|!?^.:\\]*=/)) ,
+    _op2: $ => prec(PREC.op2, choice(
+      /[@:?][=+\-*\/<>@$~&%|!?^.\\]/, //no :: or :
+      /[@:?][=+\-*\/<>@$~&%|!?^.:\\][=+\-*\/<>@$~&%|!?^.:\\]+/,
+    )) ,
+    _op3: $ => prec(PREC.op3, choice('or', 'xor')) ,
+    _op4: $ => prec(PREC.op4, choice('and')) ,
+    // token(prec( because 'of' and 'from' can be used in other contexts
+    _op5: $ => prec(PREC.op5, token(prec(TOKEN_PREC.op5, choice('==', '<=', '<', '>=', '>', '!=', 'in', 'notin', 'is', 'isnot', 'not', 'of', 'as', 'from',
+      /[=<>!][=+\-*\/<>@$~&%|!?^.:\\]+/, //no =
+    )))) ,
+    _op6: $ => prec(PREC.op6, choice(
+      '..',
+      $.dotlikeop,
+    )),
+    dotlikeop: $ => token(seq(
+      '.',
+      choice(
+        /[=+\-*\/<>@$~&%|!?^:\\]/,
+        /[=+\-*\/<>@$~&%|!?^.:\\][=+\-*\/<>@$~&%|!?^.:\\]+/
+      ),
+    )) ,
+    _op7: $ => prec(PREC.op7, choice('&',
+      /&[=+\-*\/<>@$~&%|!?^.:\\]+/,
+    )) ,
+    _op8: $ => prec(PREC.op8, choice('+', '-', '|', '~',
+      /[+\-~|][=+\-*\/<>@$~&%|!?^.:\\]+/,
+    )) ,
+    _op9: $ => prec(PREC.op9, choice('*', '/', '%', 'div', 'mod', 'shl', 'shr',
+      /[*%/\\][=+\-*\/<>@$~&%|!?^.:\\]+/
+    )) ,
+    _op10: $ => prec(PREC.op10, choice(
+      /[\$\^][=+\-*\/<>@$~&%|!?^.:\\]*/
+    )) ,
+
+    _operators: $ => choice($._op0, $._op1, $._op2, $._op3, $._op4, $._op5, $._op6, $._op7, $._op8, $._op9, $._op10),
+
+    // ========================================================================
+    // utilities
+
+    _suite: $ => choice(
+      alias($._simpleStmts, $.block),
+      seq($._indent, $.block),
+      alias($._newline, $.block)
+    ),
+
+    block: $ => seq(
+      repeat($.stmt),
+      $._dedent
+    ),
+
+    // ========================================================================
+    // delimiters
+
+    _comma: $ => ',',
+    _semicolon: $ => ';',
+    _colon: $ => ':',
+    _colcom: $ => ':',
+
+    // ========================================================================
+    // comments
+
+    comment: $ => token(prec(TOKEN_PREC.comment, seq(
+      '#',
+      token.immediate(/[^#].*/),
+    ))),
+
+    // TODO: nested multilineComment
+    multilineComment: $ => seq(
+      token(prec(TOKEN_PREC.multilineComment, '#[')),
+      repeat(/./),
+      ']#',
+    ),
+
+    docComment: $ => token(prec(TOKEN_PREC.docComment, seq(
+      '##',
+      token.immediate(/.*/),
+    ))),
+
+    // TODO: nested multilineDocComment
+    multilineDocComment: $ => seq(
+      token(prec(TOKEN_PREC.multilineDocComment, '##[')),
+      repeat(/./),
+      ']##',
+    ),
 
   }
 });
@@ -1209,7 +1317,8 @@ module.exports = grammar({
 
 // function keywords() { return prec(PREC.keyword, choice('addr', 'and', 'as', 'asm', 'bind', 'block', 'break', 'case', 'cast', 'concept', 'const', 'continue', 'converter', 'defer', 'discard', 'distinct', 'div', 'do', 'elif', 'else', 'end', 'enum', 'except', 'export', 'finally', 'for', 'from', 'func', 'if', 'import', 'in', 'include', 'interface', 'is', 'isnot', 'iterator', 'let', 'macro', 'method', 'mixin', 'mod', 'nil', 'not', 'notin', 'object', 'of', 'or', 'out', 'proc', 'ptr', 'raise', 'ref', 'return', 'shl', 'shr', 'static', 'template', 'try', 'tuple', 'type', 'using', 'var', 'when', 'while', 'xor', 'yield')) }
 // function parKeywords() { return prec(PREC.keyword, choice('discard' , 'include' , 'if' , 'while' , 'case' , 'try', 'finally' , 'except' , 'for' , 'block' , 'const' , 'let')) }
-
+// keyw: $ => prec(PREC.keyword, choice('addr', 'and', 'as', 'asm', 'bind', 'block', 'break', 'case', 'cast', 'concept', 'const', 'continue', 'converter', 'defer', 'discard', 'distinct', 'div', 'do', 'elif', 'else', 'end', 'enum', 'except', 'export', 'finally', 'for', 'from', 'func', 'if', 'import', 'in', 'include', 'interface', 'is', 'isnot', 'iterator', 'let', 'macro', 'method', 'mixin', 'mod', 'not', 'notin', 'object', 'of', 'or', 'out', 'proc', 'ptr', 'raise', 'ref', 'return', 'shl', 'shr', 'static', 'template', 'try', 'tuple', 'type', 'using', 'var', 'when', 'while', 'xor', 'yield')),
+// KEYW: $ => prec(PREC.keyword, choice('addr', 'and', 'as', 'asm', 'bind', 'block', 'break', 'case', 'cast', 'concept', 'const', 'continue', 'converter', 'defer', 'discard', 'distinct', 'div', 'do', 'elif', 'else', 'end', 'enum', 'except', 'export', 'finally', 'for', 'from', 'func', 'if', 'import', 'in', 'include', 'interface', 'is', 'isnot', 'iterator', 'let', 'macro', 'method', 'mixin', 'mod', 'nil', 'not', 'notin', 'object', 'of', 'or', 'out', 'proc', 'ptr', 'raise', 'ref', 'return', 'shl', 'shr', 'static', 'template', 'try', 'tuple', 'type', 'using', 'var', 'when', 'while', 'xor', 'yield')),
 
 function optInd($, content) {
   return choice(
@@ -1236,23 +1345,24 @@ function optPar($, content) {
   )
 }
 
+// TODO: arbitrary  parentheses
+function optParen($, content) {
+  return choice(
+    content,
+    seq(
+      alias('(', $.openParen),
+      content,
+      alias(')', $.closeParen),
+    )
+  )
+}
+
 function section($, content) {
   return choice(
-    // seq(
-      // optional($.comment),
     content,
-    // ),
     seq(
       $._indent,
-      repeat1(
-        // seq(
-        //   choice(
-            content,
-            // $.comment,
-          // ),
-          // $._samedent,
-        // ),
-      ),
+      repeat1(content),
       $._dedent,
     ),
   )
@@ -1300,6 +1410,9 @@ function sep_repeat(content, separator, allow_trailing=true) {
   }
 }
 
+// I chose this structure, because dec_lit appears in multiple places, 
+// and if I put these as normal grammar rules, then I can't use the token.immediate() 
+// function in float_lit anylonger
 function hex_lit() { return /0[xX][0-9A-Fa-f](_?[0-9A-Fa-f])*/ }
 function dec_lit() { return /[0-9](_?[0-9])*/ }
 function oct_lit() { return /0o[0-7](_?[0-7])*/ }
@@ -1314,6 +1427,12 @@ function bin_lit() { return /0[bB][01](_?[01])*/ }
  */
 // function unary_minus() { return prec(PREC.unary, /[ \t\n\r,;\(\[\{][-\+]/,) }
 
+// this special structure is trying to solve the problem that complex inline stmts
+// like: `if true: discard 0; discard 1 else: discard 1` break with the current
+// structure of _simpleStmts. Since it requires _newline to determine the end.
+// With this structure you can provide the closing pattern, for example for
+// `if true: discard 0; discard 1` the closing pattern would be the else branch 
+// `else: discard 1`
 function inlineSimpleStmts($, closing_pattern) {
   return prec.left(seq(
     sep_repeat1($._simpleStmt, ';'),

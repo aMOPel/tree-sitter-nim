@@ -160,6 +160,24 @@ I propose a change to:
 objectPart = section(objectWhen / objectCase / 'nil' / 'discard' / declColonEquals)
 ```
 which covers all cases and is much simpler and constistent with prior conventions
+26. the definition of `conceptParam` seems incorrect.
+```
+conceptParam = ('var' | 'out')? symbol
+conceptDecl = 'concept' conceptParam ^* ',' (pragma)? ('of' typeDesc ^* ',')?
+              &IND{>} stmt
+```
+would make this syntax impossible (straight from the [docs](https://nim-lang.org/docs/manual_experimental.html#concepts)).
+```nim
+type
+  MyConcept = concept x, var v, ref r, ptr p, static s, type T
+    ...
+```
+It could be changed to:
+```
+conceptParam = ('var'|'ref'|'ptr'|'static'|'type'|'out')? symbol
+```
+27. the definition for primary seems way too complicated for what it's saying
+28. the fact that arbitrary parentheses are allowed around `stmt`s and `expr`s is not really documented in the grammar spec
 
 QUESTION:
 what is this about?
@@ -198,3 +216,26 @@ QUESTION:
 `postExprBlocks`
 A:
 macro related
+
+
+
+QUESTION:
+
+`out`
+A:
+unused keyword so far
+
+QUESTION:
+`qualifiedSuffix`
+```
+primarySuffix = '(' (exprColonEqExpr comma?)* ')'
+      | '.' optInd symbol ('[:' exprList ']' ( '(' exprColonEqExpr ')' )?)? generalizedLit?
+      | DOTLIKEOP optInd symbol generalizedLit?
+      | '[' optInd exprColonEqExprList optPar ']'
+      | '{' optInd exprColonEqExprList optPar '}'
+      | &( '`'|IDENT|literal|'cast'|'addr'|'type') expr # command syntax
+```
+1. what's with the generalizedLit at the end
+2. what's the single \`
+3. what kind of suffix are the {}
+4. 

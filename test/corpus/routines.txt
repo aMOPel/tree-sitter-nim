@@ -594,7 +594,7 @@ proc g(a: int = 1; b, c: int{~nkRStrLit & ~ nkStrLit} = 2; d: int{~nkRStrLit & ~
                   (operator)
                   (symbol
                     (ident)))
-                (operatorB)
+                (operator)
                 (primary
                   (operator)
                   (symbol
@@ -633,7 +633,7 @@ proc g(a: int = 1; b, c: int{~nkRStrLit & ~ nkStrLit} = 2; d: int{~nkRStrLit & ~
                   (operator)
                   (symbol
                     (ident)))
-                (operatorB)
+                (operator)
                 (primary
                   (operator)
                   (symbol
@@ -683,7 +683,7 @@ proc g(a: int = 1; b, c: int{~nkRStrLit & ~ nkStrLit} = 2; d: int{~nkRStrLit & ~
                   (operator)
                   (symbol
                     (ident)))
-                (operatorB)
+                (operator)
                 (primary
                   (operator)
                   (symbol
@@ -705,7 +705,7 @@ proc g(a: int = 1; b, c: int{~nkRStrLit & ~ nkStrLit} = 2; d: int{~nkRStrLit & ~
                   (operator)
                   (symbol
                     (ident)))
-                (operatorB)
+                (operator)
                 (primary
                   (operator)
                   (symbol
@@ -715,8 +715,6 @@ proc g(a: int = 1; b, c: int{~nkRStrLit & ~ nkStrLit} = 2; d: int{~nkRStrLit & ~
           (primary
             (symbol
               (ident))))))))
-
-
 
 ==================
 everything together
@@ -800,7 +798,6 @@ template ex{discard; discard}[T,S;R](a{.gc}: T{noalias} not nil =1; b, c: int): 
           (discardStmt
             (keyw)))))))
 
-
 ==================
 nightmare formatting
 ==================
@@ -883,9 +880,8 @@ template
           (typeDesc
             (primary
               (keyw)
-              (primary
-                (symbol
-                  (ident))))
+              (symbol
+                (ident)))
             (paramConstraint
               (expr
                 (primary
@@ -921,10 +917,3 @@ template
         (stmt
           (discardStmt
             (keyw)))))))
-
-
-
-
-
-
-
