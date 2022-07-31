@@ -898,7 +898,7 @@ module.exports = grammar({
         )),
         $.keyw,
       )),
-      repeat($.operator),
+      repeat(alias($.operator, $.prefixOperator)),
       choice(
         $.tupleDecl,
         // $.routineExpr,

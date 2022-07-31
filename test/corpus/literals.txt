@@ -20,10 +20,9 @@ discard -0X0
       (keyw)
       (expr
         (primary
-          (operator)
+          (prefixOperator)
           (literal
             (int_lit)))))))
-
 
 ==================
 dec literal
@@ -47,7 +46,7 @@ discard -0
       (keyw)
       (expr
         (primary
-          (operator)
+          (prefixOperator)
           (literal
             (int_lit)))))))
 
@@ -73,7 +72,7 @@ discard -0o0
       (keyw)
       (expr
         (primary
-          (operator)
+          (prefixOperator)
           (literal
             (int_lit)))))))
 
@@ -99,7 +98,7 @@ discard -0B0
       (keyw)
       (expr
         (primary
-          (operator)
+          (prefixOperator)
           (literal
             (int_lit)))))))
 
@@ -118,6 +117,17 @@ discard 01234_56789'U8
 discard 0B101'u16
 discard 0o1234_567'u32
 discard 0X1234_56789_abcDEF'u64
+discard 01234_56789i8
+discard -01234_56789I8
+discard 0B101i16
+discard 0o1234_567i32
+discard 0X1234_56789_abcDEFi64
+discard 01234_56789u
+discard 01234_56789u8
+discard 01234_56789U8
+discard 0B101u16
+discard 0o1234_567u32
+discard 0X1234_56789_abcDEFu64
 
 ---
 
@@ -135,7 +145,96 @@ discard 0X1234_56789_abcDEF'u64
       (keyw)
       (expr
         (primary
-          (operator)
+          (prefixOperator)
+          (literal
+            (int_lit)
+            (int_suffix))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (int_lit)
+            (int_suffix))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (int_lit)
+            (int_suffix))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (int_lit)
+            (int_suffix))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (int_lit)
+            (int_suffix))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (int_lit)
+            (int_suffix))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (int_lit)
+            (int_suffix))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (int_lit)
+            (int_suffix))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (int_lit)
+            (int_suffix))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (int_lit)
+            (int_suffix))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (int_lit)
+            (int_suffix))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (prefixOperator)
           (literal
             (int_lit)
             (int_suffix))))))
@@ -236,7 +335,7 @@ discard -123e+123
       (keyw)
       (expr
         (primary
-          (operator)
+          (prefixOperator)
           (literal
             (float_lit))))))
   (stmt
@@ -251,10 +350,9 @@ discard -123e+123
       (keyw)
       (expr
         (primary
-          (operator)
+          (prefixOperator)
           (literal
             (float_lit)))))))
-
 
 ==================
 float32 literal
@@ -1476,16 +1574,18 @@ discard -13.123e-743'asdf_89
         (primary
           (literal
             (custom_numeric_lit
-              (int_lit)))))))
+              (int_lit)
+              (customNumericLitSuffix)))))))
   (stmt
     (discardStmt
       (keyw)
       (expr
         (primary
-          (operator)
+          (prefixOperator)
           (literal
             (custom_numeric_lit
-              (float_lit))))))))
+              (float_lit)
+              (customNumericLitSuffix))))))))
 
 ==================
 nil literal

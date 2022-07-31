@@ -533,7 +533,7 @@ proc g(a: int = 1; b, c: int{~nkRStrLit & ~ nkStrLit} = 2; d: int{~nkRStrLit & ~
             (paramConstraint
               (expr
                 (primary
-                  (operator)
+                  (prefixOperator)
                   (symbol
                     (ident))))))))
       (paramListSuffix
@@ -591,12 +591,12 @@ proc g(a: int = 1; b, c: int{~nkRStrLit & ~ nkStrLit} = 2; d: int{~nkRStrLit & ~
             (paramConstraint
               (expr
                 (primary
-                  (operator)
+                  (prefixOperator)
                   (symbol
                     (ident)))
                 (operator)
                 (primary
-                  (operator)
+                  (prefixOperator)
                   (symbol
                     (ident))))))))
       (paramListSuffix
@@ -630,12 +630,12 @@ proc g(a: int = 1; b, c: int{~nkRStrLit & ~ nkStrLit} = 2; d: int{~nkRStrLit & ~
             (paramConstraint
               (expr
                 (primary
-                  (operator)
+                  (prefixOperator)
                   (symbol
                     (ident)))
                 (operator)
                 (primary
-                  (operator)
+                  (prefixOperator)
                   (symbol
                     (ident)))))))
         (paramColonEquals
@@ -680,12 +680,12 @@ proc g(a: int = 1; b, c: int{~nkRStrLit & ~ nkStrLit} = 2; d: int{~nkRStrLit & ~
             (paramConstraint
               (expr
                 (primary
-                  (operator)
+                  (prefixOperator)
                   (symbol
                     (ident)))
                 (operator)
                 (primary
-                  (operator)
+                  (prefixOperator)
                   (symbol
                     (ident))))))
           (expr
@@ -702,12 +702,12 @@ proc g(a: int = 1; b, c: int{~nkRStrLit & ~ nkStrLit} = 2; d: int{~nkRStrLit & ~
             (paramConstraint
               (expr
                 (primary
-                  (operator)
+                  (prefixOperator)
                   (symbol
                     (ident)))
                 (operator)
                 (primary
-                  (operator)
+                  (prefixOperator)
                   (symbol
                     (ident))))))))
       (paramListSuffix
@@ -722,7 +722,6 @@ everything together
 
 template ex{discard; discard}[T,S;R](a{.gc}: T{noalias} not nil =1; b, c: int): int {.gc} =
   discard
-
 
 ---
 
