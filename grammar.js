@@ -1,11 +1,4 @@
 const PREC = {
-  float: 2,
-  raw_string: 3,
-
-  lit: 4,
-  keyword: -1,
-  stmt: 30,
-
   op0: 10,
   op1: 11,
   op2: 12,
@@ -17,9 +10,11 @@ const PREC = {
   op8: 18,
   op9: 19,
   op10: 20,
-  unary: 21,
+  // unary: 21,
 
   simpleStmtsNewline: -100,
+
+  inlineStmts: -1,
 }
 
 const TOKEN_PREC = {
@@ -38,6 +33,9 @@ const TOKEN_PREC = {
 const DYNAMIC_PREC = {
   primaryKeyw: -1,
   typeDef: 1,
+  bindStmt: 2,
+  patternBind: -1,
+  setOrTableConstr: 1,
 }
 
 module.exports = grammar({
@@ -54,6 +52,7 @@ module.exports = grammar({
     [$.bindStmt, $.primary],
     [$.variable, $.primary],
     [$.typeDef, $.primary],
+    [$.patternBind, $.setOrTableConstr],
   ],
 
   extras: $ => [
@@ -124,13 +123,13 @@ module.exports = grammar({
 
     _complexStmt: $ => choice(
       $.ifStmt,
-      prec(-1, $.inlineIfStmt),
+      prec(PREC.inlineStmts, $.inlineIfStmt),
       $.whenStmt,
-      prec(-1, $.inlineWhenStmt),
+      prec(PREC.inlineStmts, $.inlineWhenStmt),
       $.caseStmt,
       $.whileStmt,
       $.tryStmt,
-      prec(-1, $.inlineTryStmt),
+      prec(PREC.inlineStmts, $.inlineTryStmt),
       $.tryExceptStmt,
       $.tryFinallyStmt,
       $.forStmt,
@@ -582,7 +581,7 @@ module.exports = grammar({
 
     // TODO: some edge cases don't work
     bindStmt: $ => prec.right(seq(
-      alias(prec.dynamic(2, 'bind'), $.keyw), 
+      alias(prec.dynamic(DYNAMIC_PREC.bindStmt, 'bind'), $.keyw), 
       optInd($, sep_repeat1($.primary, $._comma))
     )),
 
@@ -594,17 +593,16 @@ module.exports = grammar({
     exprStmt: $ => seq(
       $._simpleExpr,
       optional(choice(
-        prec(2, seq(
+        seq(
           '=',
           optInd($, seq($.expr, optional($.colonBody)))
-        )),
-        // prec(1,
-        //
+        ),
+        // seq(
         //   sep_repeat1(
         //     $.expr,
         //     $._comma,
         //   ),
-        //   // $.postExprBlocks,
+        //   $.postExprBlocks,
         // ),
       )),
     ),
@@ -698,11 +696,11 @@ module.exports = grammar({
     )),
 
     // TODO: primarySuffix hijacking paramConstraint
-    paramConstraint: $ => prec(100, seq(
+    paramConstraint: $ => seq(
       '{',
       $.expr,
       '}',
-    )),
+    ),
 
     // ========================================================================
     // expressions
@@ -910,23 +908,20 @@ module.exports = grammar({
       repeat($.primarySuffix),
     )),
 
-    primarySuffix: $ => prec.right(-1, choice(
+    primarySuffix: $ => choice(
       $.functionCall,
       $.qualifiedSuffix,
       $.indexSuffix,
-      prec(1, seq(
-        '{',
-        $.exprColonEqExprList,
-        '}',
-      )),
-      alias(prec(-100, $.expr), $.cmdCall),
-    )),
+      $.patternBind,
+      // TODO: exprStmt also can do a cmdCall?
+      alias($.expr, $.cmdCall),
+    ),
 
-    functionCall: $ => prec(1, seq(
+    functionCall: $ => seq(
       '(',
       $.exprColonEqExprList,
       ')',
-    )),
+    ),
 
     qualifiedSuffix: $ => prec.right(seq(
       choice(
@@ -934,6 +929,7 @@ module.exports = grammar({
         $.dotlikeop,
       ),
       $.symbol,
+      // TODO: is this necessary?
       optional($.generalizedLit),
     )),
 
@@ -943,6 +939,14 @@ module.exports = grammar({
       ']',
     ),
 
+    // I think it's this: https://nim-lang.org/docs/manual_experimental.html#pattern-operators-the-nim-operator
+    patternBind: $ => prec.dynamic(DYNAMIC_PREC.patternBind, seq(
+      '{',
+      $.exprColonEqExprList,
+      '}',
+    )),
+    
+
     // ========================================================================
     // identifier
 
@@ -951,10 +955,10 @@ module.exports = grammar({
       optional($.pragma),
     )),
 
-    _identWithPragmaDot: $ => prec.left(seq(
+    _identWithPragmaDot: $ => seq(
       $._identVisDot,
       optional($.pragma),
-    )),
+    ),
 
     _identVisDot: $ => seq(
       $.symbol,
@@ -970,22 +974,22 @@ module.exports = grammar({
       optional($.opr),
     ),
 
-    _identOrLiteral: $ => prec(1, choice(
+    _identOrLiteral: $ => choice(
       $.literal,
       $.generalizedLit,
       $.tupleConstr,
-      $.par,
+      // $.par,
       $.symbol,
       $.arrayConstr,
       $.setOrTableConstr,
       // $.castExpr,
-    )),
-
-    par: $ => seq(
-      alias(token(prec(TOKEN_PREC.par, '(')), $.openParen),
-      $._suite,
-      alias(')', $.closeParen),
     ),
+
+    // par: $ => seq(
+    //   alias(token(prec(TOKEN_PREC.par, '(')), $.openParen),
+    //   $._suite,
+    //   alias(')', $.closeParen),
+    // ),
 
     symbol: $ => choice(
       seq(
@@ -1015,10 +1019,10 @@ module.exports = grammar({
     ),
 
     setOrTableConstr: $ => seq(
-      '{',
+      prec.dynamic(DYNAMIC_PREC.setOrTableConstr, '{'),
       optional(choice(
         $.exprColonEqExprList,
-        ':',
+        ':', // empty table {:}
       )),
       '}',
     ),
@@ -1058,12 +1062,12 @@ module.exports = grammar({
 
     int_suffix: $ => token.immediate(choice(
       seq(
-        '\'',
+        optional('\''),
         token.immediate(choice('i', 'I')),
         token.immediate(choice('8', '16', '32', '64')),
       ),
       seq(
-        '\'',
+        optional('\''),
         token.immediate(choice('u', 'U')),
         token.immediate(optional(choice('8', '16', '32', '64'))),
       ),
@@ -1108,7 +1112,7 @@ module.exports = grammar({
         $.int_lit,
         $.float_lit,
       ),
-      token.immediate(/'[a-zA-Z\x80-\xff](_?[a-zA-Z0-9\x80-\xff])*/,),
+      alias(token.immediate(/'[a-zA-Z\x80-\xff](_?[a-zA-Z0-9\x80-\xff])*/,), $.customNumericLitSuffix),
     ),
 
     /* TODO: 
@@ -1127,13 +1131,13 @@ module.exports = grammar({
       '\'',
     ),
 
-    char_esc_seq: $ => token(prec(1, seq(
+    char_esc_seq: $ => token(seq(
       '\\', 
       choice(
       /[rcnlftv\\"'abe]/,
       /x[0-9a-fA-F]{2}/,
       /[0-9]{1,3}/,
-    )))),
+    ))),
 
     str_lit: $ => seq(
       '"',
@@ -1144,7 +1148,7 @@ module.exports = grammar({
       token.immediate('"'),
     ),
 
-    str_esc_seq: $ => token(prec(1, seq(
+    str_esc_seq: $ => token(seq(
       '\\',
       choice(
         /[prcnlftv\\"'abe]/,
@@ -1153,7 +1157,7 @@ module.exports = grammar({
         /u\{[0-9a-fA-F]+\}/,
         /[0-9]{1,3}/,
       ),
-    ))),
+    )),
 
     // TODO: TRIPLESTR_LIT continues matching when it's not closed, instead of throwing an error
     triplestr_lit: $ => seq(
@@ -1201,47 +1205,71 @@ module.exports = grammar({
         /[=+\-*/<>@$~&%|!?^:\\][=+\-*/<>@$~&%|!?^.:\\][=+\-*/<>@$~&%|!?^.:\\]+/,
     ),
 
-    _op0: $ => prec(PREC.op0, choice(/[\-~=]>/, /[=+\-*/<>@$~&%|!?^:\\][=+\-*/<>@$~&%|!?^.:\\]*[\-~=]>/, )) ,
-    _op1: $ => prec(PREC.op1, choice( /[+\-*/@$&%|^:\\][=+\-*/<>@$~&%|!?^.:\\]*=/)) ,
+    _op0: $ => prec(PREC.op0, choice(
+      /[\-~=]>/,
+      /[=+\-*/<>@$~&%|!?^:\\][=+\-*/<>@$~&%|!?^.:\\]*[\-~=]>/,
+    )),
+
+    _op1: $ => prec(PREC.op1, choice(
+      /[+\-*/@$&%|^:\\][=+\-*/<>@$~&%|!?^.:\\]*=/,
+    )),
+
     _op2: $ => prec(PREC.op2, choice(
       /[@:?][=+\-*\/<>@$~&%|!?^.\\]/, //no :: or :
       /[@:?][=+\-*\/<>@$~&%|!?^.:\\][=+\-*\/<>@$~&%|!?^.:\\]+/,
-    )) ,
-    _op3: $ => prec(PREC.op3, choice('or', 'xor')) ,
-    _op4: $ => prec(PREC.op4, choice('and')) ,
-    // token(prec( because 'of' and 'from' can be used in other contexts
-    _op5: $ => prec(PREC.op5, token(prec(TOKEN_PREC.op5, choice('==', '<=', '<', '>=', '>', '!=', 'in', 'notin', 'is', 'isnot', 'not', 'of', 'as', 'from',
-      /[=<>!][=+\-*\/<>@$~&%|!?^.:\\]+/, //no =
-    )))) ,
-    _op6: $ => prec(PREC.op6, choice(
-      '..',
-      $.dotlikeop,
     )),
+
+    _op3: $ => prec(PREC.op3, choice('or', 'xor')),
+
+    _op4: $ => prec(PREC.op4, choice('and')),
+
+    // token(prec( because 'of' and 'from' can be used in other contexts
+    _op5: $ => prec(PREC.op5, choice(
+      token(prec(TOKEN_PREC.op5, 
+        choice('in', 'notin', 'is', 'isnot', 'not', 'of', 'as', 'from')
+      )),
+      '==', '<=', '<', '>=', '>', '!=',
+      /[=<>!][=+\-*\/<>@$~&%|!?^.:\\]+/, //no =
+    )),
+
+    _op6: $ => prec(PREC.op6, choice('..', $.dotlikeop)),
+
     dotlikeop: $ => token(seq(
       '.',
       choice(
         /[=+\-*\/<>@$~&%|!?^:\\]/,
-        /[=+\-*\/<>@$~&%|!?^.:\\][=+\-*\/<>@$~&%|!?^.:\\]+/
+        /[=+\-*\/<>@$~&%|!?^.:\\][=+\-*\/<>@$~&%|!?^.:\\]+/,
       ),
-    )) ,
-    _op7: $ => prec(PREC.op7, choice('&',
+    )),
+
+    _op7: $ => prec(PREC.op7, choice(
+      '&',
       /&[=+\-*\/<>@$~&%|!?^.:\\]+/,
-    )) ,
-    _op8: $ => prec(PREC.op8, choice('+', '-', '|', '~',
+    )),
+
+    _op8: $ => prec(PREC.op8, choice(
+      '+', '-', '|', '~',
       /[+\-~|][=+\-*\/<>@$~&%|!?^.:\\]+/,
-    )) ,
-    _op9: $ => prec(PREC.op9, choice('*', '/', '%', 'div', 'mod', 'shl', 'shr',
-      /[*%/\\][=+\-*\/<>@$~&%|!?^.:\\]+/
-    )) ,
+    )),
+
+    _op9: $ => prec(PREC.op9, choice(
+      'div', 'mod', 'shl', 'shr',
+      '*', '/', '%', 
+      /[*%/\\][=+\-*\/<>@$~&%|!?^.:\\]+/,
+    )),
+
     _op10: $ => prec(PREC.op10, choice(
       /[\$\^][=+\-*\/<>@$~&%|!?^.:\\]*/
-    )) ,
+    )),
 
     _operators: $ => choice($._op0, $._op1, $._op2, $._op3, $._op4, $._op5, $._op6, $._op7, $._op8, $._op9, $._op10),
 
     // ========================================================================
     // utilities
 
+    // _suite and block are stolen from the tree-sitter-python repo and help
+    // with the indent dedent block matching. _suite is used, where stmt is used
+    // in the grammar spec
     _suite: $ => choice(
       alias($._simpleStmts, $.block),
       seq($._indent, $.block),
@@ -1256,6 +1284,7 @@ module.exports = grammar({
     // ========================================================================
     // delimiters
 
+    // I just keep them around for easier compatability with the grammar spec
     _comma: $ => ',',
     _semicolon: $ => ';',
     _colon: $ => ':',
