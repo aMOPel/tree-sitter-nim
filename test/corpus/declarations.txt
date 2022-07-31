@@ -136,8 +136,10 @@ type j{.deprecated.}[T] = var ref int not nil
               (ident))))
         (typeDesc
           (primary
-            (keyw)
-            (keyw)
+            (primaryPrefix
+              (keyw))
+            (primaryPrefix
+              (keyw))
             (symbol
               (ident)))
           (keyw)
@@ -705,7 +707,8 @@ type a = int
       (keyw)
       (expr
         (primary
-          (keyw)
+          (primaryPrefix
+            (keyw))
           (symbol
             (ident))))))
   (stmt
@@ -715,7 +718,8 @@ type a = int
   (stmt
     (exprStmt
       (primary
-        (keyw)
+        (primaryPrefix
+          (keyw))
         (symbol
           (ident)))))
   (stmt
@@ -730,37 +734,43 @@ type a = int
       (keyw)
       (expr
         (primary
-          (keyw)
+          (primaryPrefix
+            (keyw))
           (symbol
             (ident))))))
   (stmt
     (exprStmt
       (primary
-        (keyw)
+        (primaryPrefix
+          (keyw))
         (symbol
           (ident)))))
   (stmt
     (exprStmt
       (primary
-        (keyw)
+        (primaryPrefix
+          (keyw))
         (symbol
           (ident)))))
   (stmt
     (exprStmt
       (primary
-        (keyw)
+        (primaryPrefix
+          (keyw))
         (symbol
           (ident)))))
   (stmt
     (exprStmt
       (primary
-        (keyw)
+        (primaryPrefix
+          (keyw))
         (symbol
           (ident)))))
   (stmt
     (exprStmt
       (primary
-        (keyw)
+        (primaryPrefix
+          (keyw))
         (symbol
           (ident)))))
   (stmt
@@ -773,4 +783,5 @@ type a = int
           (primary
             (symbol
               (ident))))))))
+
 

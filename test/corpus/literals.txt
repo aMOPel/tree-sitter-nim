@@ -3,7 +3,7 @@ hex literal
 ==================
 
 discard 0x0123456789_ABCDEF_abcdef
-discard -0X0
+discard 0X0
 
 ---
 
@@ -20,7 +20,6 @@ discard -0X0
       (keyw)
       (expr
         (primary
-          (prefixOperator)
           (literal
             (int_lit)))))))
 
@@ -29,7 +28,7 @@ dec literal
 ==================
 
 discard 01234_56789
-discard -0
+discard 0
 
 ---
 
@@ -46,7 +45,6 @@ discard -0
       (keyw)
       (expr
         (primary
-          (prefixOperator)
           (literal
             (int_lit)))))))
 
@@ -55,7 +53,7 @@ oct literal
 ==================
 
 discard 0o0123_4567
-discard -0o0
+discard 0o0
 
 ---
 
@@ -72,7 +70,6 @@ discard -0o0
       (keyw)
       (expr
         (primary
-          (prefixOperator)
           (literal
             (int_lit)))))))
 
@@ -81,7 +78,7 @@ bin literal
 ==================
 
 discard 0b0_1
-discard -0B0
+discard 0B0
 
 ---
 
@@ -98,7 +95,6 @@ discard -0B0
       (keyw)
       (expr
         (primary
-          (prefixOperator)
           (literal
             (int_lit)))))))
 
@@ -107,7 +103,7 @@ uint8-64 literal
 ==================
 
 discard 01234_56789'i8
-discard -01234_56789'I8
+discard 01234_56789'I8
 discard 0B101'i16
 discard 0o1234_567'i32
 discard 0X1234_56789_abcDEF'i64
@@ -118,7 +114,7 @@ discard 0B101'u16
 discard 0o1234_567'u32
 discard 0X1234_56789_abcDEF'u64
 discard 01234_56789i8
-discard -01234_56789I8
+discard 01234_56789I8
 discard 0B101i16
 discard 0o1234_567i32
 discard 0X1234_56789_abcDEFi64
@@ -145,7 +141,6 @@ discard 0X1234_56789_abcDEFu64
       (keyw)
       (expr
         (primary
-          (prefixOperator)
           (literal
             (int_lit)
             (int_suffix))))))
@@ -234,7 +229,6 @@ discard 0X1234_56789_abcDEFu64
       (keyw)
       (expr
         (primary
-          (prefixOperator)
           (literal
             (int_lit)
             (int_suffix))))))
@@ -316,9 +310,9 @@ float literal
 ==================
 
 discard 123.123e-123
-discard -123.123
+discard 123.123
 discard 123e123
-discard -123e+123
+discard 123e+123
 
 ---
 
@@ -335,7 +329,6 @@ discard -123e+123
       (keyw)
       (expr
         (primary
-          (prefixOperator)
           (literal
             (float_lit))))))
   (stmt
@@ -350,7 +343,6 @@ discard -123e+123
       (keyw)
       (expr
         (primary
-          (prefixOperator)
           (literal
             (float_lit)))))))
 
@@ -1561,10 +1553,9 @@ custom numeric literal
 ==================
 
 discard 0o34'sdf_89_coo
-discard -13.123e-743'asdf_89
+discard 13.123e-743'asdf_89
 
 ---
-
 
 (module
   (stmt
@@ -1581,7 +1572,6 @@ discard -13.123e-743'asdf_89
       (keyw)
       (expr
         (primary
-          (prefixOperator)
           (literal
             (custom_numeric_lit
               (float_lit)

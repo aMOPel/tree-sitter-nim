@@ -1,0 +1,794 @@
+==================
+op0
+==================
+
+discard a -> b
+discard a ~> b
+discard a => b
+discard a =+\-*\/<>@$~&%|!?^:\=> b
+discard a @=> b
+
+---
+
+(module
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operator)
+        (primary
+          (symbol
+            (ident))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operator)
+        (primary
+          (symbol
+            (ident))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operator)
+        (primary
+          (symbol
+            (ident))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operator)
+        (primary
+          (symbol
+            (ident))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operator)
+        (primary
+          (symbol
+            (ident)))))))
+
+==================
+op1
+==================
+
+discard a |== b
+discard a ^== b
+discard a @== b
+
+---
+
+(module
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operator)
+        (primary
+          (symbol
+            (ident))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operator)
+        (primary
+          (symbol
+            (ident))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operator)
+        (primary
+          (symbol
+            (ident)))))))
+
+==================
+op2
+==================
+
+discard a @=? b
+discard a :?+ b
+discard a ?? b
+
+---
+
+(module
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operator)
+        (primary
+          (symbol
+            (ident))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operator)
+        (primary
+          (symbol
+            (ident))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operator)
+        (primary
+          (symbol
+            (ident)))))))
+
+==================
+op3
+==================
+
+discard a or b
+discard a xor b
+
+---
+
+(module
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operator)
+        (primary
+          (symbol
+            (ident))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operator)
+        (primary
+          (symbol
+            (ident)))))))
+
+==================
+op4
+==================
+
+discard a and b
+
+---
+
+(module
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operator)
+        (primary
+          (symbol
+            (ident)))))))
+
+==================
+op5
+==================
+
+discard a <= b
+discard a >= b
+discard a > b
+discard a < b
+discard a != b
+discard a != b
+discard a in b
+discard a notin b
+discard a is b
+discard a isnot b
+discard a not b
+discard a of b
+discard a as b
+discard a from b
+discard a ==+\-*\/<>@$~&%|!?^:\ b
+discard a <! b
+discard a >\/ b
+discard a !+ b
+
+---
+
+(module
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operator)
+        (primary
+          (symbol
+            (ident))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operator)
+        (primary
+          (symbol
+            (ident))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operator)
+        (primary
+          (symbol
+            (ident))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operator)
+        (primary
+          (symbol
+            (ident))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operator)
+        (primary
+          (symbol
+            (ident))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operator)
+        (primary
+          (symbol
+            (ident))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operator)
+        (primary
+          (symbol
+            (ident))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operator)
+        (primary
+          (symbol
+            (ident))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operator)
+        (primary
+          (symbol
+            (ident))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operator)
+        (primary
+          (symbol
+            (ident))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operator)
+        (primary
+          (symbol
+            (ident))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operator)
+        (primary
+          (symbol
+            (ident))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operator)
+        (primary
+          (symbol
+            (ident))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operator)
+        (primary
+          (symbol
+            (ident))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operator)
+        (primary
+          (symbol
+            (ident))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operator)
+        (primary
+          (symbol
+            (ident))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operator)
+        (primary
+          (symbol
+            (ident))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operator)
+        (primary
+          (symbol
+            (ident)))))))
+
+==================
+op6
+==================
+
+discard a .. b
+discard a ... b
+discard a ..+ b
+discard a .=+\-*\/<>@$~&%|!?^:\=> b
+discard a .== b
+
+---
+
+(module
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operator)
+        (primary
+          (symbol
+            (ident))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operator)
+        (primary
+          (symbol
+            (ident))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operator)
+        (primary
+          (symbol
+            (ident))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operator)
+        (primary
+          (symbol
+            (ident))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operator)
+        (primary
+          (symbol
+            (ident)))))))
+
+==================
+op7
+==================
+
+discard a & b
+discard a &=+\-*\/<>@$~&%|!?^.:\\ b
+
+---
+
+(module
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operator)
+        (primary
+          (symbol
+            (ident))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operator)
+        (primary
+          (symbol
+            (ident)))))))
+
+==================
+op8
+==================
+
+discard a + b
+discard a - b
+discard a ++ b
+discard a -? b
+discard a ~-~ b
+discard a || b
+
+---
+
+(module
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operator)
+        (primary
+          (symbol
+            (ident))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operator)
+        (primary
+          (symbol
+            (ident))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operator)
+        (primary
+          (symbol
+            (ident))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operator)
+        (primary
+          (symbol
+            (ident))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operator)
+        (primary
+          (symbol
+            (ident))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operator)
+        (primary
+          (symbol
+            (ident)))))))
+
+==================
+op9
+==================
+
+discard a div  b
+discard a mod  b
+discard a shl  b
+discard a shr  b
+discard a *  b
+discard a /  b
+discard a %	 b
+discard a ** b
+discard a %/ b
+discard a // b
+discard a \>>> b
+
+---
+
+(module
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operator)
+        (primary
+          (symbol
+            (ident))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operator)
+        (primary
+          (symbol
+            (ident))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operator)
+        (primary
+          (symbol
+            (ident))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operator)
+        (primary
+          (symbol
+            (ident))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operator)
+        (primary
+          (symbol
+            (ident))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operator)
+        (primary
+          (symbol
+            (ident))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operator)
+        (primary
+          (symbol
+            (ident))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operator)
+        (primary
+          (symbol
+            (ident))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operator)
+        (primary
+          (symbol
+            (ident))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operator)
+        (primary
+          (symbol
+            (ident))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operator)
+        (primary
+          (symbol
+            (ident)))))))
+
+==================
+op10
+==================
+
+discard a $$ b
+discard a ^!@ b
+
+---
+
+(module
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operator)
+        (primary
+          (symbol
+            (ident))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operator)
+        (primary
+          (symbol
+            (ident)))))))

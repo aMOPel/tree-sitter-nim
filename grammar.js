@@ -15,12 +15,12 @@ const PREC = {
   simpleStmtsNewline: -100,
 
   inlineStmts: -1,
+  fromStmt: 16, // >op5
 }
 
 const TOKEN_PREC = {
   par: -1,
   tupleConstr: 0,
-  op5: -100,
 
   comment: -4,
   multilineComment: -3,
@@ -31,7 +31,7 @@ const TOKEN_PREC = {
 }
 
 const DYNAMIC_PREC = {
-  primaryKeyw: -1,
+  _primaryKeyw: -1,
   typeDef: 1,
   bindStmt: 2,
   patternBind: -1,
@@ -49,9 +49,9 @@ module.exports = grammar({
 
   
   conflicts: $ => [
-    [$.bindStmt, $.primary],
-    [$.variable, $.primary],
-    [$.typeDef, $.primary],
+    [$.bindStmt, $._primaryKeyw],
+    [$.variable, $._primaryKeyw],
+    [$.typeDef, $._primaryKeyw],
     [$.patternBind, $.setOrTableConstr],
   ],
 
@@ -369,7 +369,7 @@ module.exports = grammar({
       optional($.importExceptStmt),
     )),
 
-    fromStmt: $ => seq(
+    fromStmt: $ => prec(PREC.fromStmt, seq(
       alias('from', $.keyw),
       sep_repeat1(
         $.expr,
@@ -377,7 +377,7 @@ module.exports = grammar({
         false
       ),
       $.importStmt,
-    ),
+    )),
 
     includeStmt: $ => seq(
       alias('include', $.keyw),
@@ -475,11 +475,11 @@ module.exports = grammar({
       $._branches,
     ),
 
-    _branches: $ => seq(
+    _branches: $ => prec.right(seq(
       repeat1($.ofBranch),
       repeat($.elifStmt),
       optional($.elseStmt),
-    ),
+    )),
 
     ofBranch: $ => seq(
       alias('of', $.keyw),
@@ -883,20 +883,7 @@ module.exports = grammar({
     // primary
 
     primary: $ => prec.left(seq(
-      repeat(alias(
-        prec.dynamic(DYNAMIC_PREC.primaryKeyw, choice(
-          'bind',
-          'static',
-          'var',
-          'ref',
-          'ptr',
-          'distinct',
-          'out',
-          'type',
-        )),
-        $.keyw,
-      )),
-      repeat(alias($.operator, $.prefixOperator)),
+      repeat($.primaryPrefix),
       choice(
         $.tupleDecl,
         // $.routineExpr,
@@ -908,13 +895,34 @@ module.exports = grammar({
       repeat($.primarySuffix),
     )),
 
+    primaryPrefix: $ => choice(
+      $._primaryKeyw,
+      $.prefixOperator,
+    ),
+
+    _primaryKeyw: $ => alias(
+      prec.dynamic(DYNAMIC_PREC._primaryKeyw, choice(
+        'bind',
+        'static',
+        'var',
+        'ref',
+        'ptr',
+        'distinct',
+        'out',
+        'type',
+      )),
+      $.keyw,
+    ),
+
+    prefixOperator: $ => $.operator,
+
     primarySuffix: $ => choice(
       $.functionCall,
       $.qualifiedSuffix,
       $.indexSuffix,
       $.patternBind,
       // TODO: exprStmt also can do a cmdCall?
-      alias($.expr, $.cmdCall),
+      $.cmdCall,
     ),
 
     functionCall: $ => seq(
@@ -926,7 +934,7 @@ module.exports = grammar({
     qualifiedSuffix: $ => prec.right(seq(
       choice(
         '.',
-        $.dotlikeop,
+        $._dotlikeOp,
       ),
       $.symbol,
       // TODO: is this necessary?
@@ -945,7 +953,8 @@ module.exports = grammar({
       $.exprColonEqExprList,
       '}',
     )),
-    
+
+    cmdCall: $ => $.expr,
 
     // ========================================================================
     // identifier
@@ -1225,16 +1234,14 @@ module.exports = grammar({
 
     // token(prec( because 'of' and 'from' can be used in other contexts
     _op5: $ => prec(PREC.op5, choice(
-      token(prec(TOKEN_PREC.op5, 
-        choice('in', 'notin', 'is', 'isnot', 'not', 'of', 'as', 'from')
-      )),
+      'in', 'notin', 'is', 'isnot', 'not', 'of', 'as', 'from',
       '==', '<=', '<', '>=', '>', '!=',
       /[=<>!][=+\-*\/<>@$~&%|!?^.:\\]+/, //no =
     )),
 
-    _op6: $ => prec(PREC.op6, choice('..', $.dotlikeop)),
+    _op6: $ => prec(PREC.op6, choice('..', $._dotlikeOp)),
 
-    dotlikeop: $ => token(seq(
+    _dotlikeOp: $ => token(seq(
       '.',
       choice(
         /[=+\-*\/<>@$~&%|!?^:\\]/,

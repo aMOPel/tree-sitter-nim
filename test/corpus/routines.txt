@@ -533,7 +533,9 @@ proc g(a: int = 1; b, c: int{~nkRStrLit & ~ nkStrLit} = 2; d: int{~nkRStrLit & ~
             (paramConstraint
               (expr
                 (primary
-                  (prefixOperator)
+                  (primaryPrefix
+                    (prefixOperator
+                      (operator)))
                   (symbol
                     (ident))))))))
       (paramListSuffix
@@ -591,12 +593,16 @@ proc g(a: int = 1; b, c: int{~nkRStrLit & ~ nkStrLit} = 2; d: int{~nkRStrLit & ~
             (paramConstraint
               (expr
                 (primary
-                  (prefixOperator)
+                  (primaryPrefix
+                    (prefixOperator
+                      (operator)))
                   (symbol
                     (ident)))
                 (operator)
                 (primary
-                  (prefixOperator)
+                  (primaryPrefix
+                    (prefixOperator
+                      (operator)))
                   (symbol
                     (ident))))))))
       (paramListSuffix
@@ -630,12 +636,16 @@ proc g(a: int = 1; b, c: int{~nkRStrLit & ~ nkStrLit} = 2; d: int{~nkRStrLit & ~
             (paramConstraint
               (expr
                 (primary
-                  (prefixOperator)
+                  (primaryPrefix
+                    (prefixOperator
+                      (operator)))
                   (symbol
                     (ident)))
                 (operator)
                 (primary
-                  (prefixOperator)
+                  (primaryPrefix
+                    (prefixOperator
+                      (operator)))
                   (symbol
                     (ident)))))))
         (paramColonEquals
@@ -680,12 +690,16 @@ proc g(a: int = 1; b, c: int{~nkRStrLit & ~ nkStrLit} = 2; d: int{~nkRStrLit & ~
             (paramConstraint
               (expr
                 (primary
-                  (prefixOperator)
+                  (primaryPrefix
+                    (prefixOperator
+                      (operator)))
                   (symbol
                     (ident)))
                 (operator)
                 (primary
-                  (prefixOperator)
+                  (primaryPrefix
+                    (prefixOperator
+                      (operator)))
                   (symbol
                     (ident))))))
           (expr
@@ -702,12 +716,16 @@ proc g(a: int = 1; b, c: int{~nkRStrLit & ~ nkStrLit} = 2; d: int{~nkRStrLit & ~
             (paramConstraint
               (expr
                 (primary
-                  (prefixOperator)
+                  (primaryPrefix
+                    (prefixOperator
+                      (operator)))
                   (symbol
                     (ident)))
                 (operator)
                 (primary
-                  (prefixOperator)
+                  (primaryPrefix
+                    (prefixOperator
+                      (operator)))
                   (symbol
                     (ident))))))))
       (paramListSuffix
@@ -878,7 +896,8 @@ template
                     (ident))))))
           (typeDesc
             (primary
-              (keyw)
+              (primaryPrefix
+                (keyw))
               (symbol
                 (ident)))
             (paramConstraint
@@ -916,3 +935,4 @@ template
         (stmt
           (discardStmt
             (keyw)))))))
+
