@@ -149,7 +149,6 @@ module.exports = grammar({
 
     declaration: $ => choice(
       $.typeDef,
-      $.constant,
       $.variable,
     ),
 
@@ -165,26 +164,8 @@ module.exports = grammar({
       )),
     ),
 
-    constant: $ => seq(
-      alias('const', $.keyw),
-      section($, seq(
-        choice(
-          prec(0, $.varTuple),
-          prec(-1, seq(
-            $._identWithPragma,
-            optional(seq(
-              $._colon,
-              $.typeDesc,
-            )),
-            '=',
-            $.expr,
-          )),
-        ),
-      )),
-    ),
-
     variable: $ => seq(
-      alias(choice('let', 'var', 'using'), $.keyw),
+      alias(choice('const', 'let', 'var', 'using'), $.keyw),
       section($, seq(
         choice(
           $.varTuple,

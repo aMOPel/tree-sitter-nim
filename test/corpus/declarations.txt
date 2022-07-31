@@ -160,64 +160,68 @@ const
 (module
   (stmt
     (declaration
-      (constant
+      (variable
         (keyw)
-        (symbol
-          (ident))
-        (expr
-          (primary
-            (literal
-              (int_lit)))))))
+        (declColonEquals
+          (symbol
+            (ident))
+          (expr
+            (primary
+              (literal
+                (int_lit))))))))
   (stmt
     (declaration
-      (constant
+      (variable
         (keyw)
-        (symbol
-          (ident))
-        (typeDesc
-          (primary
-            (symbol
-              (ident))))
-        (expr
-          (primary
-            (literal
-              (int_lit)))))))
+        (declColonEquals
+          (symbol
+            (ident))
+          (typeDesc
+            (primary
+              (symbol
+                (ident))))
+          (expr
+            (primary
+              (literal
+                (int_lit))))))))
   (stmt
     (declaration
-      (constant
+      (variable
         (keyw)
-        (symbol
-          (ident))
-        (pragma
-          (exprColonEqExpr
-            (expr
-              (primary
-                (symbol
-                  (ident))))))
-        (expr
-          (primary
-            (literal
-              (int_lit)))))))
+        (declColonEquals
+          (symbol
+            (ident))
+          (pragma
+            (exprColonEqExpr
+              (expr
+                (primary
+                  (symbol
+                    (ident))))))
+          (expr
+            (primary
+              (literal
+                (int_lit))))))))
   (stmt
     (declaration
-      (constant
+      (variable
         (keyw)
-        (symbol
-          (ident))
-        (pragma
-          (exprColonEqExpr
-            (expr
-              (primary
-                (symbol
-                  (ident))))))
-        (typeDesc
-          (primary
-            (symbol
-              (ident))))
-        (expr
-          (primary
-            (literal
-              (int_lit))))
+        (declColonEquals
+          (symbol
+            (ident))
+          (pragma
+            (exprColonEqExpr
+              (expr
+                (primary
+                  (symbol
+                    (ident))))))
+          (typeDesc
+            (primary
+              (symbol
+                (ident))))
+          (expr
+            (primary
+              (literal
+                (int_lit)))))
         (varTuple
           (symbol
             (ident))
@@ -258,7 +262,6 @@ const
                       (primary
                         (literal
                           (int_lit)))))))))))))
-
 
 ==================
 variable simple
