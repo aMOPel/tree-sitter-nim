@@ -1,26 +1,28 @@
-const PREC = {
-  op0: 10,
-  op1: 11,
-  op2: 12,
-  op3: 13,
-  op4: 14,
-  op5: 15,
-  op6: 16,
-  op7: 17,
-  op8: 18,
-  op9: 19,
-  op10: 20,
-  // unary: 21,
+// rules:
+// TODO: par
+// TODO: conceptDecl
+// TODO: objectDecl
+// TODO: complex expressions (ifExpr, ...)
+// TODO: postExprBlocks, doBlock
+// TODO: cmdCall
+// TODO: routineExpr
+// TODO: castExpr
+// TODO: arbitrary parentheses around stmts and exprs
 
+// polish
+// TODO: corner cases marked with TODO
+// TODO: reevaluate necessity of optInd() (and other utility funcs) in individual cases
+
+const PREC = {
   simpleStmtsNewline: -100,
 
   inlineStmts: -1,
-  fromStmt: 16, // >op5
+  fromStmt: 1, // >op5
 }
 
 const TOKEN_PREC = {
   par: -1,
-  tupleConstr: 0,
+  tupleConstr: 1,
 
   comment: -4,
   multilineComment: -3,
@@ -882,17 +884,24 @@ module.exports = grammar({
     // ========================================================================
     // primary
 
-    primary: $ => prec.left(seq(
-      repeat($.primaryPrefix),
-      choice(
-        $.tupleDecl,
-        // $.routineExpr,
-        $.enumDecl,
-        // $.objectDecl,
-        // $.conceptDecl,
-        $._identOrLiteral,
+    primary: $ => prec.left(choice(
+      seq(
+        repeat($.primaryPrefix),
+        choice(
+          $.tupleDecl,
+          // $.routineExpr,
+          $.enumDecl,
+          // $.objectDecl,
+          // $.conceptDecl,
+          $._identOrLiteral,
+        ),
+        repeat($.primarySuffix),
       ),
-      repeat($.primarySuffix),
+      // TODO: fckn cmdCall
+      // prec(-100, seq(
+      //   $._identOrLiteral,
+      //   $.cmdCall,
+      // )),
     )),
 
     primaryPrefix: $ => choice(
@@ -922,15 +931,16 @@ module.exports = grammar({
       $.indexSuffix,
       $.patternBind,
       // TODO: exprStmt also can do a cmdCall?
-      $.cmdCall,
+      // $.cmdCall,
     ),
 
     functionCall: $ => seq(
       '(',
-      $.exprColonEqExprList,
+      optional($.exprColonEqExprList),
       ')',
     ),
 
+    // TODO: `a.:a` matches as primary operator primary
     qualifiedSuffix: $ => prec.right(seq(
       choice(
         '.',
@@ -938,19 +948,19 @@ module.exports = grammar({
       ),
       $.symbol,
       // TODO: is this necessary?
-      optional($.generalizedLit),
+      // optional($.generalizedLit),
     )),
 
     indexSuffix: $ => seq(
       token.immediate(choice('[', '[:')),
-      $.exprColonEqExprList,
+      optional($.exprColonEqExprList),
       ']',
     ),
 
     // I think it's this: https://nim-lang.org/docs/manual_experimental.html#pattern-operators-the-nim-operator
     patternBind: $ => prec.dynamic(DYNAMIC_PREC.patternBind, seq(
       '{',
-      $.exprColonEqExprList,
+      optional($.exprColonEqExprList),
       '}',
     )),
 
@@ -994,11 +1004,11 @@ module.exports = grammar({
       // $.castExpr,
     ),
 
-    // par: $ => seq(
-    //   alias(token(prec(TOKEN_PREC.par, '(')), $.openParen),
+    // par: $ => prec.dynamic(TOKEN_PREC.par, seq(
+    //   alias('(', $.openParen),
     //   $._suite,
     //   alias(')', $.closeParen),
-    // ),
+    // )),
 
     symbol: $ => choice(
       seq(
@@ -1037,7 +1047,7 @@ module.exports = grammar({
     ),
 
     tupleConstr: $ => seq(
-      token(prec(TOKEN_PREC.tupleConstr, '(')),
+      '(',
       optional($.exprColonEqExprList),
       ')',
     ),
@@ -1214,60 +1224,60 @@ module.exports = grammar({
         /[=+\-*/<>@$~&%|!?^:\\][=+\-*/<>@$~&%|!?^.:\\][=+\-*/<>@$~&%|!?^.:\\]+/,
     ),
 
-    _op0: $ => prec(PREC.op0, choice(
+    _op0: $ => choice(
       /[\-~=]>/,
       /[=+\-*/<>@$~&%|!?^:\\][=+\-*/<>@$~&%|!?^.:\\]*[\-~=]>/,
-    )),
+    ),
 
-    _op1: $ => prec(PREC.op1, choice(
+    _op1: $ => choice(
       /[+\-*/@$&%|^:\\][=+\-*/<>@$~&%|!?^.:\\]*=/,
-    )),
+    ),
 
-    _op2: $ => prec(PREC.op2, choice(
+    _op2: $ => choice(
       /[@:?][=+\-*\/<>@$~&%|!?^.\\]/, //no :: or :
       /[@:?][=+\-*\/<>@$~&%|!?^.:\\][=+\-*\/<>@$~&%|!?^.:\\]+/,
-    )),
+    ),
 
-    _op3: $ => prec(PREC.op3, choice('or', 'xor')),
+    _op3: $ => choice('or', 'xor'),
 
-    _op4: $ => prec(PREC.op4, choice('and')),
+    _op4: $ => choice('and'),
 
     // token(prec( because 'of' and 'from' can be used in other contexts
-    _op5: $ => prec(PREC.op5, choice(
+    _op5: $ => choice(
       'in', 'notin', 'is', 'isnot', 'not', 'of', 'as', 'from',
       '==', '<=', '<', '>=', '>', '!=',
       /[=<>!][=+\-*\/<>@$~&%|!?^.:\\]+/, //no =
-    )),
+    ),
 
-    _op6: $ => prec(PREC.op6, choice('..', $._dotlikeOp)),
+    _op6: $ => choice('..', $._dotlikeOp),
 
     _dotlikeOp: $ => token(seq(
       '.',
       choice(
-        /[=+\-*\/<>@$~&%|!?^:\\]/,
+        /[=+\-*\/<>@$~&%|!?^:\\]/, // no ..
         /[=+\-*\/<>@$~&%|!?^.:\\][=+\-*\/<>@$~&%|!?^.:\\]+/,
       ),
     )),
 
-    _op7: $ => prec(PREC.op7, choice(
+    _op7: $ => choice(
       '&',
       /&[=+\-*\/<>@$~&%|!?^.:\\]+/,
-    )),
+    ),
 
-    _op8: $ => prec(PREC.op8, choice(
+    _op8: $ => choice(
       '+', '-', '|', '~',
       /[+\-~|][=+\-*\/<>@$~&%|!?^.:\\]+/,
-    )),
+    ),
 
-    _op9: $ => prec(PREC.op9, choice(
+    _op9: $ => choice(
       'div', 'mod', 'shl', 'shr',
       '*', '/', '%', 
       /[*%/\\][=+\-*\/<>@$~&%|!?^.:\\]+/,
-    )),
+    ),
 
-    _op10: $ => prec(PREC.op10, choice(
+    _op10: $ => choice(
       /[\$\^][=+\-*\/<>@$~&%|!?^.:\\]*/
-    )),
+    ),
 
     _operators: $ => choice($._op0, $._op1, $._op2, $._op3, $._op4, $._op5, $._op6, $._op7, $._op8, $._op9, $._op10),
 

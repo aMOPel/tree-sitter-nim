@@ -1,0 +1,277 @@
+==================
+primary prefix
+==================
+
+discard bind static var ref ptr distinct out type a
+discard a- + /a
+
+---
+
+(module
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (primaryPrefix
+            (keyw))
+          (primaryPrefix
+            (keyw))
+          (primaryPrefix
+            (keyw))
+          (primaryPrefix
+            (keyw))
+          (primaryPrefix
+            (keyw))
+          (primaryPrefix
+            (keyw))
+          (primaryPrefix
+            (keyw))
+          (primaryPrefix
+            (keyw))
+          (symbol
+            (ident))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operator)
+        (primary
+          (primaryPrefix
+            (prefixOperator
+              (operator)))
+          (primaryPrefix
+            (prefixOperator
+              (operator)))
+          (symbol
+            (ident)))))))
+
+==================
+functionCall
+==================
+
+discard a()
+discard a ()
+discard a(a)
+discard a (a, b, c)
+discard a(a=9, b, c)
+
+---
+
+(module
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident))
+          (primarySuffix
+            (functionCall))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident))
+          (primarySuffix
+            (functionCall))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident))
+          (primarySuffix
+            (functionCall
+              (exprColonEqExprList
+                  (expr
+                    (primary
+                      (symbol
+                        (ident)))))))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident))
+          (primarySuffix
+            (functionCall
+              (exprColonEqExprList
+                  (expr
+                    (primary
+                      (symbol
+                        (ident))))
+                  (expr
+                    (primary
+                      (symbol
+                        (ident))))
+                  (expr
+                    (primary
+                      (symbol
+                        (ident)))))))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident))
+          (primarySuffix
+            (functionCall
+              (exprColonEqExprList
+                  (expr
+                    (primary
+                      (symbol
+                        (ident))))
+                  (expr
+                    (primary
+                      (literal
+                        (int_lit))))
+                  (expr
+                    (primary
+                      (symbol
+                        (ident))))
+                  (expr
+                    (primary
+                      (symbol
+                        (ident))))))))))))
+
+
+==================
+qualifiedSuffix
+==================
+
+discard a.a
+discard a . a
+discard a.:a
+
+---
+
+(module
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident))
+          (primarySuffix
+            (qualifiedSuffix
+              (symbol
+                (ident))))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident))
+          (primarySuffix
+            (qualifiedSuffix
+              (symbol
+                (ident))))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident)))
+        (operator)
+        (primary
+          (symbol
+            (ident)))))))
+
+==================
+indexSuffix
+==================
+
+discard a[0]
+discard a.a[:0]
+discard a[int, int]
+
+---
+
+(module
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident))
+          (primarySuffix
+            (indexSuffix
+              (exprColonEqExprList
+                  (expr
+                    (primary
+                      (literal
+                        (int_lit)))))))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident))
+          (primarySuffix
+            (qualifiedSuffix
+              (symbol
+                (ident))))
+          (primarySuffix
+            (indexSuffix
+              (exprColonEqExprList
+                  (expr
+                    (primary
+                      (literal
+                        (int_lit)))))))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident))
+          (primarySuffix
+            (indexSuffix
+              (exprColonEqExprList
+                  (expr
+                    (primary
+                      (symbol
+                        (ident))))
+                  (expr
+                    (primary
+                      (symbol
+                        (ident))))))))))))
+
+==================
+patternBind
+==================
+
+discard a{x}
+
+---
+
+(module
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident))
+          (primarySuffix
+            (patternBind
+              (exprColonEqExprList
+                  (expr
+                    (primary
+                      (symbol
+                        (ident))))))))))))
+
