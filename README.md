@@ -1,3 +1,5 @@
+# 🚫 NOT READY FOR USE 🚫
+
 # tree-sitter-nim
 tree-sitter parser for the nim programming language
 
