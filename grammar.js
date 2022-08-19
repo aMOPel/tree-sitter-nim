@@ -8,6 +8,7 @@
 // TODO: routineExpr
 // TODO: castExpr
 // TODO: arbitrary parentheses around stmts and exprs
+// TODO: std/strformat interpolation
 
 // polish
 // TODO: corner cases marked with TODO
@@ -1372,7 +1373,7 @@ function optPar($, content) {
   )
 }
 
-// TODO: arbitrary  parentheses
+// TODO: arbitrary  parentheses, unfinished idea
 function optParen($, content) {
   return choice(
     content,
