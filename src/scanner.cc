@@ -162,12 +162,22 @@ struct Scanner {
 
         return true;
       } else {
-        while (lexer->lookahead != '"') {
+        bool some = false;
+        if (lexer->lookahead != '"' && lexer->lookahead != '\0') {
+          some = true;
           advance(lexer);
         }
-        lexer->mark_end(lexer);
-        lexer->result_symbol = MULTI_STRING_CONTENT;
-        return true;
+        while (lexer->lookahead != '"' && lexer->lookahead != '\0') {
+          advance(lexer);
+        }
+        // since we `repeat($._multi_string_content)` it goes into an infinite loop,
+        // if we don't check if it found any content, since it would infinitely
+        // match a 0 len string
+        if (some) {
+          lexer->mark_end(lexer);
+          lexer->result_symbol = MULTI_STRING_CONTENT;
+          return true;
+        }
       }
     }
 

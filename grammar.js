@@ -1181,7 +1181,7 @@ module.exports = grammar({
     // TODO: TRIPLESTR_LIT continues matching when it's not closed, instead of throwing an error
     triplestr_lit: $ => seq(
       /[rR]?"""/,
-      repeat( $._multi_string_content),
+      repeat($._multi_string_content),
       $._multi_string_end,
     ),
 
