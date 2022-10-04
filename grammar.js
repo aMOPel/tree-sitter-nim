@@ -5,8 +5,8 @@
 // TODO: complex expressions (ifExpr, ...)
 // TODO: postExprBlocks, doBlock
 // TODO: cmdCall
-// TODO: routineExpr
-// TODO: castExpr
+// DONE: routineExpr
+// DONE: castExpr
 // TODO: arbitrary parentheses around stmts and exprs
 // TODO: std/strformat interpolation
 
@@ -676,7 +676,7 @@ module.exports = grammar({
     ),
 
     // use seq(optional($.paramList), optional($.paramListSuffix)) instead of
-    // paramListSuffix or paramListArrow from grammar
+    // paramListColon or paramListArrow from grammar
     paramListSuffix: $ => seq(
       choice(':', '->'),
       $.typeDesc
@@ -890,7 +890,7 @@ module.exports = grammar({
         repeat($.primaryPrefix),
         choice(
           $.tupleDecl,
-          // $.routineExpr,
+          $.routineExpr,
           $.enumDecl,
           // $.objectDecl,
           // $.conceptDecl,
@@ -1002,8 +1002,25 @@ module.exports = grammar({
       $.symbol,
       $.arrayConstr,
       $.setOrTableConstr,
-      // $.castExpr,
+      $.castExpr,
     ),
+
+    castExpr: $ => seq(
+      'cast',
+      '[',
+      $.typeDesc,
+      ']',
+      '(',
+      $.expr,
+      ')'
+    ),
+
+    routineExpr: $ => prec.right(seq(
+      alias(choice('proc', 'func', 'iterator'), $.keyw),
+      seq(optional($.paramList), optional($.paramListSuffix)),
+      optional($.pragma),
+      optional(seq('=', $._suite)),
+    )),
 
     // par: $ => prec.dynamic(TOKEN_PREC.par, seq(
     //   alias('(', $.openParen),

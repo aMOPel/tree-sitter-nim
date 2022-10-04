@@ -210,6 +210,25 @@
     }
   },
   {
+    "type": "castExpr",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "expr",
+          "named": true
+        },
+        {
+          "type": "typeDesc",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "char_lit",
     "named": true,
     "fields": {},
@@ -1585,6 +1604,10 @@
           "named": true
         },
         {
+          "type": "castExpr",
+          "named": true
+        },
+        {
           "type": "enumDecl",
           "named": true
         },
@@ -1602,6 +1625,10 @@
         },
         {
           "type": "primarySuffix",
+          "named": true
+        },
+        {
+          "type": "routineExpr",
           "named": true
         },
         {
@@ -1756,6 +1783,37 @@
         },
         {
           "type": "pattern",
+          "named": true
+        },
+        {
+          "type": "pragma",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "routineExpr",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "block",
+          "named": true
+        },
+        {
+          "type": "keyw",
+          "named": true
+        },
+        {
+          "type": "paramList",
+          "named": true
+        },
+        {
+          "type": "paramListSuffix",
           "named": true
         },
         {
@@ -2468,6 +2526,10 @@
   },
   {
     "type": "as",
+    "named": false
+  },
+  {
+    "type": "cast",
     "named": false
   },
   {

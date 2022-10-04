@@ -275,3 +275,147 @@ discard a{x}
                       (symbol
                         (ident))))))))))))
 
+==================
+castExpr
+==================
+
+discard cast[Foo](1)
+discard cast[int](x)
+
+---
+
+(module
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (castExpr
+            (typeDesc
+              (primary
+                (symbol
+                  (ident))))
+            (expr
+              (primary
+                (literal
+                  (int_lit)))))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (castExpr
+            (typeDesc
+              (primary
+                (symbol
+                  (ident))))
+            (expr
+              (primary
+                (symbol
+                  (ident))))))))))
+
+==================
+routineExpr
+==================
+
+discard proc (x: int, y, z: int)
+discard proc (x = 5, y: int = 6): int {.inline.} =
+  discard true
+  discard true
+discard func
+discard iterator
+
+---
+
+(module
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (routineExpr
+            (keyw)
+            (paramList
+              (paramColonEquals
+                (symbol
+                  (ident))
+                (typeDesc
+                  (primary
+                    (symbol
+                      (ident)))))
+              (paramColonEquals
+                (symbol
+                  (ident))
+                (symbol
+                  (ident))
+                (typeDesc
+                  (primary
+                    (symbol
+                      (ident)))))))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (routineExpr
+            (keyw)
+            (paramList
+              (paramColonEquals
+                (symbol
+                  (ident))
+                (expr
+                  (primary
+                    (literal
+                      (int_lit)))))
+              (paramColonEquals
+                (symbol
+                  (ident))
+                (typeDesc
+                  (primary
+                    (symbol
+                      (ident))))
+                (expr
+                  (primary
+                    (literal
+                      (int_lit))))))
+            (paramListSuffix
+              (typeDesc
+                (primary
+                  (symbol
+                    (ident)))))
+            (pragma
+              (exprColonEqExpr
+                (expr
+                  (primary
+                    (symbol
+                      (ident))))))
+            (block
+              (stmt
+                (discardStmt
+                  (keyw)
+                  (expr
+                    (primary
+                      (literal
+                        (bool_lit))))))
+              (stmt
+                (discardStmt
+                  (keyw)
+                  (expr
+                    (primary
+                      (literal
+                        (bool_lit))))))))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (routineExpr
+            (keyw))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (routineExpr
+            (keyw)))))))
+
