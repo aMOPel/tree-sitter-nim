@@ -1922,4 +1922,159 @@ discard (a:1, b:6)
                     (literal
                       (int_lit)))))))))))
 
+==================
+interpolated_str_lit
+==================
+
+discard & "hi{'i'}"
+discard &"hi{'i'}hi{'i'}"
+discard fmt"hi{'i'}"
+discard fmt"hi{'i'}hi{'i'}"
+
+---
+
+(module
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (interpolated_str_lit
+              (expr
+                (primary
+                  (literal
+                    (char_lit))))))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (interpolated_str_lit
+              (expr
+                (primary
+                  (literal
+                    (char_lit))))
+              (expr
+                (primary
+                  (literal
+                    (char_lit))))))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (interpolated_str_lit
+              (expr
+                (primary
+                  (literal
+                    (char_lit))))))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (interpolated_str_lit
+              (expr
+                (primary
+                  (literal
+                    (char_lit))))
+              (expr
+                (primary
+                  (literal
+                    (char_lit)))))))))))
+
+==================
+interpolated_triplestr_lit
+==================
+
+discard & """hi{'i'}hi{'i'}"""
+discard &"""hi{'i'}hi{'i'}"""
+discard &"""hi{'i'}
+hi{'i'}"""
+discard fmt"""hi{'i'}hi{'i'}"""
+discard fmt"""hi{'i'}
+hi{'i'}"""
+
+---
+
+(module
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (interpolated_triplestr_lit
+              (expr
+                (primary
+                  (literal
+                    (char_lit))))
+              (expr
+                (primary
+                  (literal
+                    (char_lit))))))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (interpolated_triplestr_lit
+              (expr
+                (primary
+                  (literal
+                    (char_lit))))
+              (expr
+                (primary
+                  (literal
+                    (char_lit))))))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (interpolated_triplestr_lit
+              (expr
+                (primary
+                  (literal
+                    (char_lit))))
+              (expr
+                (primary
+                  (literal
+                    (char_lit))))))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (interpolated_triplestr_lit
+              (expr
+                (primary
+                  (literal
+                    (char_lit))))
+              (expr
+                (primary
+                  (literal
+                    (char_lit))))))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (interpolated_triplestr_lit
+              (expr
+                (primary
+                  (literal
+                    (char_lit))))
+              (expr
+                (primary
+                  (literal
+                    (char_lit)))))))))))
 

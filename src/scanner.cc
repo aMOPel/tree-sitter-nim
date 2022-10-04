@@ -16,6 +16,7 @@ enum TokenType {
   SAMEDENT,
   DEDENT,
   MULTI_STRING_CONTENT,
+  INTERPOLATION_START,
   MULTI_STRING_END,
 };
 
@@ -144,7 +145,50 @@ struct Scanner {
   void skip(TSLexer *lexer) { lexer->advance(lexer, true); }
 
   bool scan(TSLexer *lexer, const bool *valid_symbols) {
-    if (valid_symbols[MULTI_STRING_CONTENT] && !valid_symbols[INDENT]) {
+    if (valid_symbols[INTERPOLATION_START] && !valid_symbols[INDENT]) {
+      if (lexer->lookahead == '{') {
+        advance(lexer);
+        lexer->mark_end(lexer);
+        lexer->result_symbol = INTERPOLATION_START;
+        return true;
+      }
+      if (lexer->lookahead == '"') {
+        int count = 0;
+        while (lexer->lookahead == '"') {
+          ++count;
+          advance(lexer);
+        }
+
+        if (count >= 3) {
+          lexer->mark_end(lexer);
+          lexer->result_symbol = MULTI_STRING_END;
+        } else {
+          lexer->mark_end(lexer);
+          lexer->result_symbol = MULTI_STRING_CONTENT;
+        }
+
+        return true;
+      } else {
+        bool some = false;
+        if (lexer->lookahead != '"' && lexer->lookahead != '\0') {
+          some = true;
+          advance(lexer);
+        }
+        while (lexer->lookahead != '"' && lexer->lookahead != '\0' && lexer->lookahead != '{') {
+          advance(lexer);
+        }
+        // since we `repeat($._multi_string_content)` it goes into an infinite loop,
+        // if we don't check if it found any content, since it would infinitely
+        // match a 0 len string
+        if (some) {
+          lexer->mark_end(lexer);
+          lexer->result_symbol = MULTI_STRING_CONTENT;
+          return true;
+        }
+      }
+    }
+
+    if (valid_symbols[MULTI_STRING_CONTENT] && !valid_symbols[INTERPOLATION_START] && !valid_symbols[INDENT]) {
       if (lexer->lookahead == '"') {
         int count = 0;
         while (lexer->lookahead == '"') {

@@ -19,6 +19,7 @@ const PREC = {
 
   inlineStmts: -1,
   fromStmt: 1, // >op5
+  interpolated_str_lit: 1, // >op7
 }
 
 const TOKEN_PREC = {
@@ -72,6 +73,7 @@ module.exports = grammar({
     $._samedent,
     $._dedent,
     $._multi_string_content,
+    $._interpolation_start,
     $._multi_string_end,
   ],
 
@@ -1079,6 +1081,8 @@ module.exports = grammar({
       $.custom_numeric_lit,
       $.char_lit,
       $.str_lit,
+      $.interpolated_str_lit,
+      $.interpolated_triplestr_lit,
       $.rstr_lit,
       $.triplestr_lit,
       $.nil_lit,
@@ -1222,7 +1226,57 @@ module.exports = grammar({
     generalized_triplestr_lit: $ => seq(
       $.ident,
       token.immediate('"""'),
-      repeat( $._multi_string_content),
+      repeat($._multi_string_content),
+      $._multi_string_end,
+    ),
+
+    // &"" is a str_lit but fmt"" is a generalized_str_lit and thus raw
+    interpolated_str_lit: $ => choice(
+      prec(PREC.interpolated_str_lit, seq(
+        '&',
+        '"',
+        repeat(choice(
+          token.immediate(/[^\n\r"]/),
+          $.str_esc_seq,
+          seq(
+            token.immediate('{'),
+            $.expr,
+            token.immediate('}'),
+          ),
+        )),
+        token.immediate('"'),
+      )),
+      seq(
+        'fmt',
+        token.immediate(/".[^"]/), // to disambiguate from GENERALIZED_TRIPLESTR_LIT
+        repeat(choice(
+          token.immediate(/[^\r\n"]|""/),
+          seq(
+            token.immediate('{'),
+            $.expr,
+            token.immediate('}'),
+          ),
+        )),
+        token.immediate('"'),
+      ),
+    ),
+
+    interpolated_triplestr_lit: $ => seq(
+      choice(
+        prec(PREC.interpolated_str_lit, seq(
+          '&',
+          '"""',
+        )),
+        'fmt"""',
+      ),
+      repeat(choice(
+        seq(
+          $._interpolation_start,
+          $.expr,
+          token.immediate('}'),
+        ),
+      $._multi_string_content,
+      )),
       $._multi_string_end,
     ),
 

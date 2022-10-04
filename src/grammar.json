@@ -4613,6 +4613,14 @@
         },
         {
           "type": "SYMBOL",
+          "name": "interpolated_str_lit"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "interpolated_triplestr_lit"
+        },
+        {
+          "type": "SYMBOL",
           "name": "rstr_lit"
         },
         {
@@ -5290,6 +5298,205 @@
         }
       ]
     },
+    "interpolated_str_lit": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "PREC",
+          "value": 1,
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "STRING",
+                "value": "&"
+              },
+              {
+                "type": "STRING",
+                "value": "\""
+              },
+              {
+                "type": "REPEAT",
+                "content": {
+                  "type": "CHOICE",
+                  "members": [
+                    {
+                      "type": "IMMEDIATE_TOKEN",
+                      "content": {
+                        "type": "PATTERN",
+                        "value": "[^\\n\\r\"]"
+                      }
+                    },
+                    {
+                      "type": "SYMBOL",
+                      "name": "str_esc_seq"
+                    },
+                    {
+                      "type": "SEQ",
+                      "members": [
+                        {
+                          "type": "IMMEDIATE_TOKEN",
+                          "content": {
+                            "type": "STRING",
+                            "value": "{"
+                          }
+                        },
+                        {
+                          "type": "SYMBOL",
+                          "name": "expr"
+                        },
+                        {
+                          "type": "IMMEDIATE_TOKEN",
+                          "content": {
+                            "type": "STRING",
+                            "value": "}"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "IMMEDIATE_TOKEN",
+                "content": {
+                  "type": "STRING",
+                  "value": "\""
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "fmt"
+            },
+            {
+              "type": "IMMEDIATE_TOKEN",
+              "content": {
+                "type": "PATTERN",
+                "value": "\".[^\"]"
+              }
+            },
+            {
+              "type": "REPEAT",
+              "content": {
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "IMMEDIATE_TOKEN",
+                    "content": {
+                      "type": "PATTERN",
+                      "value": "[^\\r\\n\"]|\"\""
+                    }
+                  },
+                  {
+                    "type": "SEQ",
+                    "members": [
+                      {
+                        "type": "IMMEDIATE_TOKEN",
+                        "content": {
+                          "type": "STRING",
+                          "value": "{"
+                        }
+                      },
+                      {
+                        "type": "SYMBOL",
+                        "name": "expr"
+                      },
+                      {
+                        "type": "IMMEDIATE_TOKEN",
+                        "content": {
+                          "type": "STRING",
+                          "value": "}"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "type": "IMMEDIATE_TOKEN",
+              "content": {
+                "type": "STRING",
+                "value": "\""
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "interpolated_triplestr_lit": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "PREC",
+              "value": 1,
+              "content": {
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "STRING",
+                    "value": "&"
+                  },
+                  {
+                    "type": "STRING",
+                    "value": "\"\"\""
+                  }
+                ]
+              }
+            },
+            {
+              "type": "STRING",
+              "value": "fmt\"\"\""
+            }
+          ]
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "_interpolation_start"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "expr"
+                  },
+                  {
+                    "type": "IMMEDIATE_TOKEN",
+                    "content": {
+                      "type": "STRING",
+                      "value": "}"
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "SYMBOL",
+                "name": "_multi_string_content"
+              }
+            ]
+          }
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_multi_string_end"
+        }
+      ]
+    },
     "nil_lit": {
       "type": "STRING",
       "value": "nil"
@@ -5855,6 +6062,10 @@
     {
       "type": "SYMBOL",
       "name": "_multi_string_content"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "_interpolation_start"
     },
     {
       "type": "SYMBOL",
