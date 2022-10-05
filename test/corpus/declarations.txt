@@ -699,7 +699,7 @@ type a = int
   (stmt
     (bindStmt
       (keyw)
-      (primary
+      (qualifiedIdent
         (symbol
           (ident)))))
   (stmt

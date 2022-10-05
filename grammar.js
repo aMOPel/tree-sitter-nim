@@ -587,12 +587,12 @@ module.exports = grammar({
     // TODO: some edge cases don't work
     bindStmt: $ => prec.right(seq(
       alias(prec.dynamic(DYNAMIC_PREC.bindStmt, 'bind'), $.keyw), 
-      optInd($, sep_repeat1($.primary, $._comma))
+      optInd($, sep_repeat1($.qualifiedIdent, $._comma))
     )),
 
     mixinStmt: $ => prec.right(seq(
       alias('mixin', $.keyw), 
-      optInd($, sep_repeat1($.primary, $._comma))
+      optInd($, sep_repeat1($.qualifiedIdent, $._comma))
     )),
 
     exprStmt: $ => seq(
@@ -782,6 +782,14 @@ module.exports = grammar({
 
     // ========================================================================
     // tidbits
+
+    qualifiedIdent: $ => seq(
+      $.symbol,
+      optional(seq(
+        '.',
+        $.symbol,
+      )),
+    ),
 
     declColonEquals: $ => prec.right(seq(
       sep_repeat1(
