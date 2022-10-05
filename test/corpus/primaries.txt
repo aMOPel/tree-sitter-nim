@@ -54,9 +54,7 @@ functionCall
 ==================
 
 discard a()
-discard a ()
 discard a(a)
-discard a (a, b, c)
 discard a(a=9, b, c)
 
 ---
@@ -79,39 +77,8 @@ discard a(a=9, b, c)
           (symbol
             (ident))
           (primarySuffix
-            (functionCall))))))
-  (stmt
-    (discardStmt
-      (keyw)
-      (expr
-        (primary
-          (symbol
-            (ident))
-          (primarySuffix
             (functionCall
               (exprColonEqExprList
-                  (expr
-                    (primary
-                      (symbol
-                        (ident)))))))))))
-  (stmt
-    (discardStmt
-      (keyw)
-      (expr
-        (primary
-          (symbol
-            (ident))
-          (primarySuffix
-            (functionCall
-              (exprColonEqExprList
-                  (expr
-                    (primary
-                      (symbol
-                        (ident))))
-                  (expr
-                    (primary
-                      (symbol
-                        (ident))))
                   (expr
                     (primary
                       (symbol
@@ -142,7 +109,6 @@ discard a(a=9, b, c)
                     (primary
                       (symbol
                         (ident))))))))))))
-
 
 ==================
 qualifiedSuffix
@@ -195,7 +161,7 @@ indexSuffix
 
 discard a[0]
 discard a.a[:0]
-discard a[int, int]
+discard a[int, int]()
 
 ---
 
@@ -249,7 +215,9 @@ discard a[int, int]
                   (expr
                     (primary
                       (symbol
-                        (ident))))))))))))
+                        (ident)))))))
+          (primarySuffix
+            (functionCall)))))))
 
 ==================
 patternBind
@@ -418,4 +386,250 @@ discard iterator
         (primary
           (routineExpr
             (keyw)))))))
+
+==================
+cmdCall tupleConstr disambiguation
+==================
+
+echo()            # function call
+echo ()            # tuple
+echo(1, 2)            # function call
+echo (1, 2)            # function call
+echo (a: 1,b: 2)      # tuple
+echo(1)               # function call
+echo (1)              # function call
+echo (1,)              # tuple
+echo (a: 1)           # tuple, no trailing comma, still tuple
+echo((1,2))           # tuple
+echo ((1,2))           # tuple
+echo(((1,2),),)           # double tuple
+echo (((1,2),),)           # triple tuple
+
+---
+
+(module
+  (stmt
+    (exprStmt
+      (primary
+        (symbol
+          (ident))
+        (primarySuffix
+          (functionCall))))
+    (comment))
+  (stmt
+    (exprStmt
+      (primary
+        (symbol
+          (ident))
+        (cmdCall
+          (expr
+            (primary
+              (tupleConstr))))))
+    (comment))
+  (stmt
+    (exprStmt
+      (primary
+        (symbol
+          (ident))
+        (primarySuffix
+          (functionCall
+            (exprColonEqExprList
+                (expr
+                  (primary
+                    (literal
+                      (int_lit))))
+                (expr
+                  (primary
+                    (literal
+                      (int_lit)))))))))
+    (comment))
+  (stmt
+    (exprStmt
+      (primary
+        (symbol
+          (ident))
+        (cmdCall
+          (expr
+            (primary
+              (tupleConstr
+                  (expr
+                    (primary
+                      (literal
+                        (int_lit))))
+                  (expr
+                    (primary
+                      (literal
+                        (int_lit))))))))))
+    (comment))
+  (stmt
+    (exprStmt
+      (primary
+        (symbol
+          (ident))
+        (cmdCall
+          (expr
+            (primary
+              (tupleConstr
+                  (expr
+                    (primary
+                      (symbol
+                        (ident))))
+                  (expr
+                    (primary
+                      (literal
+                        (int_lit))))
+                  (expr
+                    (primary
+                      (symbol
+                        (ident))))
+                  (expr
+                    (primary
+                      (literal
+                        (int_lit))))))))))
+    (comment))
+  (stmt
+    (exprStmt
+      (primary
+        (symbol
+          (ident))
+        (primarySuffix
+          (functionCall
+            (exprColonEqExprList
+                (expr
+                  (primary
+                    (literal
+                      (int_lit)))))))))
+    (comment))
+  (stmt
+    (exprStmt
+      (primary
+        (symbol
+          (ident))
+        (primarySuffix
+          (functionCall
+            (exprColonEqExprList
+                (expr
+                  (primary
+                    (literal
+                      (int_lit)))))))))
+    (comment))
+  (stmt
+    (exprStmt
+      (primary
+        (symbol
+          (ident))
+        (cmdCall
+          (expr
+            (primary
+              (tupleConstr
+                  (expr
+                    (primary
+                      (literal
+                        (int_lit))))))))))
+    (comment))
+  (stmt
+    (exprStmt
+      (primary
+        (symbol
+          (ident))
+        (cmdCall
+          (expr
+            (primary
+              (tupleConstr
+                (expr
+                  (primary
+                    (symbol
+                      (ident))))
+                (expr
+                  (primary
+                    (literal
+                      (int_lit))))))))))
+    (comment))
+  (stmt
+    (exprStmt
+      (primary
+        (symbol
+          (ident))
+        (primarySuffix
+          (functionCall
+            (exprColonEqExprList
+                (expr
+                  (primary
+                    (tupleConstr
+                        (expr
+                          (primary
+                            (literal
+                              (int_lit))))
+                        (expr
+                          (primary
+                            (literal
+                              (int_lit))))))))))))
+    (comment))
+  (stmt
+    (exprStmt
+      (primary
+        (symbol
+          (ident))
+        (primarySuffix
+          (functionCall
+            (exprColonEqExprList
+                (expr
+                  (primary
+                    (tupleConstr
+                        (expr
+                          (primary
+                            (literal
+                              (int_lit))))
+                        (expr
+                          (primary
+                            (literal
+                              (int_lit))))))))))))
+    (comment))
+  (stmt
+    (exprStmt
+      (primary
+        (symbol
+          (ident))
+        (primarySuffix
+          (functionCall
+            (exprColonEqExprList
+                (expr
+                  (primary
+                    (tupleConstr
+                        (expr
+                          (primary
+                            (tupleConstr
+                                (expr
+                                  (primary
+                                    (literal
+                                      (int_lit))))
+                                (expr
+                                  (primary
+                                    (literal
+                                      (int_lit)))))))))))))))
+    (comment))
+  (stmt
+    (exprStmt
+      (primary
+        (symbol
+          (ident))
+        (cmdCall
+          (expr
+            (primary
+              (tupleConstr
+                  (expr
+                    (primary
+                      (tupleConstr
+                          (expr
+                            (primary
+                              (tupleConstr
+                                  (expr
+                                    (primary
+                                      (literal
+                                        (int_lit))))
+                                  (expr
+                                    (primary
+                                      (literal
+                                        (int_lit)))))))))))))))))
+  (comment))
 

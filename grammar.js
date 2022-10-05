@@ -4,11 +4,16 @@
 // TODO: objectDecl
 // TODO: complex expressions (ifExpr, ...)
 // TODO: postExprBlocks, doBlock
-// TODO: cmdCall
+// DONE: cmdCall
 // DONE: routineExpr
 // DONE: castExpr
 // TODO: arbitrary parentheses around stmts and exprs
-// TODO: std/strformat interpolation
+// DONE: std/strformat interpolation
+// DONE: fix patternBind and indexSuffix collision with cmdCall
+
+// refactor
+// TODO: separate `using` statement
+// TODO: separate indexSuffix from genericParam specification
 
 // polish
 // TODO: corner cases marked with TODO
@@ -20,11 +25,14 @@ const PREC = {
   inlineStmts: -1,
   fromStmt: 1, // >op5
   interpolated_str_lit: 1, // >op7
+
+  tupleConstr: 1,
+  functionCall: -1,
+  immediateFunctionCall: 2,
 }
 
 const TOKEN_PREC = {
   par: -1,
-  tupleConstr: 1,
 
   comment: -4,
   multilineComment: -3,
@@ -32,14 +40,18 @@ const TOKEN_PREC = {
   multilineDocComment: -1,
 
   conceptOf: 100,
+
+  indexSuffix: 1,
 }
 
 const DYNAMIC_PREC = {
   _primaryKeyw: -1,
   typeDef: 1,
   bindStmt: 2,
-  patternBind: -1,
-  setOrTableConstr: 1,
+  patternBind: 1,
+  setOrTableConstr: 0,
+  exprColonExpr: 1,
+  varTuple: 2,
 }
 
 module.exports = grammar({
@@ -57,6 +69,8 @@ module.exports = grammar({
     [$.variable, $._primaryKeyw],
     [$.typeDef, $._primaryKeyw],
     [$.patternBind, $.setOrTableConstr],
+    [$.exprColonExpr, $.exprColonEqExpr],
+    [$.varTuple, $.tupleConstr],
   ],
 
   extras: $ => [
@@ -179,13 +193,13 @@ module.exports = grammar({
       )),
     ),
 
-    varTuple: $ => seq(
+    varTuple: $ => prec.dynamic(DYNAMIC_PREC.varTuple ,seq(
       '(',
       sep_repeat1($._identWithPragma, $._comma),
       ')',
       '=',
       $.expr,
-    ),
+    )),
 
     tupleDecl: $ => seq(
       alias('tuple', $.keyw),
@@ -290,7 +304,7 @@ module.exports = grammar({
     // conceptDecl: $ => seq(
     //   alias('concept', $.keyw),
     //   sep_repeat(
-    //     $.primary,
+    //     $.primary, // don't use primary
     //     ',',
     //   ),
     //   optional($.pragma),
@@ -847,6 +861,19 @@ module.exports = grammar({
       choice('.}', '}'),
     ),
 
+    exprColonExpr: $ => prec.dynamic(DYNAMIC_PREC.exprColonExpr, seq(
+      $.expr,
+      optional(seq(
+        ':',
+        $.expr,
+      ))
+    )),
+
+    exprColonExprList: $ => sep_repeat1(
+      alias($.exprColonExpr, 'exprColonExpr'),
+      $._comma,
+    ),
+
     exprColonEqExpr: $ => seq(
       $.expr,
       optional(seq(
@@ -908,11 +935,10 @@ module.exports = grammar({
         ),
         repeat($.primarySuffix),
       ),
-      // TODO: fckn cmdCall
-      // prec(-100, seq(
-      //   $._identOrLiteral,
-      //   $.cmdCall,
-      // )),
+      seq(
+        $._identOrLiteral,
+        $.cmdCall,
+      ),
     )),
 
     primaryPrefix: $ => choice(
@@ -938,6 +964,7 @@ module.exports = grammar({
 
     primarySuffix: $ => choice(
       $.functionCall,
+      alias($.immediateFunctionCall, $.functionCall),
       $.qualifiedSuffix,
       $.indexSuffix,
       $.patternBind,
@@ -945,14 +972,21 @@ module.exports = grammar({
       // $.cmdCall,
     ),
 
-    functionCall: $ => seq(
+    functionCall: $ => prec(PREC.functionCall, seq(
       '(',
       optional($.exprColonEqExprList),
       ')',
-    ),
+    )),
+
+    immediateFunctionCall: $ => prec(PREC.immediateFunctionCall, seq(
+      token.immediate('('),
+      optional($.exprColonEqExprList),
+      ')',
+    )),
 
     // TODO: `a.:a` matches as primary operator primary
-    qualifiedSuffix: $ => prec.right(seq(
+    // TODO: fix prec
+    qualifiedSuffix: $ => prec.right(1, seq(
       choice(
         '.',
         $._dotlikeOp,
@@ -962,8 +996,11 @@ module.exports = grammar({
       // optional($.generalizedLit),
     )),
 
+    // indexSuffix also serves as specification of generic types for
+    // eg function calls, like `a[int, int]()`
     indexSuffix: $ => seq(
-      token.immediate(choice('[', '[:')),
+      // has to be token(prec( for some reason
+      token.immediate(prec(TOKEN_PREC.indexSuffix, choice('[', '[:'))),
       optional($.exprColonEqExprList),
       ']',
     ),
@@ -1059,6 +1096,7 @@ module.exports = grammar({
     // ========================================================================
     // constructors
 
+    // TODO: narrow down exprColonEqExprList?
     arrayConstr: $ => seq(
       '[',
       optional($.exprColonEqExprList),
@@ -1074,11 +1112,26 @@ module.exports = grammar({
       '}',
     ),
 
-    tupleConstr: $ => seq(
+    // making tupleConstr as precise as possible for disambiguation with functionCall
+    tupleConstr: $ => prec(PREC.tupleConstr, seq(
       '(',
-      optional($.exprColonEqExprList),
+      optional(choice(
+        seq(
+          $.expr,
+          ':',
+          $.expr,
+        ), // single element doesn't need a trailing comma if using named fields
+        seq(
+          alias($.exprColonExpr, 'exprColonExpr'), // single element needs a trailing comma
+          ',',
+          optional(sep_repeat1(
+              alias($.exprColonExpr, 'exprColonExpr'),
+              $._comma,
+          )),
+        ),
+      )),
       ')',
-    ),
+    )),
 
     // ========================================================================
     // literals
@@ -1313,7 +1366,8 @@ module.exports = grammar({
       /[+\-*/@$&%|^:\\][=+\-*/<>@$~&%|!?^.:\\]*=/,
     ),
 
-    _op2: $ => choice(
+    // TODO: If a unary operator's first character is @ it is a sigil-like operator which binds stronger than a primarySuffix: @x.abc is parsed as (@x).abc whereas $x.abc is parsed as $(x.abc).
+    _op2: $ => choice('@',
       /[@:?][=+\-*\/<>@$~&%|!?^.\\]/, //no :: or :
       /[@:?][=+\-*\/<>@$~&%|!?^.:\\][=+\-*\/<>@$~&%|!?^.:\\]+/,
     ),

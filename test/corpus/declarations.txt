@@ -232,7 +232,6 @@ const
           (expr
             (primary
               (tupleConstr
-                (exprColonEqExprList
                     (expr
                       (primary
                         (literal
@@ -240,7 +239,7 @@ const
                     (expr
                       (primary
                         (literal
-                          (int_lit)))))))))
+                          (int_lit))))))))
         (varTuple
           (symbol
             (ident))
@@ -255,7 +254,6 @@ const
           (expr
             (primary
               (tupleConstr
-                (exprColonEqExprList
                     (expr
                       (primary
                         (literal
@@ -263,7 +261,7 @@ const
                     (expr
                       (primary
                         (literal
-                          (int_lit)))))))))))))
+                          (int_lit))))))))))))
 
 ==================
 variable simple
@@ -327,11 +325,10 @@ var
           (expr
             (primary
               (tupleConstr
-                (exprColonEqExprList
-                    (expr
-                      (primary
-                        (literal
-                          (int_lit))))))))))))
+                  (expr
+                    (primary
+                      (literal
+                        (int_lit)))))))))))
   (stmt
     (declaration
       (variable
@@ -342,11 +339,10 @@ var
           (expr
             (primary
               (tupleConstr
-                (exprColonEqExprList
-                    (expr
-                      (primary
-                        (literal
-                          (int_lit))))))))))))
+                  (expr
+                    (primary
+                      (literal
+                        (int_lit)))))))))))
   (stmt
     (declaration
       (variable
@@ -359,15 +355,14 @@ var
           (expr
             (primary
               (tupleConstr
-                (exprColonEqExprList
-                    (expr
-                      (primary
-                        (literal
-                          (int_lit))))
-                    (expr
-                      (primary
-                        (literal
-                          (int_lit))))))))))))
+                  (expr
+                    (primary
+                      (literal
+                        (int_lit))))
+                  (expr
+                    (primary
+                      (literal
+                        (int_lit)))))))))))
   (stmt
     (declaration
       (variable
@@ -386,15 +381,14 @@ var
           (expr
             (primary
               (tupleConstr
-                (exprColonEqExprList
-                    (expr
-                      (primary
-                        (literal
-                          (int_lit))))
-                    (expr
-                      (primary
-                        (literal
-                          (int_lit))))))))))))
+                  (expr
+                    (primary
+                      (literal
+                        (int_lit))))
+                  (expr
+                    (primary
+                      (literal
+                        (int_lit)))))))))))
   (stmt
     (declaration
       (variable
@@ -424,15 +418,14 @@ var
           (expr
             (primary
               (tupleConstr
-                (exprColonEqExprList
-                    (expr
-                      (primary
-                        (literal
-                          (int_lit))))
-                    (expr
-                      (primary
-                        (literal
-                          (int_lit)))))))))
+                  (expr
+                    (primary
+                      (literal
+                        (int_lit))))
+                  (expr
+                    (primary
+                      (literal
+                        (int_lit))))))))
         (varTuple
           (symbol
             (ident))
@@ -447,15 +440,14 @@ var
           (expr
             (primary
               (tupleConstr
-                (exprColonEqExprList
-                    (expr
-                      (primary
-                        (literal
-                          (int_lit))))
-                    (expr
-                      (primary
-                        (literal
-                          (int_lit)))))))))))))
+                  (expr
+                    (primary
+                      (literal
+                        (int_lit))))
+                  (expr
+                    (primary
+                      (literal
+                        (int_lit))))))))))))
 
 ==================
 tupleDecl

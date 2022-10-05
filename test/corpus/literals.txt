@@ -1823,7 +1823,7 @@ tupleConstr
 ==================
 
 discard ()
-discard (0)
+discard (0,)
 discard (0, 1)
 discard (
   0
@@ -1848,79 +1848,74 @@ discard (a:1, b:6)
       (expr
         (primary
           (tupleConstr
-            (exprColonEqExprList
-                (expr
-                  (primary
-                    (literal
-                      (int_lit))))))))))
+              (expr
+                (primary
+                  (literal
+                    (int_lit)))))))))
   (stmt
     (discardStmt
       (keyw)
       (expr
         (primary
           (tupleConstr
-            (exprColonEqExprList
-                (expr
-                  (primary
-                    (literal
-                      (int_lit))))
-                (expr
-                  (primary
-                    (literal
-                      (int_lit))))))))))
+              (expr
+                (primary
+                  (literal
+                    (int_lit))))
+              (expr
+                (primary
+                  (literal
+                    (int_lit)))))))))
   (stmt
     (discardStmt
       (keyw)
       (expr
         (primary
           (tupleConstr
-            (exprColonEqExprList
-                (expr
-                  (primary
-                    (literal
-                      (int_lit))))
-                (expr
-                  (primary
-                    (literal
-                      (int_lit))))))))))
+              (expr
+                (primary
+                  (literal
+                    (int_lit))))
+              (expr
+                (primary
+                  (literal
+                    (int_lit)))))))))
   (stmt
     (discardStmt
       (keyw)
       (expr
         (primary
           (tupleConstr
-            (exprColonEqExprList
-                (expr
-                  (primary
-                    (symbol
-                      (ident))))
-                (expr
-                  (primary
-                    (literal
-                      (int_lit))))))))))
+            (expr
+              (primary
+                (symbol
+                  (ident))))
+            (expr
+              (primary
+                (literal
+                  (int_lit)))))))))
   (stmt
     (discardStmt
       (keyw)
       (expr
         (primary
           (tupleConstr
-            (exprColonEqExprList
-                (expr
-                  (primary
-                    (symbol
-                      (ident))))
-                (expr
-                  (primary
-                    (literal
-                      (int_lit))))
-                (expr
-                  (primary
-                    (symbol
-                      (ident))))
-                (expr
-                  (primary
-                    (literal
-                      (int_lit)))))))))))
+              (expr
+                (primary
+                  (symbol
+                    (ident))))
+              (expr
+                (primary
+                  (literal
+                    (int_lit))))
+              (expr
+                (primary
+                  (symbol
+                    (ident))))
+              (expr
+                (primary
+                  (literal
+                    (int_lit))))))))))
 
 ==================
 interpolated_str_lit
