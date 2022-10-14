@@ -1,13 +1,14 @@
 // rules:
-// TODO: par
-// TODO: conceptDecl
-// TODO: objectDecl
+// TODO: par, this is gonna be more difficult
 // TODO: complex expressions (ifExpr, ...)
 // TODO: postExprBlocks, doBlock
+// TODO: arbitrary parentheses around stmts and exprs
+// DONE: cmdCall comma list
+// DONE: conceptDecl
+// DONE: objectDecl
 // DONE: cmdCall
 // DONE: routineExpr
 // DONE: castExpr
-// TODO: arbitrary parentheses around stmts and exprs
 // DONE: std/strformat interpolation
 // DONE: fix patternBind and indexSuffix collision with cmdCall
 
@@ -32,7 +33,6 @@ const PREC = {
 }
 
 const TOKEN_PREC = {
-  par: -1,
 
   comment: -4,
   multilineComment: -3,
@@ -45,6 +45,8 @@ const TOKEN_PREC = {
 }
 
 const DYNAMIC_PREC = {
+  // par: 1,
+
   _primaryKeyw: -1,
   typeDef: 1,
   bindStmt: 2,
@@ -207,14 +209,14 @@ module.exports = grammar({
         seq(
           '[',
           sep_repeat(
-            $.identColonEquals,
+            $.identColon,
             choice($._comma, $._semicolon)
           ),
           ']',
         ),
         seq(
           $._indent,
-          repeat1($.identColonEquals),
+          repeat1($.identColon),
           $._dedent,
         ),
       ),
@@ -235,86 +237,108 @@ module.exports = grammar({
       ),
     )),
 
-    // objectDecl: $ => prec.right(seq(
-    //   alias('object', $.keyw),
-    //   optional($.pragma),
-    //   optional(seq(
-    //     alias(token(prec(-1, 'of')), $.keyw),
-    //     $.typeDesc,
-    //   )),
-    //   optional($.objectPart),
-    // )),
-    //
-    // objectPart: $ => section($,
-    //   choice(
-    //     prec(0, $.objectWhen),
-    //     prec(-1, $.objectCase),
-    //     prec(-2, alias('nil', $.keyw)),
-    //     prec(-3, alias('discard', $.keyw)),
-    //     prec(-4, $.declColonEquals),
-    //   ),
-    // ),
-    //
-    // objectWhen: $ => prec.right(seq(
-    //   alias(token(prec(-1, 'when')), $.keyw),
-    //   $.expr,
-    //   $._colcom,
-    //   $.objectPart,
-    //   repeat($.objectElif),
-    //   optional($.objectElse),
-    // )),
-    //
-    // // TODO: this works, but it slows down the parser compilation immensely
-    // objectCase: $ => seq(
-    //   alias(token(prec(-1, 'case')), $.keyw),
-    //   $._identWithPragma,
-    //   ':',
-    //   $.typeDesc,
-    //   optional(':'),
-    //   // $._newline,
-    //   $.objectBranches,
-    // ),
-    //
-    // objectBranches: $ => prec.left(seq(
-    //   repeat1($.objectBranch),
-    //   repeat($.objectElif),
-    //   optional($.objectElse),
-    // )),
-    //
-    // objectBranch: $ => seq(
-    //   alias(token(prec(-1, 'of')), $.keyw),
-    //   $.exprList,
-    //   $._colcom,
-    //   $.objectPart,
-    // ),
-    //
-    // objectElif: $ => seq(
-    //   alias(token(prec(-1, 'elif')), $.keyw),
-    //   $.expr,
-    //   $._colcom,
-    //   $.objectPart,
-    // ),
-    //
-    // objectElse: $ => seq(
-    //   alias(token(prec(-1, 'else')), $.keyw),
-    //   $._colcom,
-    //   $.objectPart,
-    // ),
+    objectDecl: $ => prec.right(seq(
+      alias('object', $.keyw),
+      optional($.pragma),
+      optional(seq(
+        alias('of', $.keyw),
+        $.typeDesc,
+      )),
+      optional(seq(
+        $._indent,
+        repeat1($.objectPart),
+        $._dedent,
+      )),
+    )),
 
-    // conceptDecl: $ => seq(
-    //   alias('concept', $.keyw),
-    //   sep_repeat(
-    //     $.primary, // don't use primary
-    //     ',',
-    //   ),
-    //   optional($.pragma),
-    //   optional(seq(
-    //     alias(token(prec(TOKEN_PREC.conceptOf, 'of')), $.keyw),
-    //     sep_repeat($.typeDesc, ','),
-    //   )),
-    //   $._newline,
-    //   $._suite,
-    // ),
+    _objectPart: $ => section($, $.objectPart),
+
+    objectPart: $ => choice(
+      $.objectWhen,
+      $.objectCase,
+      alias('nil', $.keyw),
+      alias('discard', $.keyw),
+      seq(
+        sep_repeat1(
+          $._identWithPragma,
+          $._comma,
+        ),
+        ':',
+        $.typeDesc,
+      ),
+    ),
+
+    objectWhen: $ => prec.right(seq(
+      alias('when', $.keyw),
+      $.expr,
+      $._colcom,
+      $._objectPart,
+      repeat($.objectElif),
+      optional($.objectElse),
+    )),
+
+    objectCase: $ => seq(
+      alias('case', $.keyw),
+      $._identWithPragma,
+      ':',
+      $.typeDesc,
+      optional(':'),
+      $._newline,
+      $.objectBranches,
+    ),
+
+    objectBranches: $ => prec.right(seq(
+      repeat1($.objectBranch),
+      // repeat($.objectElif),
+      optional($.objectElse),
+    )),
+
+    objectBranch: $ => prec.right(seq(
+      alias('of', $.keyw),
+      $.exprList,
+      $._colcom,
+      $._objectPart,
+    )),
+
+    objectElif: $ => prec.right(seq(
+      alias('elif', $.keyw),
+      $.expr,
+      $._colcom,
+      $._objectPart,
+    )),
+
+    objectElse: $ => prec.right(seq(
+      alias('else', $.keyw),
+      $._colcom,
+      $._objectPart,
+    )),
+
+    conceptDecl: $ => seq(
+      alias('concept', $.keyw),
+      sep_repeat(
+        $.conceptParam,
+        ',',
+      ),
+      optional($.pragma),
+      optional(seq(
+        alias('of', $.keyw),
+        sep_repeat($.typeDesc, ','),
+      )),
+      $._newline,
+      $._suite,
+    ),
+
+    conceptParam: $ => seq(
+      optional(alias(choice(
+        'var',
+        'ref',
+        'ptr',
+        'static',
+        'type',
+        'out',
+      ), $.keyw)),
+      $.symbol,
+    ),
 
     // ========================================================================
     // simple statements 
@@ -821,6 +845,12 @@ module.exports = grammar({
       
     )),
 
+    identColon: $ => seq(
+      sep_repeat1($.ident, $._comma),
+      ':',
+      $.typeDesc,
+    ),
+
     identColonEquals: $ => prec.right(seq(
       sep_repeat1($.ident, $._comma),
       optional(seq(
@@ -929,8 +959,8 @@ module.exports = grammar({
           $.tupleDecl,
           $.routineExpr,
           $.enumDecl,
-          // $.objectDecl,
-          // $.conceptDecl,
+          $.objectDecl,
+          $.conceptDecl,
           $._identOrLiteral,
         ),
         repeat($.primarySuffix),
@@ -1012,7 +1042,7 @@ module.exports = grammar({
       '}',
     )),
 
-    cmdCall: $ => $.expr,
+    cmdCall: $ => prec.left(sep_repeat1($.expr, $._comma, false)),
 
     // ========================================================================
     // identifier
@@ -1419,7 +1449,7 @@ module.exports = grammar({
     // utilities
 
     // _suite and block are stolen from the tree-sitter-python repo and help
-    // with the indent dedent block matching. _suite is used, where stmt is used
+    // with the _indent _dedent block matching. _suite is used, where stmt is used
     // in the grammar spec
     _suite: $ => choice(
       alias($._simpleStmts, $.block),

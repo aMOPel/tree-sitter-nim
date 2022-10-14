@@ -248,7 +248,7 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
         {
@@ -268,6 +268,56 @@
       "types": [
         {
           "type": "block",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "conceptDecl",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "block",
+          "named": true
+        },
+        {
+          "type": "conceptParam",
+          "named": true
+        },
+        {
+          "type": "keyw",
+          "named": true
+        },
+        {
+          "type": "pragma",
+          "named": true
+        },
+        {
+          "type": "typeDesc",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "conceptParam",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "keyw",
+          "named": true
+        },
+        {
+          "type": "symbol",
           "named": true
         }
       ]
@@ -915,17 +965,13 @@
     }
   },
   {
-    "type": "identColonEquals",
+    "type": "identColon",
     "named": true,
     "fields": {},
     "children": {
       "multiple": true,
       "required": true,
       "types": [
-        {
-          "type": "expr",
-          "named": true
-        },
         {
           "type": "ident",
           "named": true
@@ -1424,6 +1470,227 @@
     "fields": {}
   },
   {
+    "type": "nil_lit",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "objectBranch",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "exprList",
+          "named": true
+        },
+        {
+          "type": "keyw",
+          "named": true
+        },
+        {
+          "type": "objectPart",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "objectBranches",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "objectBranch",
+          "named": true
+        },
+        {
+          "type": "objectElse",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "objectCase",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "keyw",
+          "named": true
+        },
+        {
+          "type": "objectBranches",
+          "named": true
+        },
+        {
+          "type": "opr",
+          "named": true
+        },
+        {
+          "type": "pragma",
+          "named": true
+        },
+        {
+          "type": "symbol",
+          "named": true
+        },
+        {
+          "type": "typeDesc",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "objectDecl",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "keyw",
+          "named": true
+        },
+        {
+          "type": "objectPart",
+          "named": true
+        },
+        {
+          "type": "pragma",
+          "named": true
+        },
+        {
+          "type": "typeDesc",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "objectElif",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "expr",
+          "named": true
+        },
+        {
+          "type": "keyw",
+          "named": true
+        },
+        {
+          "type": "objectPart",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "objectElse",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "keyw",
+          "named": true
+        },
+        {
+          "type": "objectPart",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "objectPart",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "keyw",
+          "named": true
+        },
+        {
+          "type": "objectCase",
+          "named": true
+        },
+        {
+          "type": "objectWhen",
+          "named": true
+        },
+        {
+          "type": "opr",
+          "named": true
+        },
+        {
+          "type": "pragma",
+          "named": true
+        },
+        {
+          "type": "symbol",
+          "named": true
+        },
+        {
+          "type": "typeDesc",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "objectWhen",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "expr",
+          "named": true
+        },
+        {
+          "type": "keyw",
+          "named": true
+        },
+        {
+          "type": "objectElif",
+          "named": true
+        },
+        {
+          "type": "objectElse",
+          "named": true
+        },
+        {
+          "type": "objectPart",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "ofBranch",
     "named": true,
     "fields": {},
@@ -1684,6 +1951,10 @@
           "named": true
         },
         {
+          "type": "conceptDecl",
+          "named": true
+        },
+        {
           "type": "enumDecl",
           "named": true
         },
@@ -1693,6 +1964,10 @@
         },
         {
           "type": "literal",
+          "named": true
+        },
+        {
+          "type": "objectDecl",
           "named": true
         },
         {
@@ -2280,7 +2555,7 @@
       "required": true,
       "types": [
         {
-          "type": "identColonEquals",
+          "type": "identColon",
           "named": true
         },
         {
@@ -2696,8 +2971,8 @@
     "named": false
   },
   {
-    "type": "nil_lit",
-    "named": true
+    "type": "nil",
+    "named": false
   },
   {
     "type": "not",

@@ -388,6 +388,79 @@ discard iterator
             (keyw)))))))
 
 ==================
+cmdCall
+==================
+
+echo "hi"
+echo "hi", test "hi"
+echo test "hi", "hi", test "hi", "hi"
+
+---
+
+(module
+  (stmt
+    (exprStmt
+      (primary
+        (symbol
+          (ident))
+        (cmdCall
+          (expr
+            (primary
+              (literal
+                (str_lit))))))))
+  (stmt
+    (exprStmt
+      (primary
+        (symbol
+          (ident))
+        (cmdCall
+          (expr
+            (primary
+              (literal
+                (str_lit))))
+          (expr
+            (primary
+              (symbol
+                (ident))
+              (cmdCall
+                (expr
+                  (primary
+                    (literal
+                      (str_lit)))))))))))
+  (stmt
+    (exprStmt
+      (primary
+        (symbol
+          (ident))
+        (cmdCall
+          (expr
+            (primary
+              (symbol
+                (ident))
+              (cmdCall
+                (expr
+                  (primary
+                    (literal
+                      (str_lit)))))))
+          (expr
+            (primary
+              (literal
+                (str_lit))))
+          (expr
+            (primary
+              (symbol
+                (ident))
+              (cmdCall
+                (expr
+                  (primary
+                    (literal
+                      (str_lit)))))))
+          (expr
+            (primary
+              (literal
+                (str_lit)))))))))
+
+==================
 cmdCall tupleConstr disambiguation
 ==================
 
