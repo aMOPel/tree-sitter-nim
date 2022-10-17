@@ -1,8 +1,12 @@
 // rules:
 // TODO: par, this is gonna be more difficult
-// TODO: complex expressions (ifExpr, ...)
-// TODO: postExprBlocks, doBlock
 // TODO: arbitrary parentheses around stmts and exprs
+// TODO: complex expressions (ifExpr, ...)
+// TODO: add postExprBlocks to the remaining rules
+// DONE: postExprBlocks, doBlock
+// TODO: routineExpr does not work inside str interpolation
+// TODO: look into bracketExpr for type brackets like `varargs[untyped]`
+// TODO: look into cmdCall + qualifiedSuffix like `echo args.treeRepr`
 // DONE: cmdCall comma list
 // DONE: conceptDecl
 // DONE: objectDecl
@@ -162,6 +166,7 @@ module.exports = grammar({
       $.mixinStmt,
       $.routine,
       $.declaration,
+      $.complexPostExprBlocks,
     ),
 
     // ========================================================================
@@ -191,7 +196,7 @@ module.exports = grammar({
           $.varTuple,
           $.declColonEquals,
         ),
-        optional($.colonBody),
+        optional($.postExprBlocks),
       )),
     ),
 
@@ -635,19 +640,11 @@ module.exports = grammar({
 
     exprStmt: $ => seq(
       $._simpleExpr,
-      optional(choice(
-        seq(
+      optional(seq(
           '=',
-          optInd($, seq($.expr, optional($.colonBody)))
-        ),
-        // seq(
-        //   sep_repeat1(
-        //     $.expr,
-        //     $._comma,
-        //   ),
-        //   $.postExprBlocks,
-        // ),
+          $.expr
       )),
+      optional($.postExprBlocks),
     ),
 
     // ========================================================================
@@ -666,7 +663,7 @@ module.exports = grammar({
       alias($._identVis, $.ident),
       optional($.pattern),
       optional($.genericParamList),
-      seq(optional($.paramList), optional($.paramListSuffix)),
+      seq(optional($.paramList), optional($.paramListColon)),
       optional($.pragma),
       optional(seq(
         '=',
@@ -715,10 +712,14 @@ module.exports = grammar({
       ')',
     ),
 
-    // use seq(optional($.paramList), optional($.paramListSuffix)) instead of
-    // paramListColon or paramListArrow from grammar
-    paramListSuffix: $ => seq(
-      choice(':', '->'),
+    // use seq(optional($.paramList), optional($.paramListArrow/Colon)) instead of
+    paramListArrow: $ => seq(
+      '->',
+      $.typeDesc
+    ),
+
+    paramListColon: $ => seq(
+      ':',
       $.typeDesc
     ),
 
@@ -917,31 +918,100 @@ module.exports = grammar({
       $._comma,
     ),
 
-    colonBody: $ => seq(
-      $._colcom,
-      $._suite,
-      // optional($.postExprBlocks),
-    ),
+    // goes into
+    // exprColonEqExpr
+    // par
+    // commandParam
+    // primarySuffix
+    // returnStmt
+    // raiseStmt
+    // yieldStmt
+    // discardStmt
+    // breakStmt
+    // continueStmt
+    // variable/constant
 
-    postExprBlocks: $ => seq(
+    // of/else: https://nim-lang.org/docs/manual.html#macros-caseminusof-macro
+    postExprBlocks: $ => prec.left(choice(
+      $.doBlock,
+      // just `do:` without paramList etc
+      seq(
+        ':',
+        choice(
+          alias($._simpleStmts, $.block),
+          seq($._indent, $.block),
+        ),
+      ),
+    )),
+
+    // Has to in _complexStmt, so that it can match multiple branches.
+    // If it's in exprStmt with postExprBlocks, it is below _simpleStmts
+    // and that will cut off after the first possible _newline, thus the other
+    // branches won't be parsed properly
+    complexPostExprBlocks: $ => prec.right(seq(
+      $._simpleExpr,
+      choice(
+        seq(
+          ':',
+          $._newline,
+          repeat1(choice(
+            $.postExprOf,
+            $.postExprElif,
+            $.postExprElse,
+            $.postExprExcept,
+            $.postExprFinally,
+          )),
+        ),
+        repeat1($.postExprDo),
+      ),
+    )),
+
+    // it's extracted from doBlock, since doBlock has a distinct syntax
+    postExprDo: $ => seq(
+      alias('do', $.keyw),
       ':',
-      optional($._suite),
-      repeat(choice(
-        $.doBlock,
-        // seq(alias('of', $.keyw), $.exprList, ':', $._suite),
-        // seq(alias('elif', $.keyw), $.expr, ':', $._suite),
-        // seq(alias('except', $.keyw), $.exprList, ':', $._suite),
-        // seq(alias('finally', $.keyw), ':', $._suite),
-        // seq(alias('else', $.keyw), ':', $._suite),
-      )),
+      $._suite
     ),
 
+    postExprOf: $ => seq(
+      alias('of', $.keyw),
+      $.exprList,
+      ':',
+      $._suite,
+    ),
+
+    postExprElif: $ => seq(
+      alias('elif', $.keyw),
+      $.expr,
+      ':',
+      $._suite,
+    ),
+
+    postExprElse: $ => seq(
+      'else',
+      ':',
+      $._suite,
+    ),
+
+    postExprExcept: $ => seq(
+      alias('except', $.keyw),
+      $.exprList,
+      ':',
+      $._suite,
+    ),
+
+    postExprFinally: $ => seq(
+      alias('finally', $.keyw),
+      ':',
+      $._suite,
+    ),
+
+    // https://nim-lang.org/docs/manual_experimental.html#do-notation
+    // doBlock with paramList
     doBlock: $ => seq(
       alias('do', $.keyw),
-      seq(
-        optional($.paramList),
-        optional($.paramListSuffix),
-      ),
+      $.paramList,
+      optional($.paramListArrow),
       optional($.pragma),
       $._colcom,
       $._suite,
@@ -964,10 +1034,6 @@ module.exports = grammar({
           $._identOrLiteral,
         ),
         repeat($.primarySuffix),
-      ),
-      seq(
-        $._identOrLiteral,
-        $.cmdCall,
       ),
     )),
 
@@ -998,8 +1064,8 @@ module.exports = grammar({
       $.qualifiedSuffix,
       $.indexSuffix,
       $.patternBind,
-      // TODO: exprStmt also can do a cmdCall?
-      // $.cmdCall,
+      // has to be in primarySuffix to cover all cases
+      $.cmdCall,
     ),
 
     functionCall: $ => prec(PREC.functionCall, seq(
@@ -1094,7 +1160,7 @@ module.exports = grammar({
 
     routineExpr: $ => prec.right(seq(
       alias(choice('proc', 'func', 'iterator'), $.keyw),
-      seq(optional($.paramList), optional($.paramListSuffix)),
+      seq(optional($.paramList), optional($.paramListColon)),
       optional($.pragma),
       optional(seq('=', $._suite)),
     )),

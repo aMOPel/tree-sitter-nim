@@ -1,0 +1,389 @@
+==================
+call colon body
+==================
+
+test:
+  discard
+  discard
+test 1: discard; discard
+test 2, 3:
+  discard
+test(1):
+  discard
+
+---
+
+(module
+  (stmt
+    (exprStmt
+      (primary
+        (symbol
+          (ident)))
+      (postExprBlocks
+        (block
+          (stmt
+            (discardStmt
+              (keyw)))
+          (stmt
+            (discardStmt
+              (keyw)))))))
+  (stmt
+    (exprStmt
+      (primary
+        (symbol
+          (ident))
+        (primarySuffix
+          (cmdCall
+            (expr
+              (primary
+                (literal
+                  (int_lit)))))))
+      (postExprBlocks
+        (block
+          (discardStmt
+            (keyw))
+          (discardStmt
+            (keyw))))))
+  (stmt
+    (exprStmt
+      (primary
+        (symbol
+          (ident))
+        (primarySuffix
+          (cmdCall
+            (expr
+              (primary
+                (literal
+                  (int_lit))))
+            (expr
+              (primary
+                (literal
+                  (int_lit)))))))
+      (postExprBlocks
+        (block
+          (stmt
+            (discardStmt
+              (keyw)))))))
+  (stmt
+    (exprStmt
+      (primary
+        (symbol
+          (ident))
+        (primarySuffix
+          (functionCall
+            (exprColonEqExprList
+                (expr
+                  (primary
+                    (literal
+                      (int_lit))))))))
+      (postExprBlocks
+        (block
+          (stmt
+            (discardStmt
+              (keyw))))))))
+
+==================
+complexPostExprBlocks
+==================
+
+case_token:
+elif true:
+  discard
+elif false:
+  discard
+else:
+  discard
+case_token:
+except Exception as e, OtherException:
+  discard
+finally:
+  discard
+case_token:
+of 0:
+  discard
+of 1:
+  discard
+of 2:
+  discard
+else:
+  discard
+
+---
+
+(module
+  (stmt
+    (complexPostExprBlocks
+      (primary
+        (symbol
+          (ident)))
+      (postExprElif
+        (keyw)
+        (expr
+          (primary
+            (literal
+              (bool_lit))))
+        (block
+          (stmt
+            (discardStmt
+              (keyw)))))
+      (postExprElif
+        (keyw)
+        (expr
+          (primary
+            (literal
+              (bool_lit))))
+        (block
+          (stmt
+            (discardStmt
+              (keyw)))))
+      (postExprElse
+        (block
+          (stmt
+            (discardStmt
+              (keyw)))))))
+  (stmt
+    (complexPostExprBlocks
+      (primary
+        (symbol
+          (ident)))
+      (postExprExcept
+        (keyw)
+        (exprList
+          (expr
+            (primary
+              (symbol
+                (ident)))
+            (operator)
+            (primary
+              (symbol
+                (ident))))
+          (expr
+            (primary
+              (symbol
+                (ident)))))
+        (block
+          (stmt
+            (discardStmt
+              (keyw)))))
+      (postExprFinally
+        (keyw)
+        (block
+          (stmt
+            (discardStmt
+              (keyw)))))))
+  (stmt
+    (complexPostExprBlocks
+      (primary
+        (symbol
+          (ident)))
+      (postExprOf
+        (keyw)
+        (exprList
+          (expr
+            (primary
+              (literal
+                (int_lit)))))
+        (block
+          (stmt
+            (discardStmt
+              (keyw)))))
+      (postExprOf
+        (keyw)
+        (exprList
+          (expr
+            (primary
+              (literal
+                (int_lit)))))
+        (block
+          (stmt
+            (discardStmt
+              (keyw)))))
+      (postExprOf
+        (keyw)
+        (exprList
+          (expr
+            (primary
+              (literal
+                (int_lit)))))
+        (block
+          (stmt
+            (discardStmt
+              (keyw)))))
+      (postExprElse
+        (block
+          (stmt
+            (discardStmt
+              (keyw))))))))
+
+==================
+doBlock
+==================
+
+sort(cities) do (x,y: string) -> int:
+  cmp(x.len, y.len)
+cities = cities.map do (x:string) -> string:
+  "City of " & x
+
+---
+
+(module
+  (stmt
+    (exprStmt
+      (primary
+        (symbol
+          (ident))
+        (primarySuffix
+          (functionCall
+            (exprColonEqExprList
+                (expr
+                  (primary
+                    (symbol
+                      (ident))))))))
+      (postExprBlocks
+        (doBlock
+          (keyw)
+          (paramList
+            (paramColonEquals
+              (symbol
+                (ident))
+              (symbol
+                (ident))
+              (typeDesc
+                (primary
+                  (symbol
+                    (ident))))))
+          (paramListArrow
+            (typeDesc
+              (primary
+                (symbol
+                  (ident)))))
+          (block
+            (stmt
+              (exprStmt
+                (primary
+                  (symbol
+                    (ident))
+                  (primarySuffix
+                    (functionCall
+                      (exprColonEqExprList
+                          (expr
+                            (primary
+                              (symbol
+                                (ident))
+                              (primarySuffix
+                                (qualifiedSuffix
+                                  (symbol
+                                    (ident))))))
+                          (expr
+                            (primary
+                              (symbol
+                                (ident))
+                              (primarySuffix
+                                (qualifiedSuffix
+                                  (symbol
+                                    (ident)))))))))))))))))
+  (stmt
+    (exprStmt
+      (primary
+        (symbol
+          (ident)))
+      (expr
+        (primary
+          (symbol
+            (ident))
+          (primarySuffix
+            (qualifiedSuffix
+              (symbol
+                (ident))))))
+      (postExprBlocks
+        (doBlock
+          (keyw)
+          (paramList
+            (paramColonEquals
+              (symbol
+                (ident))
+              (typeDesc
+                (primary
+                  (symbol
+                    (ident))))))
+          (paramListArrow
+            (typeDesc
+              (primary
+                (symbol
+                  (ident)))))
+          (block
+            (stmt
+              (exprStmt
+                (primary
+                  (literal
+                    (str_lit)))
+                (operator)
+                (primary
+                  (symbol
+                    (ident)))))))))))
+
+==================
+postExprDo
+==================
+
+macroResults.add quote do:
+  discard
+  discard
+performWithUndo do:
+  discard
+  discard
+do:
+  discard
+  discard
+
+---
+
+(module
+  (stmt
+    (complexPostExprBlocks
+      (primary
+        (symbol
+          (ident))
+        (primarySuffix
+          (qualifiedSuffix
+            (symbol
+              (ident))))
+        (primarySuffix
+          (cmdCall
+            (expr
+              (primary
+                (symbol
+                  (ident)))))))
+      (postExprDo
+        (keyw)
+        (block
+          (stmt
+            (discardStmt
+              (keyw)))
+          (stmt
+            (discardStmt
+              (keyw)))))))
+  (stmt
+    (complexPostExprBlocks
+      (primary
+        (symbol
+          (ident)))
+      (postExprDo
+        (keyw)
+        (block
+          (stmt
+            (discardStmt
+              (keyw)))
+          (stmt
+            (discardStmt
+              (keyw)))))
+      (postExprDo
+        (keyw)
+        (block
+          (stmt
+            (discardStmt
+              (keyw)))
+          (stmt
+            (discardStmt
+              (keyw))))))))
+

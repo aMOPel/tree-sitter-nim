@@ -346,7 +346,7 @@ discard iterator
                   (primary
                     (literal
                       (int_lit))))))
-            (paramListSuffix
+            (paramListColon
               (typeDesc
                 (primary
                   (symbol
@@ -403,62 +403,68 @@ echo test "hi", "hi", test "hi", "hi"
       (primary
         (symbol
           (ident))
-        (cmdCall
-          (expr
-            (primary
-              (literal
-                (str_lit))))))))
+        (primarySuffix
+          (cmdCall
+            (expr
+              (primary
+                (literal
+                  (str_lit)))))))))
   (stmt
     (exprStmt
       (primary
         (symbol
           (ident))
-        (cmdCall
-          (expr
-            (primary
-              (literal
-                (str_lit))))
-          (expr
-            (primary
-              (symbol
-                (ident))
-              (cmdCall
-                (expr
-                  (primary
-                    (literal
-                      (str_lit)))))))))))
+        (primarySuffix
+          (cmdCall
+            (expr
+              (primary
+                (literal
+                  (str_lit))))
+            (expr
+              (primary
+                (symbol
+                  (ident))))))
+        (primarySuffix
+          (cmdCall
+            (expr
+              (primary
+                (literal
+                  (str_lit)))))))))
   (stmt
     (exprStmt
       (primary
         (symbol
           (ident))
-        (cmdCall
-          (expr
-            (primary
-              (symbol
-                (ident))
-              (cmdCall
-                (expr
-                  (primary
-                    (literal
-                      (str_lit)))))))
-          (expr
-            (primary
-              (literal
-                (str_lit))))
-          (expr
-            (primary
-              (symbol
-                (ident))
-              (cmdCall
-                (expr
-                  (primary
-                    (literal
-                      (str_lit)))))))
-          (expr
-            (primary
-              (literal
-                (str_lit)))))))))
+        (primarySuffix
+          (cmdCall
+            (expr
+              (primary
+                (symbol
+                  (ident))))))
+        (primarySuffix
+          (cmdCall
+            (expr
+              (primary
+                (literal
+                  (str_lit))))
+            (expr
+              (primary
+                (literal
+                  (str_lit))))
+            (expr
+              (primary
+                (symbol
+                  (ident))))))
+        (primarySuffix
+          (cmdCall
+            (expr
+              (primary
+                (literal
+                  (str_lit))))
+            (expr
+              (primary
+                (literal
+                  (str_lit))))))))))
 
 ==================
 cmdCall tupleConstr disambiguation
@@ -494,10 +500,11 @@ echo (((1,2),),)           # triple tuple
       (primary
         (symbol
           (ident))
-        (cmdCall
-          (expr
-            (primary
-              (tupleConstr))))))
+        (primarySuffix
+          (cmdCall
+            (expr
+              (primary
+                (tupleConstr)))))))
     (comment))
   (stmt
     (exprStmt
@@ -521,44 +528,46 @@ echo (((1,2),),)           # triple tuple
       (primary
         (symbol
           (ident))
-        (cmdCall
-          (expr
-            (primary
-              (tupleConstr
-                  (expr
-                    (primary
-                      (literal
-                        (int_lit))))
-                  (expr
-                    (primary
-                      (literal
-                        (int_lit))))))))))
+        (primarySuffix
+          (cmdCall
+            (expr
+              (primary
+                (tupleConstr
+                    (expr
+                      (primary
+                        (literal
+                          (int_lit))))
+                    (expr
+                      (primary
+                        (literal
+                          (int_lit)))))))))))
     (comment))
   (stmt
     (exprStmt
       (primary
         (symbol
           (ident))
-        (cmdCall
-          (expr
-            (primary
-              (tupleConstr
-                  (expr
-                    (primary
-                      (symbol
-                        (ident))))
-                  (expr
-                    (primary
-                      (literal
-                        (int_lit))))
-                  (expr
-                    (primary
-                      (symbol
-                        (ident))))
-                  (expr
-                    (primary
-                      (literal
-                        (int_lit))))))))))
+        (primarySuffix
+          (cmdCall
+            (expr
+              (primary
+                (tupleConstr
+                    (expr
+                      (primary
+                        (symbol
+                          (ident))))
+                    (expr
+                      (primary
+                        (literal
+                          (int_lit))))
+                    (expr
+                      (primary
+                        (symbol
+                          (ident))))
+                    (expr
+                      (primary
+                        (literal
+                          (int_lit)))))))))))
     (comment))
   (stmt
     (exprStmt
@@ -591,32 +600,34 @@ echo (((1,2),),)           # triple tuple
       (primary
         (symbol
           (ident))
-        (cmdCall
-          (expr
-            (primary
-              (tupleConstr
-                  (expr
-                    (primary
-                      (literal
-                        (int_lit))))))))))
+        (primarySuffix
+          (cmdCall
+            (expr
+              (primary
+                (tupleConstr
+                    (expr
+                      (primary
+                        (literal
+                          (int_lit)))))))))))
     (comment))
   (stmt
     (exprStmt
       (primary
         (symbol
           (ident))
-        (cmdCall
-          (expr
-            (primary
-              (tupleConstr
-                (expr
-                  (primary
-                    (symbol
-                      (ident))))
-                (expr
-                  (primary
-                    (literal
-                      (int_lit))))))))))
+        (primarySuffix
+          (cmdCall
+            (expr
+              (primary
+                (tupleConstr
+                  (expr
+                    (primary
+                      (symbol
+                        (ident))))
+                  (expr
+                    (primary
+                      (literal
+                        (int_lit)))))))))))
     (comment))
   (stmt
     (exprStmt
@@ -686,23 +697,25 @@ echo (((1,2),),)           # triple tuple
       (primary
         (symbol
           (ident))
-        (cmdCall
-          (expr
-            (primary
-              (tupleConstr
-                  (expr
-                    (primary
-                      (tupleConstr
-                          (expr
-                            (primary
-                              (tupleConstr
-                                  (expr
-                                    (primary
-                                      (literal
-                                        (int_lit))))
-                                  (expr
-                                    (primary
-                                      (literal
-                                        (int_lit)))))))))))))))))
+        (primarySuffix
+          (cmdCall
+            (expr
+              (primary
+                (tupleConstr
+                    (expr
+                      (primary
+                        (tupleConstr
+                            (expr
+                              (primary
+                                (tupleConstr
+                                    (expr
+                                      (primary
+                                        (literal
+                                          (int_lit))))
+                                    (expr
+                                      (primary
+                                        (literal
+                                          (int_lit))))))))))))))))))
   (comment))
+
 

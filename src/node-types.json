@@ -259,15 +259,47 @@
     }
   },
   {
-    "type": "colonBody",
+    "type": "complexPostExprBlocks",
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
         {
-          "type": "block",
+          "type": "operator",
+          "named": true
+        },
+        {
+          "type": "postExprDo",
+          "named": true
+        },
+        {
+          "type": "postExprElif",
+          "named": true
+        },
+        {
+          "type": "postExprElse",
+          "named": true
+        },
+        {
+          "type": "postExprExcept",
+          "named": true
+        },
+        {
+          "type": "postExprFinally",
+          "named": true
+        },
+        {
+          "type": "postExprOf",
+          "named": true
+        },
+        {
+          "type": "pragma",
+          "named": true
+        },
+        {
+          "type": "primary",
           "named": true
         }
       ]
@@ -474,7 +506,7 @@
           "named": true
         },
         {
-          "type": "paramListSuffix",
+          "type": "paramListArrow",
           "named": true
         },
         {
@@ -762,15 +794,15 @@
       "required": true,
       "types": [
         {
-          "type": "colonBody",
-          "named": true
-        },
-        {
           "type": "expr",
           "named": true
         },
         {
           "type": "operator",
+          "named": true
+        },
+        {
+          "type": "postExprBlocks",
           "named": true
         },
         {
@@ -1785,7 +1817,22 @@
     }
   },
   {
-    "type": "paramListSuffix",
+    "type": "paramListArrow",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "typeDesc",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "paramListColon",
     "named": true,
     "fields": {},
     "children": {
@@ -1882,6 +1929,147 @@
     }
   },
   {
+    "type": "postExprBlocks",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "block",
+          "named": true
+        },
+        {
+          "type": "doBlock",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "postExprDo",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "block",
+          "named": true
+        },
+        {
+          "type": "keyw",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "postExprElif",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "block",
+          "named": true
+        },
+        {
+          "type": "expr",
+          "named": true
+        },
+        {
+          "type": "keyw",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "postExprElse",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "block",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "postExprExcept",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "block",
+          "named": true
+        },
+        {
+          "type": "exprList",
+          "named": true
+        },
+        {
+          "type": "keyw",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "postExprFinally",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "block",
+          "named": true
+        },
+        {
+          "type": "keyw",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "postExprOf",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "block",
+          "named": true
+        },
+        {
+          "type": "exprList",
+          "named": true
+        },
+        {
+          "type": "keyw",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "pragma",
     "named": true,
     "fields": {},
@@ -1944,10 +2132,6 @@
         },
         {
           "type": "castExpr",
-          "named": true
-        },
-        {
-          "type": "cmdCall",
           "named": true
         },
         {
@@ -2028,6 +2212,10 @@
       "multiple": false,
       "required": true,
       "types": [
+        {
+          "type": "cmdCall",
+          "named": true
+        },
         {
           "type": "functionCall",
           "named": true
@@ -2144,7 +2332,7 @@
           "named": true
         },
         {
-          "type": "paramListSuffix",
+          "type": "paramListColon",
           "named": true
         },
         {
@@ -2179,7 +2367,7 @@
           "named": true
         },
         {
-          "type": "paramListSuffix",
+          "type": "paramListColon",
           "named": true
         },
         {
@@ -2254,6 +2442,10 @@
         },
         {
           "type": "caseStmt",
+          "named": true
+        },
+        {
+          "type": "complexPostExprBlocks",
           "named": true
         },
         {
@@ -2671,15 +2863,15 @@
       "required": true,
       "types": [
         {
-          "type": "colonBody",
-          "named": true
-        },
-        {
           "type": "declColonEquals",
           "named": true
         },
         {
           "type": "keyw",
+          "named": true
+        },
+        {
+          "type": "postExprBlocks",
           "named": true
         },
         {
@@ -2925,6 +3117,10 @@
   {
     "type": "docComment",
     "named": true
+  },
+  {
+    "type": "else",
+    "named": false
   },
   {
     "type": "false",

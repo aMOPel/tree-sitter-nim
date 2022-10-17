@@ -104,7 +104,7 @@ proc g(a: int = 1; b, c: int = 2; d: int): int
         (symbol
           (ident)))
       (paramList)
-      (paramListSuffix
+      (paramListColon
         (typeDesc
           (primary
             (symbol
@@ -123,7 +123,7 @@ proc g(a: int = 1; b, c: int = 2; d: int): int
             (primary
               (symbol
                 (ident))))))
-      (paramListSuffix
+      (paramListColon
         (typeDesc
           (primary
             (symbol
@@ -144,33 +144,7 @@ proc g(a: int = 1; b, c: int = 2; d: int): int
             (primary
               (symbol
                 (ident))))))
-      (paramListSuffix
-        (typeDesc
-          (primary
-            (symbol
-              (ident)))))))
-  (stmt
-    (routine
-      (keyw)
-      (ident
-        (symbol
-          (ident)))
-      (paramList
-        (paramColonEquals
-          (symbol
-            (ident))
-          (typeDesc
-            (primary
-              (symbol
-                (ident)))))
-        (paramColonEquals
-          (symbol
-            (ident))
-          (typeDesc
-            (primary
-              (symbol
-                (ident))))))
-      (paramListSuffix
+      (paramListColon
         (typeDesc
           (primary
             (symbol
@@ -192,6 +166,32 @@ proc g(a: int = 1; b, c: int = 2; d: int): int
         (paramColonEquals
           (symbol
             (ident))
+          (typeDesc
+            (primary
+              (symbol
+                (ident))))))
+      (paramListColon
+        (typeDesc
+          (primary
+            (symbol
+              (ident)))))))
+  (stmt
+    (routine
+      (keyw)
+      (ident
+        (symbol
+          (ident)))
+      (paramList
+        (paramColonEquals
+          (symbol
+            (ident))
+          (typeDesc
+            (primary
+              (symbol
+                (ident)))))
+        (paramColonEquals
+          (symbol
+            (ident))
           (symbol
             (ident))
           (typeDesc
@@ -205,7 +205,7 @@ proc g(a: int = 1; b, c: int = 2; d: int): int
             (primary
               (symbol
                 (ident))))))
-      (paramListSuffix
+      (paramListColon
         (typeDesc
           (primary
             (symbol
@@ -248,7 +248,7 @@ proc g(a: int = 1; b, c: int = 2; d: int): int
             (primary
               (symbol
                 (ident))))))
-      (paramListSuffix
+      (paramListColon
         (typeDesc
           (primary
             (symbol
@@ -276,7 +276,7 @@ proc d(a{.gc}: int): int {.inline.} =
         (symbol
           (ident)))
       (paramList)
-      (paramListSuffix
+      (paramListColon
         (typeDesc
           (primary
             (symbol
@@ -324,7 +324,7 @@ proc d(a{.gc}: int): int {.inline.} =
             (primary
               (symbol
                 (ident))))))
-      (paramListSuffix
+      (paramListColon
         (typeDesc
           (primary
             (symbol
@@ -349,7 +349,7 @@ proc d(a{.gc}: int): int {.inline.} =
             (primary
               (symbol
                 (ident))))))
-      (paramListSuffix
+      (paramListColon
         (typeDesc
           (primary
             (symbol
@@ -364,7 +364,6 @@ proc d(a{.gc}: int): int {.inline.} =
         (stmt
           (discardStmt
             (keyw)))))))
-
 
 ==================
 with generic parameter
@@ -392,7 +391,7 @@ proc e[T, S; P]()
           (symbol
             (ident))))
       (paramList)
-      (paramListSuffix
+      (paramListColon
         (typeDesc
           (primary
             (symbol
@@ -423,7 +422,7 @@ proc e[T, S; P]()
           (symbol
             (ident))))
       (paramList)
-      (paramListSuffix
+      (paramListColon
         (typeDesc
           (primary
             (symbol
@@ -457,7 +456,6 @@ proc e[T, S; P]()
           (symbol
             (ident))))
       (paramList))))
-
 
 ==================
 with pattern/ term rewriting macros
@@ -538,7 +536,7 @@ proc g(a: int = 1; b, c: int{~nkRStrLit & ~ nkStrLit} = 2; d: int{~nkRStrLit & ~
                       (operator)))
                   (symbol
                     (ident))))))))
-      (paramListSuffix
+      (paramListColon
         (typeDesc
           (primary
             (symbol
@@ -564,7 +562,7 @@ proc g(a: int = 1; b, c: int{~nkRStrLit & ~ nkStrLit} = 2; d: int{~nkRStrLit & ~
                 (primary
                   (symbol
                     (ident))))))))
-      (paramListSuffix
+      (paramListColon
         (typeDesc
           (primary
             (symbol
@@ -605,7 +603,7 @@ proc g(a: int = 1; b, c: int{~nkRStrLit & ~ nkStrLit} = 2; d: int{~nkRStrLit & ~
                       (operator)))
                   (symbol
                     (ident))))))))
-      (paramListSuffix
+      (paramListColon
         (typeDesc
           (primary
             (symbol
@@ -655,7 +653,7 @@ proc g(a: int = 1; b, c: int{~nkRStrLit & ~ nkStrLit} = 2; d: int{~nkRStrLit & ~
             (primary
               (symbol
                 (ident))))))
-      (paramListSuffix
+      (paramListColon
         (typeDesc
           (primary
             (symbol
@@ -728,7 +726,7 @@ proc g(a: int = 1; b, c: int{~nkRStrLit & ~ nkStrLit} = 2; d: int{~nkRStrLit & ~
                       (operator)))
                   (symbol
                     (ident))))))))
-      (paramListSuffix
+      (paramListColon
         (typeDesc
           (primary
             (symbol
@@ -799,7 +797,7 @@ template ex{discard; discard}[T,S;R](a{.gc}: T{noalias} not nil =1; b, c: int): 
             (primary
               (symbol
                 (ident))))))
-      (paramListSuffix
+      (paramListColon
         (typeDesc
           (primary
             (symbol
@@ -920,7 +918,7 @@ template
             (primary
               (symbol
                 (ident))))))
-      (paramListSuffix
+      (paramListColon
         (typeDesc
           (primary
             (symbol
@@ -935,4 +933,3 @@ template
         (stmt
           (discardStmt
             (keyw)))))))
-

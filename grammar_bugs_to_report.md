@@ -182,6 +182,11 @@ conceptParam = ('var'|'ref'|'ptr'|'static'|'type'|'out')? symbol
 30. what are these: `'cast'|'addr'|'type'` doing in `primarySuffix`
 31. no `objectConstr` even though it has specific syntax
 32. `objectBranches` should not allow for an `elif` branch, or at least I couldn't construct a valid example.
+33. `primarySuffix` says it allows for the command syntax 
+```
+| &( '`'|IDENT|literal|'cast'|'addr'|'type') expr # command syntax
+```
+But what about multiple arguments separated by commas?
 
 QUESTION:
 what is this about?
@@ -243,3 +248,154 @@ primarySuffix = '(' (exprColonEqExpr comma?)* ')'
 2. what's the single \`
 3. what kind of suffix are the {}
 4. 
+
+====================================================================
+
+Hi there,
+
+I've been working on a tree sitter parser for nim for a while now and recently got back to it after a longer pause.
+The parser is nearing feature completion. However there are still a few roadblocks, one being the following.
+If you have a deeper understanding of the nim grammar, your help would be very appreciated.
+
+[grammar spec](https://nim-lang.org/docs/manual.html#syntax-grammar), regarding `postExprBlocks` and `colonBody`:
+
+```
+postExprBlocks = ':' stmt? ( IND{=} doBlock
+                           | IND{=} 'of' exprList ':' stmt
+                           | IND{=} 'elif' expr ':' stmt
+                           | IND{=} 'except' exprList ':' stmt
+                           | IND{=} 'finally' ':' stmt
+                           | IND{=} 'else' ':' stmt )*
+colonBody = colcom stmt postExprBlocks?
+variable = (varTuple / identColonEquals) colonBody? indAndComment
+exprStmt = simpleExpr
+         (( '=' optInd expr colonBody? )
+         / ( expr ^+ comma
+             postExprBlocks
+           ))?
+```
+
+So these are all the places in the spec where `postExprBlocks` and `colonBody` occur.
+
+### `colonBody`
+From my understanding `colonBody` is about the body for a template/macro call like:
+```nim
+templ:
+  discard
+```
+The way the spec currently describes it, `colonBody` is allowed either after a variable declaration, like:
+```nim
+let a = templ: # variable > identColonEquals
+  discard
+```
+or after an assignment, like:
+```nim
+a = templ: # exprStmt > simpleExpr '=' expr
+  discard
+```
+With the current spec a normal template call like:
+```nim
+templ:
+  discard
+```
+seems impossible. There only is this fragment in `exprStmt`
+```
+/ ( expr ^+ comma
+   postExprBlocks
+ ))?
+```
+which allows for a syntax like `expr colon stmt`.
+This fragment however strictly requires at least 1 additional `expr` before the colon,
+so it actually calls for `expr expr colon stmt` or `expr expr comma expr ... colon stmt`.
+This looks an awful lot like the command call syntax, which is allowed for template calls like this,
+however it seems oddly out of place here, since:
+1. it requires at least 1 argument,
+2. there is no equivalent for a normal function call with parentheses,
+3. the command call syntax is already taken care of by `primarySuffix`, from what I understand.
+So actually `expr colon stmt` is already enough to allow for:
+```nim
+templ 1, 2:
+  discard
+```
+and
+4. it uses `postExprBlocks` and not `colonBody`.
+
+This brings me to my second problem: `postExprBlocks`. 
+
+### `postExprBlocks` 
+
+First things that confuses me is this:
+```
+postExprBlocks = ':' stmt? ( ...
+```
+`postExprBlocks` allowing for another `colon stmt`? `colonBody` already does that, and it can be followed by `postExprBlocks`,
+so it would allow for a syntax like:
+```nim
+templ:
+  discard:
+    discard
+```
+which of course is nonsense, but what would be an actual use case of this? Since the nesting is already possible just with `colonBody`.
+
+Second thing is this:
+```
+doBlock = 'do' paramListArrow pragma? colcom stmt
+```
+only appears in the `postExprBlocks` in the whole grammar spec.
+I can only assume that `doBlock` is about the [do notation](https://nim-lang.org/docs/manual_experimental.html#do-notation).
+Looking at the examples:
+```nim
+sort(cities) do (x,y: string) -> int:
+  cmp(x.len, y.len)
+```
+is completely impossible with the current grammar spec, because:
+1. `postExprBlocks` requires a `:` before the `doBlock`
+2. `postExprBlocks` can only appear after a declaration, or an assignment (in `colonBody`) or after `expr expr` (in `exprStmt`)
+
+Third thing is:
+```
+| IND{=} 'of' exprList ':' stmt
+| IND{=} 'elif' expr ':' stmt
+| IND{=} 'except' exprList ':' stmt
+| IND{=} 'finally' ':' stmt
+| IND{=} 'else' ':' stmt )*
+```
+Frankly my understanding of macro related syntax is limited so this might be obvious, but I don't know when these could ever appear.
+
+If you could explain any of the above problems, it would be greatly appreciated.
+
+Thank you :)
+
+===================================
+
+ANSWER:
+
+1. Turns out `colonBody` is a fraud, where it's supposed to be, `postExprBlocks` is actually used in the parser.nim.
+
+2.
+```
+/ ( expr ^+ comma
+    postExprBlocks
+  ))?
+```
+isn't entirely accurate and is indeed about the command syntax. The duplication might be unnecessary.
+
+3.
+```
+postExprBlocks = ':' stmt? ( IND{=} doBlock
+                           | IND{=} 'of' exprList ':' stmt
+                           | IND{=} 'elif' expr ':' stmt
+                           | IND{=} 'except' exprList ':' stmt
+                           | IND{=} 'finally' ':' stmt
+                           | IND{=} 'else' ':' stmt )*
+```
+should actually be
+```
+postExprBlocks = doBlock / 
+                  (':' stmt? ( IND{=} doBlock
+                           | IND{=} 'of' exprList ':' stmt
+                           | IND{=} 'elif' expr ':' stmt
+                           | IND{=} 'except' exprList ':' stmt
+                           | IND{=} 'finally' ':' stmt
+                           | IND{=} 'else' ':' stmt )*
+```

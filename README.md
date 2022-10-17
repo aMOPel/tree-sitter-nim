@@ -11,8 +11,6 @@ Looking at that, you can see that quite a lot of language features are already w
 
 ## Roadmap
 
-❗ In the next month or so, I won't be able to do much for this project.
-
 __currently__
 
 *  trying to implement the missing language features
