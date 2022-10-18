@@ -3,6 +3,7 @@
 // TODO: arbitrary parentheses around stmts and exprs
 // TODO: complex expressions (ifExpr, ...)
 
+// TODO: separating typeDef and typeDesc properly
 // TODO: reorder rules related to typeDesc etc
 // TODO: add postExprBlocks to the remaining rules
 // TODO: routineExpr does not work inside str interpolation
@@ -202,7 +203,7 @@ module.exports = grammar({
     ),
 
     _typeDefAux: $ => prec.right(seq(
-      $._simpleExprTypeDesc,
+      $._simpleExprTypeDef,
       optional(choice(
         seq(
           alias('not', $.keyw), 
@@ -210,6 +211,30 @@ module.exports = grammar({
         ),
         $.postExprBlocks,
       )),
+    )),
+
+    _simpleExprTypeDef: $ => prec.left(seq(
+      sep_repeat1(
+        $.primaryTypeDef,
+        $.operator,
+        false,
+      ),
+      optional($.pragma),
+    )),
+
+    primaryTypeDef: $ => prec.left(choice(
+      seq(
+        repeat($.primaryPrefix),
+        choice(
+          $.tupleDecl,
+          $.routineExprTypeDesc,
+          $.enumDecl,
+          $.objectDecl,
+          $.conceptDecl,
+          $.symbol,
+        ),
+        repeat($.primarySuffix),
+      ),
     )),
 
     variable: $ => seq(
@@ -231,39 +256,53 @@ module.exports = grammar({
       $.expr,
     )),
 
-    tupleDecl: $ => seq(
+    // tupleDesc gets extra rule compared to seq[..] or array[..,..],
+    // because it allows for syntax like tuple[a, b: seq[int]]
+    // FIX: var a: tuple [c: d]
+    tupleDesc: $ => seq(
       alias('tuple', $.keyw),
-      choice(
-        seq(
-          '[',
-          sep_repeat(
-            $.identColon,
-            choice($._comma, $._semicolon)
-          ),
-          ']',
-        ),
-        seq(
-          $._indent,
-          repeat1($.identColon),
-          $._dedent,
-        ),
+      '[',
+      sep_repeat(
+        $.identColon,
+        choice($._comma, $._semicolon)
+      ),
+      ']',
+    ),
+
+    tupleDecl: $ => choice(
+      alias($.tupleDesc, "tupleDesc"),
+      seq(
+        alias('tuple', $.keyw),
+        $._indent,
+        repeat1($.identColon),
+        $._dedent,
       ),
     ),
 
     enumDecl: $ => prec.right(seq(
       alias('enum', $.keyw),
-      sep_repeat1(
-        // declColonEquals is a superset of the actual grammar here
-        $.declColonEquals,
-        // $.symbol,
-        // optional($.pragma),
-        // optional(seq(
-        //   '=',
-        //   $.expr
-        // )),
-        optional($._comma),
+      choice(
+        seq(
+          $._indent,
+          repeat1($.enumElement),
+          $._dedent,
+        ),
+        seq(
+          repeat1($.enumElement),
+          $._newline,
+        ),
       ),
     )),
+
+    enumElement: $ => seq(
+      $.symbol,
+      optional($.pragma),
+      optional(seq(
+        '=',
+        $.expr
+      )),
+      optional($._comma),
+    ),
 
     objectDecl: $ => prec.right(seq(
       alias('object', $.keyw),
@@ -927,11 +966,8 @@ module.exports = grammar({
       seq(
         repeat($.primaryPrefix),
         choice(
-          $.tupleDecl,
+          $.tupleDesc,
           $.routineExprTypeDesc,
-          $.enumDecl,
-          $.objectDecl,
-          $.conceptDecl,
           $.symbol,
         ),
         repeat($.primarySuffix),
@@ -978,6 +1014,11 @@ module.exports = grammar({
         $.expr,
       ))
     )),
+
+    exprColonExprList: $ => sep_repeat1(
+      $.exprColonExpr,
+      $._comma,
+    ),
 
     exprColonEqExpr: $ => seq(
       $.expr,
@@ -1291,7 +1332,7 @@ module.exports = grammar({
     // TODO: narrow down exprColonEqExprList?
     arrayConstr: $ => seq(
       '[',
-      optional($.symbolEqExprList),
+      optional($.exprColonExprList),
       ']',
     ),
 

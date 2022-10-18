@@ -8,7 +8,7 @@
       "required": false,
       "types": [
         {
-          "type": "symbolEqExprList",
+          "type": "exprColonExprList",
           "named": true
         }
       ]
@@ -695,11 +695,34 @@
       "required": true,
       "types": [
         {
-          "type": "declColonEquals",
+          "type": "enumElement",
           "named": true
         },
         {
           "type": "keyw",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "enumElement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "expr",
+          "named": true
+        },
+        {
+          "type": "pragma",
+          "named": true
+        },
+        {
+          "type": "symbol",
           "named": true
         }
       ]
@@ -791,6 +814,21 @@
       "types": [
         {
           "type": "expr",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "exprColonExprList",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "exprColonExpr",
           "named": true
         }
       ]
@@ -2265,7 +2303,7 @@
     }
   },
   {
-    "type": "primaryTypeDesc",
+    "type": "primaryTypeDef",
     "named": true,
     "fields": {},
     "children": {
@@ -2302,6 +2340,37 @@
         },
         {
           "type": "tupleDecl",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "primaryTypeDesc",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "primaryPrefix",
+          "named": true
+        },
+        {
+          "type": "primarySuffix",
+          "named": true
+        },
+        {
+          "type": "routineExprTypeDesc",
+          "named": true
+        },
+        {
+          "type": "symbol",
+          "named": true
+        },
+        {
+          "type": "tupleDesc",
           "named": true
         }
       ]
@@ -2919,6 +2988,25 @@
     "fields": {},
     "children": {
       "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "identColon",
+          "named": true
+        },
+        {
+          "type": "keyw",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "tupleDesc",
+    "named": false,
+    "fields": {},
+    "children": {
+      "multiple": true,
       "required": true,
       "types": [
         {
@@ -2969,7 +3057,7 @@
           "named": true
         },
         {
-          "type": "primaryTypeDesc",
+          "type": "primaryTypeDef",
           "named": true
         },
         {

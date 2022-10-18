@@ -22,7 +22,7 @@ type j[T] = var ref int not nil
         (keyw)
         (symbol
           (ident))
-        (primaryTypeDesc
+        (primaryTypeDef
           (symbol
             (ident))))))
   (stmt
@@ -33,7 +33,7 @@ type j[T] = var ref int not nil
           (ident))
         (symbol
           (ident))
-        (primaryTypeDesc
+        (primaryTypeDef
           (symbol
             (ident))))))
   (stmt
@@ -42,12 +42,12 @@ type j[T] = var ref int not nil
         (keyw)
         (symbol
           (ident))
-        (primaryTypeDesc
+        (primaryTypeDef
           (symbol
             (ident)))
         (symbol
           (ident))
-        (primaryTypeDesc
+        (primaryTypeDef
           (symbol
             (ident))))))
   (stmt
@@ -60,7 +60,7 @@ type j[T] = var ref int not nil
           (genericParam
             (symbol
               (ident))))
-        (primaryTypeDesc
+        (primaryTypeDef
           (symbol
             (ident))))))
   (stmt
@@ -73,7 +73,7 @@ type j[T] = var ref int not nil
           (genericParam
             (symbol
               (ident))))
-        (primaryTypeDesc
+        (primaryTypeDef
           (symbol
             (ident))))))
   (stmt
@@ -88,7 +88,7 @@ type j[T] = var ref int not nil
               (primary
                 (symbol
                   (ident))))))
-        (primaryTypeDesc
+        (primaryTypeDef
           (symbol
             (ident))))))
   (stmt
@@ -107,7 +107,7 @@ type j[T] = var ref int not nil
               (primary
                 (symbol
                   (ident))))))
-        (primaryTypeDesc
+        (primaryTypeDef
           (symbol
             (ident))))))
   (stmt
@@ -120,7 +120,7 @@ type j[T] = var ref int not nil
           (genericParam
             (symbol
               (ident))))
-        (primaryTypeDesc
+        (primaryTypeDef
           (primaryPrefix
             (keyw))
           (primaryPrefix
@@ -470,7 +470,7 @@ var x: tuple[x: int; y, z: int]
         (keyw)
         (symbol
           (ident))
-        (primaryTypeDesc
+        (primaryTypeDef
           (primaryPrefix
             (keyw))
           (tupleDecl
@@ -487,35 +487,35 @@ var x: tuple[x: int; y, z: int]
         (keyw)
         (symbol
           (ident))
-        (primaryTypeDesc
+        (primaryTypeDef
           (tupleDecl
-            (keyw)
-            (identColon
-              (ident)
-              (typeDesc
-                (primaryTypeDesc
-                  (symbol
-                    (ident)))))
-            (identColon
-              (ident)
-              (ident)
-              (typeDesc
-                (primaryTypeDesc
-                  (symbol
-                    (ident)))))
-            (identColon
-              (ident)
-              (typeDesc
-                (primaryTypeDesc
-                  (symbol
-                    (ident))))))))))
+              (keyw)
+              (identColon
+                (ident)
+                (typeDesc
+                  (primaryTypeDesc
+                    (symbol
+                      (ident)))))
+              (identColon
+                (ident)
+                (ident)
+                (typeDesc
+                  (primaryTypeDesc
+                    (symbol
+                      (ident)))))
+              (identColon
+                (ident)
+                (typeDesc
+                  (primaryTypeDesc
+                    (symbol
+                      (ident))))))))))
   (stmt
     (declaration
       (typeDef
         (keyw)
         (symbol
           (ident))
-        (primaryTypeDesc
+        (primaryTypeDef
           (tupleDecl
             (keyw)
             (identColon
@@ -526,15 +526,15 @@ var x: tuple[x: int; y, z: int]
                     (ident)))))))
         (symbol
           (ident))
-        (primaryTypeDesc
+        (primaryTypeDef
           (tupleDecl
-            (keyw)
-            (identColon
-              (ident)
-              (typeDesc
-                (primaryTypeDesc
-                  (symbol
-                    (ident))))))))))
+              (keyw)
+              (identColon
+                (ident)
+                (typeDesc
+                  (primaryTypeDesc
+                    (symbol
+                      (ident))))))))))
   (stmt
     (declaration
       (variable
@@ -544,7 +544,7 @@ var x: tuple[x: int; y, z: int]
             (ident))
           (typeDesc
             (primaryTypeDesc
-              (tupleDecl
+              (tupleDesc
                 (keyw)
                 (identColon
                   (ident)
@@ -580,10 +580,10 @@ type b {.pure.} = enum A{.deprecated.} = 9, B{.deprecated.} C D = 17
         (keyw)
         (symbol
           (ident))
-        (primaryTypeDesc
+        (primaryTypeDef
           (enumDecl
             (keyw)
-            (declColonEquals
+            (enumElement
               (symbol
                 (ident))
               (pragma
@@ -596,7 +596,7 @@ type b {.pure.} = enum A{.deprecated.} = 9, B{.deprecated.} C D = 17
                 (primary
                   (literal
                     (int_lit)))))
-            (declColonEquals
+            (enumElement
               (symbol
                 (ident))
               (pragma
@@ -605,10 +605,10 @@ type b {.pure.} = enum A{.deprecated.} = 9, B{.deprecated.} C D = 17
                     (primary
                       (symbol
                         (ident)))))))
-            (declColonEquals
+            (enumElement
               (symbol
                 (ident)))
-            (declColonEquals
+            (enumElement
               (symbol
                 (ident))
               (expr
@@ -627,10 +627,10 @@ type b {.pure.} = enum A{.deprecated.} = 9, B{.deprecated.} C D = 17
               (primary
                 (symbol
                   (ident))))))
-        (primaryTypeDesc
+        (primaryTypeDef
           (enumDecl
             (keyw)
-            (declColonEquals
+            (enumElement
               (symbol
                 (ident))
               (pragma
@@ -643,7 +643,7 @@ type b {.pure.} = enum A{.deprecated.} = 9, B{.deprecated.} C D = 17
                 (primary
                   (literal
                     (int_lit)))))
-            (declColonEquals
+            (enumElement
               (symbol
                 (ident))
               (pragma
@@ -652,10 +652,10 @@ type b {.pure.} = enum A{.deprecated.} = 9, B{.deprecated.} C D = 17
                     (primary
                       (symbol
                         (ident)))))))
-            (declColonEquals
+            (enumElement
               (symbol
                 (ident)))
-            (declColonEquals
+            (enumElement
               (symbol
                 (ident))
               (expr
@@ -766,7 +766,7 @@ type a = int
         (keyw)
         (symbol
           (ident))
-        (primaryTypeDesc
+        (primaryTypeDef
           (symbol
             (ident)))))))
 
@@ -792,7 +792,7 @@ type f = concept x
         (keyw)
         (symbol
           (ident))
-        (primaryTypeDesc
+        (primaryTypeDef
           (conceptDecl
             (keyw)
             (conceptParam
@@ -805,7 +805,7 @@ type f = concept x
         (keyw)
         (symbol
           (ident))
-        (primaryTypeDesc
+        (primaryTypeDef
           (conceptDecl
             (keyw)
             (conceptParam
@@ -842,52 +842,7 @@ type f = concept x
         (keyw)
         (symbol
           (ident))
-        (primaryTypeDesc
-          (conceptDecl
-            (keyw)
-            (conceptParam
-              (symbol
-                (ident)))
-            (conceptParam
-              (keyw)
-              (symbol
-                (ident)))
-            (pragma
-              (exprColonEqExpr
-                (expr
-                  (primary
-                    (symbol
-                      (ident))))))
-            (block))))))
-  (stmt
-    (declaration
-      (typeDef
-        (keyw)
-        (symbol
-          (ident))
-        (primaryTypeDesc
-          (conceptDecl
-            (keyw)
-            (conceptParam
-              (symbol
-                (ident)))
-            (conceptParam
-              (keyw)
-              (symbol
-                (ident)))
-            (keyw)
-            (typeDesc
-              (primaryTypeDesc
-                (symbol
-                  (ident))))
-            (block))))))
-  (stmt
-    (declaration
-      (typeDef
-        (keyw)
-        (symbol
-          (ident))
-        (primaryTypeDesc
+        (primaryTypeDef
           (conceptDecl
             (keyw)
             (conceptParam
@@ -903,6 +858,51 @@ type f = concept x
                   (primary
                     (symbol
                       (ident))))))
+            (block))))))
+  (stmt
+    (declaration
+      (typeDef
+        (keyw)
+        (symbol
+          (ident))
+        (primaryTypeDef
+          (conceptDecl
+            (keyw)
+            (conceptParam
+              (symbol
+                (ident)))
+            (conceptParam
+              (keyw)
+              (symbol
+                (ident)))
+            (keyw)
+            (typeDesc
+              (primaryTypeDesc
+                (symbol
+                  (ident))))
+            (block))))))
+  (stmt
+    (declaration
+      (typeDef
+        (keyw)
+        (symbol
+          (ident))
+        (primaryTypeDef
+          (conceptDecl
+            (keyw)
+            (conceptParam
+              (symbol
+                (ident)))
+            (conceptParam
+              (keyw)
+              (symbol
+                (ident)))
+            (pragma
+              (exprColonEqExpr
+                (expr
+                  (primary
+                    (symbol
+                      (ident))))))
             (keyw)
             (typeDesc
               (primaryTypeDesc
@@ -919,7 +919,7 @@ type f = concept x
         (keyw)
         (symbol
           (ident))
-        (primaryTypeDesc
+        (primaryTypeDef
           (conceptDecl
             (keyw)
             (conceptParam
@@ -954,7 +954,7 @@ type c{.deprecated.} = object
         (keyw)
         (symbol
           (ident))
-        (primaryTypeDesc
+        (primaryTypeDef
           (objectDecl
             (keyw))))))
   (stmt
@@ -963,7 +963,7 @@ type c{.deprecated.} = object
         (keyw)
         (symbol
           (ident))
-        (primaryTypeDesc
+        (primaryTypeDef
           (objectDecl
             (keyw)
             (keyw)
@@ -983,7 +983,7 @@ type c{.deprecated.} = object
               (primary
                 (symbol
                   (ident))))))
-        (primaryTypeDesc
+        (primaryTypeDef
           (objectDecl
             (keyw)
             (objectPart
@@ -1044,7 +1044,7 @@ type c = object
         (keyw)
         (symbol
           (ident))
-        (primaryTypeDesc
+        (primaryTypeDef
           (objectDecl
             (keyw)
             (objectPart
@@ -1067,7 +1067,7 @@ type c = object
         (keyw)
         (symbol
           (ident))
-        (primaryTypeDesc
+        (primaryTypeDef
           (objectDecl
             (keyw)
             (objectPart
@@ -1132,7 +1132,7 @@ type c = object
         (keyw)
         (symbol
           (ident))
-        (primaryTypeDesc
+        (primaryTypeDef
           (objectDecl
             (keyw)
             (objectPart
@@ -1253,7 +1253,7 @@ type c = object
         (keyw)
         (symbol
           (ident))
-        (primaryTypeDesc
+        (primaryTypeDef
           (objectDecl
             (keyw)
             (objectPart
@@ -1316,7 +1316,7 @@ type c = object
         (keyw)
         (symbol
           (ident))
-        (primaryTypeDesc
+        (primaryTypeDef
           (objectDecl
             (keyw)
             (objectPart
@@ -1363,7 +1363,7 @@ type c = object
         (keyw)
         (symbol
           (ident))
-        (primaryTypeDesc
+        (primaryTypeDef
           (objectDecl
             (keyw)
             (objectPart
@@ -1446,6 +1446,7 @@ type c = object
                         (primaryTypeDesc
                           (symbol
                             (ident)))))))))))))))
+
 
 
 

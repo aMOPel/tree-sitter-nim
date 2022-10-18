@@ -1631,7 +1631,7 @@ discard [
 ,
 1
 ]
-discard [A=0, B=1]
+discard [A:0, T.B:1]
 
 ---
 
@@ -1648,8 +1648,8 @@ discard [A=0, B=1]
       (expr
         (primary
           (arrayConstr
-            (symbolEqExprList
-              (symbolEqExpr
+            (exprColonExprList
+              (exprColonExpr
                 (expr
                   (primary
                     (literal
@@ -1660,13 +1660,13 @@ discard [A=0, B=1]
       (expr
         (primary
           (arrayConstr
-            (symbolEqExprList
-              (symbolEqExpr
+            (exprColonExprList
+              (exprColonExpr
                 (expr
                   (primary
                     (literal
                       (int_lit)))))
-              (symbolEqExpr
+              (exprColonExpr
                 (expr
                   (primary
                     (literal
@@ -1677,13 +1677,13 @@ discard [A=0, B=1]
       (expr
         (primary
           (arrayConstr
-            (symbolEqExprList
-              (symbolEqExpr
+            (exprColonExprList
+              (exprColonExpr
                 (expr
                   (primary
                     (literal
                       (int_lit)))))
-              (symbolEqExpr
+              (exprColonExpr
                 (expr
                   (primary
                     (literal
@@ -1694,17 +1694,25 @@ discard [A=0, B=1]
       (expr
         (primary
           (arrayConstr
-            (symbolEqExprList
-              (symbolEqExpr
-                (symbol
-                  (ident))
+            (exprColonExprList
+              (exprColonExpr
+                (expr
+                  (primary
+                    (symbol
+                      (ident))))
                 (expr
                   (primary
                     (literal
                       (int_lit)))))
-              (symbolEqExpr
-                (symbol
-                  (ident))
+              (exprColonExpr
+                (expr
+                  (primary
+                    (symbol
+                      (ident))
+                    (primarySuffix
+                      (qualifiedSuffix
+                        (symbol
+                          (ident))))))
                 (expr
                   (primary
                     (literal

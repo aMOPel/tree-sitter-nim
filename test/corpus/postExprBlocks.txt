@@ -517,7 +517,7 @@ type a = test:
         (keyw)
         (symbol
           (ident))
-        (primaryTypeDesc
+        (primaryTypeDef
           (symbol
             (ident)))
         (postExprBlocks
