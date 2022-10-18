@@ -11,7 +11,7 @@ type f[T] = int
 type g[T] = int
 type h{.deprecated.} = int
 type i[T]{.deprecated.} = int
-type j{.deprecated.}[T] = var ref int not nil
+type j[T] = var ref int not nil
 
 ---
 
@@ -22,10 +22,9 @@ type j{.deprecated.}[T] = var ref int not nil
         (keyw)
         (symbol
           (ident))
-        (typeDesc
-          (primary
-            (symbol
-              (ident)))))))
+        (primaryTypeDesc
+          (symbol
+            (ident))))))
   (stmt
     (declaration
       (typeDef
@@ -34,40 +33,23 @@ type j{.deprecated.}[T] = var ref int not nil
           (ident))
         (symbol
           (ident))
-        (typeDesc
-          (primary
-            (symbol
-              (ident)))))))
+        (primaryTypeDesc
+          (symbol
+            (ident))))))
   (stmt
     (declaration
       (typeDef
         (keyw)
         (symbol
           (ident))
-        (typeDesc
-          (primary
-            (symbol
-              (ident))))
+        (primaryTypeDesc
+          (symbol
+            (ident)))
         (symbol
           (ident))
-        (typeDesc
-          (primary
-            (symbol
-              (ident)))))))
-  (stmt
-    (declaration
-      (typeDef
-        (keyw)
-        (symbol
-          (ident))
-        (genericParamList
-          (genericParam
-            (symbol
-              (ident))))
-        (typeDesc
-          (primary
-            (symbol
-              (ident)))))))
+        (primaryTypeDesc
+          (symbol
+            (ident))))))
   (stmt
     (declaration
       (typeDef
@@ -78,10 +60,22 @@ type j{.deprecated.}[T] = var ref int not nil
           (genericParam
             (symbol
               (ident))))
-        (typeDesc
-          (primary
+        (primaryTypeDesc
+          (symbol
+            (ident))))))
+  (stmt
+    (declaration
+      (typeDef
+        (keyw)
+        (symbol
+          (ident))
+        (genericParamList
+          (genericParam
             (symbol
-              (ident)))))))
+              (ident))))
+        (primaryTypeDesc
+          (symbol
+            (ident))))))
   (stmt
     (declaration
       (typeDef
@@ -94,10 +88,9 @@ type j{.deprecated.}[T] = var ref int not nil
               (primary
                 (symbol
                   (ident))))))
-        (typeDesc
-          (primary
-            (symbol
-              (ident)))))))
+        (primaryTypeDesc
+          (symbol
+            (ident))))))
   (stmt
     (declaration
       (typeDef
@@ -114,36 +107,28 @@ type j{.deprecated.}[T] = var ref int not nil
               (primary
                 (symbol
                   (ident))))))
-        (typeDesc
-          (primary
-            (symbol
-              (ident)))))))
+        (primaryTypeDesc
+          (symbol
+            (ident))))))
   (stmt
     (declaration
       (typeDef
         (keyw)
         (symbol
           (ident))
-        (pragma
-          (exprColonEqExpr
-            (expr
-              (primary
-                (symbol
-                  (ident))))))
         (genericParamList
           (genericParam
             (symbol
               (ident))))
-        (typeDesc
-          (primary
-            (primaryPrefix
-              (keyw))
-            (primaryPrefix
-              (keyw))
-            (symbol
-              (ident)))
-          (keyw)
-          (nil_lit))))))
+        (primaryTypeDesc
+          (primaryPrefix
+            (keyw))
+          (primaryPrefix
+            (keyw))
+          (symbol
+            (ident)))
+        (keyw)
+        (nil_lit)))))
 
 ==================
 constant simple
@@ -179,7 +164,7 @@ const
           (symbol
             (ident))
           (typeDesc
-            (primary
+            (primaryTypeDesc
               (symbol
                 (ident))))
           (expr
@@ -217,7 +202,7 @@ const
                   (symbol
                     (ident))))))
           (typeDesc
-            (primary
+            (primaryTypeDesc
               (symbol
                 (ident))))
           (expr
@@ -232,14 +217,16 @@ const
           (expr
             (primary
               (tupleConstr
-                    (expr
-                      (primary
-                        (literal
-                          (int_lit))))
-                    (expr
-                      (primary
-                        (literal
-                          (int_lit))))))))
+                (symbolColonExpr
+                  (expr
+                    (primary
+                      (literal
+                        (int_lit)))))
+                (symbolColonExpr
+                  (expr
+                    (primary
+                      (literal
+                        (int_lit)))))))))
         (varTuple
           (symbol
             (ident))
@@ -254,14 +241,16 @@ const
           (expr
             (primary
               (tupleConstr
-                    (expr
-                      (primary
-                        (literal
-                          (int_lit))))
-                    (expr
-                      (primary
-                        (literal
-                          (int_lit))))))))))))
+                (symbolColonExpr
+                  (expr
+                    (primary
+                      (literal
+                        (int_lit)))))
+                (symbolColonExpr
+                  (expr
+                    (primary
+                      (literal
+                        (int_lit)))))))))))))
 
 ==================
 variable simple
@@ -312,7 +301,7 @@ var
           (symbol
             (ident))
           (typeDesc
-            (primary
+            (primaryTypeDesc
               (symbol
                 (ident))))))))
   (stmt
@@ -325,10 +314,11 @@ var
           (expr
             (primary
               (tupleConstr
+                (symbolColonExpr
                   (expr
                     (primary
                       (literal
-                        (int_lit)))))))))))
+                        (int_lit))))))))))))
   (stmt
     (declaration
       (variable
@@ -339,10 +329,11 @@ var
           (expr
             (primary
               (tupleConstr
+                (symbolColonExpr
                   (expr
                     (primary
                       (literal
-                        (int_lit)))))))))))
+                        (int_lit))))))))))))
   (stmt
     (declaration
       (variable
@@ -355,14 +346,16 @@ var
           (expr
             (primary
               (tupleConstr
+                (symbolColonExpr
                   (expr
                     (primary
                       (literal
-                        (int_lit))))
+                        (int_lit)))))
+                (symbolColonExpr
                   (expr
                     (primary
                       (literal
-                        (int_lit)))))))))))
+                        (int_lit))))))))))))
   (stmt
     (declaration
       (variable
@@ -381,14 +374,16 @@ var
           (expr
             (primary
               (tupleConstr
+                (symbolColonExpr
                   (expr
                     (primary
                       (literal
-                        (int_lit))))
+                        (int_lit)))))
+                (symbolColonExpr
                   (expr
                     (primary
                       (literal
-                        (int_lit)))))))))))
+                        (int_lit))))))))))))
   (stmt
     (declaration
       (variable
@@ -403,7 +398,7 @@ var
                   (symbol
                     (ident))))))
           (typeDesc
-            (primary
+            (primaryTypeDesc
               (symbol
                 (ident))))
           (expr
@@ -418,14 +413,16 @@ var
           (expr
             (primary
               (tupleConstr
+                (symbolColonExpr
                   (expr
                     (primary
                       (literal
-                        (int_lit))))
+                        (int_lit)))))
+                (symbolColonExpr
                   (expr
                     (primary
                       (literal
-                        (int_lit))))))))
+                        (int_lit)))))))))
         (varTuple
           (symbol
             (ident))
@@ -440,14 +437,16 @@ var
           (expr
             (primary
               (tupleConstr
+                (symbolColonExpr
                   (expr
                     (primary
                       (literal
-                        (int_lit))))
+                        (int_lit)))))
+                (symbolColonExpr
                   (expr
                     (primary
                       (literal
-                        (int_lit))))))))))))
+                        (int_lit)))))))))))))
 
 ==================
 tupleDecl
@@ -471,75 +470,71 @@ var x: tuple[x: int; y, z: int]
         (keyw)
         (symbol
           (ident))
-        (typeDesc
-          (primary
-            (primaryPrefix
-              (keyw))
-            (tupleDecl
-              (keyw)
-              (identColon
-                (ident)
-                (typeDesc
-                  (primary
-                    (symbol
-                      (ident)))))))))))
+        (primaryTypeDesc
+          (primaryPrefix
+            (keyw))
+          (tupleDecl
+            (keyw)
+            (identColon
+              (ident)
+              (typeDesc
+                (primaryTypeDesc
+                  (symbol
+                    (ident))))))))))
   (stmt
     (declaration
       (typeDef
         (keyw)
         (symbol
           (ident))
-        (typeDesc
-          (primary
-            (tupleDecl
-              (keyw)
-              (identColon
-                (ident)
-                (typeDesc
-                  (primary
-                    (symbol
-                      (ident)))))
-              (identColon
-                (ident)
-                (ident)
-                (typeDesc
-                  (primary
-                    (symbol
-                      (ident)))))
-              (identColon
-                (ident)
-                (typeDesc
-                  (primary
-                    (symbol
-                      (ident)))))))))))
+        (primaryTypeDesc
+          (tupleDecl
+            (keyw)
+            (identColon
+              (ident)
+              (typeDesc
+                (primaryTypeDesc
+                  (symbol
+                    (ident)))))
+            (identColon
+              (ident)
+              (ident)
+              (typeDesc
+                (primaryTypeDesc
+                  (symbol
+                    (ident)))))
+            (identColon
+              (ident)
+              (typeDesc
+                (primaryTypeDesc
+                  (symbol
+                    (ident))))))))))
   (stmt
     (declaration
       (typeDef
         (keyw)
         (symbol
           (ident))
-        (typeDesc
-          (primary
-            (tupleDecl
-              (keyw)
-              (identColon
-                (ident)
-                (typeDesc
-                  (primary
-                    (symbol
-                      (ident))))))))
+        (primaryTypeDesc
+          (tupleDecl
+            (keyw)
+            (identColon
+              (ident)
+              (typeDesc
+                (primaryTypeDesc
+                  (symbol
+                    (ident)))))))
         (symbol
           (ident))
-        (typeDesc
-          (primary
-            (tupleDecl
-              (keyw)
-              (identColon
-                (ident)
-                (typeDesc
-                  (primary
-                    (symbol
-                      (ident)))))))))))
+        (primaryTypeDesc
+          (tupleDecl
+            (keyw)
+            (identColon
+              (ident)
+              (typeDesc
+                (primaryTypeDesc
+                  (symbol
+                    (ident))))))))))
   (stmt
     (declaration
       (variable
@@ -548,20 +543,20 @@ var x: tuple[x: int; y, z: int]
           (symbol
             (ident))
           (typeDesc
-            (primary
+            (primaryTypeDesc
               (tupleDecl
                 (keyw)
                 (identColon
                   (ident)
                   (typeDesc
-                    (primary
+                    (primaryTypeDesc
                       (symbol
                         (ident)))))
                 (identColon
                   (ident)
                   (ident)
                   (typeDesc
-                    (primary
+                    (primaryTypeDesc
                       (symbol
                         (ident)))))))))))))
 
@@ -585,42 +580,41 @@ type b {.pure.} = enum A{.deprecated.} = 9, B{.deprecated.} C D = 17
         (keyw)
         (symbol
           (ident))
-        (typeDesc
-          (primary
-            (enumDecl
-              (keyw)
-              (declColonEquals
-                (symbol
-                  (ident))
-                (pragma
-                  (exprColonEqExpr
-                    (expr
-                      (primary
-                        (symbol
-                          (ident))))))
-                (expr
-                  (primary
-                    (literal
-                      (int_lit)))))
-              (declColonEquals
-                (symbol
-                  (ident))
-                (pragma
-                  (exprColonEqExpr
-                    (expr
-                      (primary
-                        (symbol
-                          (ident)))))))
-              (declColonEquals
-                (symbol
-                  (ident)))
-              (declColonEquals
-                (symbol
-                  (ident))
-                (expr
-                  (primary
-                    (literal
-                      (int_lit)))))))))))
+        (primaryTypeDesc
+          (enumDecl
+            (keyw)
+            (declColonEquals
+              (symbol
+                (ident))
+              (pragma
+                (exprColonEqExpr
+                  (expr
+                    (primary
+                      (symbol
+                        (ident))))))
+              (expr
+                (primary
+                  (literal
+                    (int_lit)))))
+            (declColonEquals
+              (symbol
+                (ident))
+              (pragma
+                (exprColonEqExpr
+                  (expr
+                    (primary
+                      (symbol
+                        (ident)))))))
+            (declColonEquals
+              (symbol
+                (ident)))
+            (declColonEquals
+              (symbol
+                (ident))
+              (expr
+                (primary
+                  (literal
+                    (int_lit))))))))))
   (stmt
     (declaration
       (typeDef
@@ -633,42 +627,41 @@ type b {.pure.} = enum A{.deprecated.} = 9, B{.deprecated.} C D = 17
               (primary
                 (symbol
                   (ident))))))
-        (typeDesc
-          (primary
-            (enumDecl
-              (keyw)
-              (declColonEquals
-                (symbol
-                  (ident))
-                (pragma
-                  (exprColonEqExpr
-                    (expr
-                      (primary
-                        (symbol
-                          (ident))))))
-                (expr
-                  (primary
-                    (literal
-                      (int_lit)))))
-              (declColonEquals
-                (symbol
-                  (ident))
-                (pragma
-                  (exprColonEqExpr
-                    (expr
-                      (primary
-                        (symbol
-                          (ident)))))))
-              (declColonEquals
-                (symbol
-                  (ident)))
-              (declColonEquals
-                (symbol
-                  (ident))
-                (expr
-                  (primary
-                    (literal
-                      (int_lit))))))))))))
+        (primaryTypeDesc
+          (enumDecl
+            (keyw)
+            (declColonEquals
+              (symbol
+                (ident))
+              (pragma
+                (exprColonEqExpr
+                  (expr
+                    (primary
+                      (symbol
+                        (ident))))))
+              (expr
+                (primary
+                  (literal
+                    (int_lit)))))
+            (declColonEquals
+              (symbol
+                (ident))
+              (pragma
+                (exprColonEqExpr
+                  (expr
+                    (primary
+                      (symbol
+                        (ident)))))))
+            (declColonEquals
+              (symbol
+                (ident)))
+            (declColonEquals
+              (symbol
+                (ident))
+              (expr
+                (primary
+                  (literal
+                    (int_lit)))))))))))
 
 ==================
 primary keyword disambiguation
@@ -773,11 +766,9 @@ type a = int
         (keyw)
         (symbol
           (ident))
-        (typeDesc
-          (primary
-            (symbol
-              (ident))))))))
-
+        (primaryTypeDesc
+          (symbol
+            (ident)))))))
 
 ==================
 conceptDecl
@@ -801,152 +792,146 @@ type f = concept x
         (keyw)
         (symbol
           (ident))
-        (typeDesc
-          (primary
-            (conceptDecl
-              (keyw)
-              (conceptParam
-                (symbol
-                  (ident)))
-              (block)))))))
+        (primaryTypeDesc
+          (conceptDecl
+            (keyw)
+            (conceptParam
+              (symbol
+                (ident)))
+            (block))))))
   (stmt
     (declaration
       (typeDef
         (keyw)
         (symbol
           (ident))
-        (typeDesc
-          (primary
-            (conceptDecl
+        (primaryTypeDesc
+          (conceptDecl
+            (keyw)
+            (conceptParam
+              (symbol
+                (ident)))
+            (conceptParam
               (keyw)
-              (conceptParam
-                (symbol
-                  (ident)))
-              (conceptParam
-                (keyw)
-                (symbol
-                  (ident)))
-              (conceptParam
-                (keyw)
-                (symbol
-                  (ident)))
-              (conceptParam
-                (keyw)
-                (symbol
-                  (ident)))
-              (conceptParam
-                (keyw)
-                (symbol
-                  (ident)))
-              (conceptParam
-                (keyw)
-                (symbol
-                  (ident)))
-              (conceptParam
-                (keyw)
-                (symbol
-                  (ident)))
-              (block)))))))
+              (symbol
+                (ident)))
+            (conceptParam
+              (keyw)
+              (symbol
+                (ident)))
+            (conceptParam
+              (keyw)
+              (symbol
+                (ident)))
+            (conceptParam
+              (keyw)
+              (symbol
+                (ident)))
+            (conceptParam
+              (keyw)
+              (symbol
+                (ident)))
+            (conceptParam
+              (keyw)
+              (symbol
+                (ident)))
+            (block))))))
   (stmt
     (declaration
       (typeDef
         (keyw)
         (symbol
           (ident))
-        (typeDesc
-          (primary
-            (conceptDecl
+        (primaryTypeDesc
+          (conceptDecl
+            (keyw)
+            (conceptParam
+              (symbol
+                (ident)))
+            (conceptParam
               (keyw)
-              (conceptParam
-                (symbol
-                  (ident)))
-              (conceptParam
-                (keyw)
-                (symbol
-                  (ident)))
-              (pragma
-                (exprColonEqExpr
-                  (expr
-                    (primary
-                      (symbol
-                        (ident))))))
-              (block)))))))
+              (symbol
+                (ident)))
+            (pragma
+              (exprColonEqExpr
+                (expr
+                  (primary
+                    (symbol
+                      (ident))))))
+            (block))))))
   (stmt
     (declaration
       (typeDef
         (keyw)
         (symbol
           (ident))
-        (typeDesc
-          (primary
-            (conceptDecl
+        (primaryTypeDesc
+          (conceptDecl
+            (keyw)
+            (conceptParam
+              (symbol
+                (ident)))
+            (conceptParam
               (keyw)
-              (conceptParam
+              (symbol
+                (ident)))
+            (keyw)
+            (typeDesc
+              (primaryTypeDesc
                 (symbol
-                  (ident)))
-              (conceptParam
-                (keyw)
-                (symbol
-                  (ident)))
-              (keyw)
-              (typeDesc
-                (primary
-                  (symbol
-                    (ident))))
-              (block)))))))
+                  (ident))))
+            (block))))))
   (stmt
     (declaration
       (typeDef
         (keyw)
         (symbol
           (ident))
-        (typeDesc
-          (primary
-            (conceptDecl
+        (primaryTypeDesc
+          (conceptDecl
+            (keyw)
+            (conceptParam
+              (symbol
+                (ident)))
+            (conceptParam
               (keyw)
-              (conceptParam
+              (symbol
+                (ident)))
+            (pragma
+              (exprColonEqExpr
+                (expr
+                  (primary
+                    (symbol
+                      (ident))))))
+            (keyw)
+            (typeDesc
+              (primaryTypeDesc
                 (symbol
-                  (ident)))
-              (conceptParam
-                (keyw)
+                  (ident))))
+            (typeDesc
+              (primaryTypeDesc
                 (symbol
-                  (ident)))
-              (pragma
-                (exprColonEqExpr
-                  (expr
-                    (primary
-                      (symbol
-                        (ident))))))
-              (keyw)
-              (typeDesc
-                (primary
-                  (symbol
-                    (ident))))
-              (typeDesc
-                (primary
-                  (symbol
-                    (ident))))
-              (block)))))))
+                  (ident))))
+            (block))))))
   (stmt
     (declaration
       (typeDef
         (keyw)
         (symbol
           (ident))
-        (typeDesc
-          (primary
-            (conceptDecl
-              (keyw)
-              (conceptParam
-                (symbol
-                  (ident)))
-              (block
-                (stmt
-                  (discardStmt
-                    (keyw)))
-                (stmt
-                  (discardStmt
-                    (keyw)))))))))))
+        (primaryTypeDesc
+          (conceptDecl
+            (keyw)
+            (conceptParam
+              (symbol
+                (ident)))
+            (block
+              (stmt
+                (discardStmt
+                  (keyw)))
+              (stmt
+                (discardStmt
+                  (keyw))))))))))
 
 ==================
 objectDecl simple
@@ -969,25 +954,23 @@ type c{.deprecated.} = object
         (keyw)
         (symbol
           (ident))
-        (typeDesc
-          (primary
-            (objectDecl
-              (keyw)))))))
+        (primaryTypeDesc
+          (objectDecl
+            (keyw))))))
   (stmt
     (declaration
       (typeDef
         (keyw)
         (symbol
           (ident))
-        (typeDesc
-          (primary
-            (objectDecl
-              (keyw)
-              (keyw)
-              (typeDesc
-                (primary
-                  (symbol
-                    (ident))))))))))
+        (primaryTypeDesc
+          (objectDecl
+            (keyw)
+            (keyw)
+            (typeDesc
+              (primaryTypeDesc
+                (symbol
+                  (ident)))))))))
   (stmt
     (declaration
       (typeDef
@@ -1000,30 +983,29 @@ type c{.deprecated.} = object
               (primary
                 (symbol
                   (ident))))))
-        (typeDesc
-          (primary
-            (objectDecl
-              (keyw)
-              (objectPart
-                (symbol
-                  (ident))
-                (typeDesc
-                  (primary
-                    (symbol
-                      (ident)))))
-              (objectPart
-                (symbol
-                  (ident))
-                (symbol
-                  (ident))
-                (typeDesc
-                  (primary
-                    (symbol
-                      (ident)))))
-              (objectPart
-                (keyw))
-              (objectPart
-                (keyw)))))))))
+        (primaryTypeDesc
+          (objectDecl
+            (keyw)
+            (objectPart
+              (symbol
+                (ident))
+              (typeDesc
+                (primaryTypeDesc
+                  (symbol
+                    (ident)))))
+            (objectPart
+              (symbol
+                (ident))
+              (symbol
+                (ident))
+              (typeDesc
+                (primaryTypeDesc
+                  (symbol
+                    (ident)))))
+            (objectPart
+              (keyw))
+            (objectPart
+              (keyw))))))))
 
 ==================
 objectWhen
@@ -1062,12 +1044,47 @@ type c = object
         (keyw)
         (symbol
           (ident))
-        (typeDesc
-          (primary
-            (objectDecl
-              (keyw)
-              (objectPart
-                (objectWhen
+        (primaryTypeDesc
+          (objectDecl
+            (keyw)
+            (objectPart
+              (objectWhen
+                (keyw)
+                (expr
+                  (primary
+                    (literal
+                      (bool_lit))))
+                (objectPart
+                  (symbol
+                    (ident))
+                  (typeDesc
+                    (primaryTypeDesc
+                      (symbol
+                        (ident))))))))))))
+  (stmt
+    (declaration
+      (typeDef
+        (keyw)
+        (symbol
+          (ident))
+        (primaryTypeDesc
+          (objectDecl
+            (keyw)
+            (objectPart
+              (objectWhen
+                (keyw)
+                (expr
+                  (primary
+                    (literal
+                      (bool_lit))))
+                (objectPart
+                  (symbol
+                    (ident))
+                  (typeDesc
+                    (primaryTypeDesc
+                      (symbol
+                        (ident)))))
+                (objectElif
                   (keyw)
                   (expr
                     (primary
@@ -1077,7 +1094,36 @@ type c = object
                     (symbol
                       (ident))
                     (typeDesc
-                      (primary
+                      (primaryTypeDesc
+                        (symbol
+                          (ident))))))
+                (objectElif
+                  (keyw)
+                  (expr
+                    (primary
+                      (literal
+                        (bool_lit))))
+                  (objectPart
+                    (symbol
+                      (ident))
+                    (typeDesc
+                      (primaryTypeDesc
+                        (symbol
+                          (ident)))))
+                  (objectPart
+                    (symbol
+                      (ident))
+                    (typeDesc
+                      (primaryTypeDesc
+                        (symbol
+                          (ident))))))
+                (objectElse
+                  (keyw)
+                  (objectPart
+                    (symbol
+                      (ident))
+                    (typeDesc
+                      (primaryTypeDesc
                         (symbol
                           (ident)))))))))))))
   (stmt
@@ -1086,12 +1132,24 @@ type c = object
         (keyw)
         (symbol
           (ident))
-        (typeDesc
-          (primary
-            (objectDecl
-              (keyw)
-              (objectPart
-                (objectWhen
+        (primaryTypeDesc
+          (objectDecl
+            (keyw)
+            (objectPart
+              (objectWhen
+                (keyw)
+                (expr
+                  (primary
+                    (literal
+                      (bool_lit))))
+                (objectPart
+                  (symbol
+                    (ident))
+                  (typeDesc
+                    (primaryTypeDesc
+                      (symbol
+                        (ident)))))
+                (objectElif
                   (keyw)
                   (expr
                     (primary
@@ -1101,96 +1159,37 @@ type c = object
                     (symbol
                       (ident))
                     (typeDesc
-                      (primary
+                      (primaryTypeDesc
                         (symbol
-                          (ident)))))
-                  (objectElif
-                    (keyw)
-                    (expr
-                      (primary
-                        (literal
-                          (bool_lit))))
-                    (objectPart
-                      (symbol
-                        (ident))
-                      (typeDesc
-                        (primary
-                          (symbol
-                            (ident))))))
-                  (objectElif
-                    (keyw)
-                    (expr
-                      (primary
-                        (literal
-                          (bool_lit))))
-                    (objectPart
-                      (symbol
-                        (ident))
-                      (typeDesc
-                        (primary
-                          (symbol
-                            (ident)))))
-                    (objectPart
-                      (symbol
-                        (ident))
-                      (typeDesc
-                        (primary
-                          (symbol
-                            (ident))))))
-                  (objectElse
-                    (keyw)
-                    (objectPart
-                      (symbol
-                        (ident))
-                      (typeDesc
-                        (primary
-                          (symbol
-                            (ident))))))))))))))
-  (stmt
-    (declaration
-      (typeDef
-        (keyw)
-        (symbol
-          (ident))
-        (typeDesc
-          (primary
-            (objectDecl
-              (keyw)
-              (objectPart
-                (objectWhen
+                          (ident))))))
+                (objectElif
                   (keyw)
                   (expr
                     (primary
                       (literal
                         (bool_lit))))
                   (objectPart
-                    (symbol
-                      (ident))
-                    (typeDesc
-                      (primary
-                        (symbol
-                          (ident)))))
-                  (objectElif
-                    (keyw)
-                    (expr
-                      (primary
-                        (literal
-                          (bool_lit))))
-                    (objectPart
-                      (symbol
-                        (ident))
-                      (typeDesc
+                    (objectWhen
+                      (keyw)
+                      (expr
                         (primary
-                          (symbol
-                            (ident))))))
-                  (objectElif
-                    (keyw)
-                    (expr
-                      (primary
-                        (literal
-                          (bool_lit))))
-                    (objectPart
-                      (objectWhen
+                          (literal
+                            (bool_lit))))
+                      (objectPart
+                        (symbol
+                          (ident))
+                        (typeDesc
+                          (primaryTypeDesc
+                            (symbol
+                              (ident)))))
+                      (objectPart
+                        (symbol
+                          (ident))
+                        (typeDesc
+                          (primaryTypeDesc
+                            (symbol
+                              (ident)))))
+                      (objectElif
                         (keyw)
                         (expr
                           (primary
@@ -1200,38 +1199,18 @@ type c = object
                           (symbol
                             (ident))
                           (typeDesc
-                            (primary
+                            (primaryTypeDesc
                               (symbol
-                                (ident)))))
+                                (ident))))))
+                      (objectElse
+                        (keyw)
                         (objectPart
                           (symbol
                             (ident))
                           (typeDesc
-                            (primary
+                            (primaryTypeDesc
                               (symbol
-                                (ident)))))
-                        (objectElif
-                          (keyw)
-                          (expr
-                            (primary
-                              (literal
-                                (bool_lit))))
-                          (objectPart
-                            (symbol
-                              (ident))
-                            (typeDesc
-                              (primary
-                                (symbol
-                                  (ident))))))
-                        (objectElse
-                          (keyw)
-                          (objectPart
-                            (symbol
-                              (ident))
-                            (typeDesc
-                              (primary
-                                (symbol
-                                  (ident))))))))))))))))))
+                                (ident)))))))))))))))))
 
 ==================
 objectCase
@@ -1274,201 +1253,199 @@ type c = object
         (keyw)
         (symbol
           (ident))
-        (typeDesc
-          (primary
-            (objectDecl
-              (keyw)
-              (objectPart
-                (objectCase
-                  (keyw)
-                  (symbol
-                    (ident))
-                  (typeDesc
-                    (primary
+        (primaryTypeDesc
+          (objectDecl
+            (keyw)
+            (objectPart
+              (objectCase
+                (keyw)
+                (symbol
+                  (ident))
+                (typeDesc
+                  (primaryTypeDesc
+                    (symbol
+                      (ident))))
+                (objectBranches
+                  (objectBranch
+                    (keyw)
+                    (exprList
+                      (expr
+                        (primary
+                          (literal
+                            (int_lit)))))
+                    (objectPart
                       (symbol
-                        (ident))))
-                  (objectBranches
-                    (objectBranch
-                      (keyw)
-                      (exprList
-                        (expr
-                          (primary
-                            (literal
-                              (int_lit)))))
-                      (objectPart
-                        (symbol
-                          (ident))
-                        (typeDesc
-                          (primary
-                            (symbol
-                              (ident))))))
-                    (objectBranch
-                      (keyw)
-                      (exprList
-                        (expr
-                          (primary
-                            (literal
-                              (int_lit)))))
-                      (objectPart
-                        (symbol
-                          (ident))
-                        (typeDesc
-                          (primary
-                            (symbol
-                              (ident)))))
-                      (objectPart
-                        (symbol
-                          (ident))
-                        (typeDesc
-                          (primary
-                            (symbol
-                              (ident))))))
-                    (objectElse
-                      (keyw)
-                      (objectPart
-                        (symbol
-                          (ident))
-                        (typeDesc
-                          (primary
-                            (symbol
-                              (ident)))))))))))))))
-  (stmt
-    (declaration
-      (typeDef
-        (keyw)
-        (symbol
-          (ident))
-        (typeDesc
-          (primary
-            (objectDecl
-              (keyw)
-              (objectPart
-                (objectCase
-                  (keyw)
-                  (symbol
-                    (ident))
-                  (typeDesc
-                    (primary
-                      (symbol
-                        (ident))))
-                  (objectBranches
-                    (objectBranch
-                      (keyw)
-                      (exprList
-                        (expr
-                          (primary
-                            (literal
-                              (bool_lit)))))
-                      (objectPart
-                        (symbol
-                          (ident))
-                        (typeDesc
-                          (primary
-                            (symbol
-                              (ident))))))
-                    (objectBranch
-                      (keyw)
-                      (exprList
-                        (expr
-                          (primary
-                            (literal
-                              (bool_lit)))))
-                      (objectPart
-                        (symbol
-                          (ident))
-                        (typeDesc
-                          (primary
-                            (symbol
-                              (ident)))))))))))))))
-  (stmt
-    (declaration
-      (typeDef
-        (keyw)
-        (symbol
-          (ident))
-        (typeDesc
-          (primary
-            (objectDecl
-              (keyw)
-              (objectPart
-                (objectCase
-                  (keyw)
-                  (symbol
-                    (ident))
-                  (typeDesc
-                    (primary
-                      (symbol
-                        (ident))))
-                  (objectBranches
-                    (objectBranch
-                      (keyw)
-                      (exprList
-                        (expr
-                          (primary
-                            (literal
-                              (int_lit)))))
-                      (objectPart
-                        (symbol
-                          (ident))
-                        (typeDesc
-                          (primary
-                            (symbol
-                              (ident)))))
-                      (objectPart
-                        (objectCase
-                          (keyw)
+                        (ident))
+                      (typeDesc
+                        (primaryTypeDesc
                           (symbol
-                            (ident))
-                          (typeDesc
-                            (primary
+                            (ident))))))
+                  (objectBranch
+                    (keyw)
+                    (exprList
+                      (expr
+                        (primary
+                          (literal
+                            (int_lit)))))
+                    (objectPart
+                      (symbol
+                        (ident))
+                      (typeDesc
+                        (primaryTypeDesc
+                          (symbol
+                            (ident)))))
+                    (objectPart
+                      (symbol
+                        (ident))
+                      (typeDesc
+                        (primaryTypeDesc
+                          (symbol
+                            (ident))))))
+                  (objectElse
+                    (keyw)
+                    (objectPart
+                      (symbol
+                        (ident))
+                      (typeDesc
+                        (primaryTypeDesc
+                          (symbol
+                            (ident))))))))))))))
+  (stmt
+    (declaration
+      (typeDef
+        (keyw)
+        (symbol
+          (ident))
+        (primaryTypeDesc
+          (objectDecl
+            (keyw)
+            (objectPart
+              (objectCase
+                (keyw)
+                (symbol
+                  (ident))
+                (typeDesc
+                  (primaryTypeDesc
+                    (symbol
+                      (ident))))
+                (objectBranches
+                  (objectBranch
+                    (keyw)
+                    (exprList
+                      (expr
+                        (primary
+                          (literal
+                            (bool_lit)))))
+                    (objectPart
+                      (symbol
+                        (ident))
+                      (typeDesc
+                        (primaryTypeDesc
+                          (symbol
+                            (ident))))))
+                  (objectBranch
+                    (keyw)
+                    (exprList
+                      (expr
+                        (primary
+                          (literal
+                            (bool_lit)))))
+                    (objectPart
+                      (symbol
+                        (ident))
+                      (typeDesc
+                        (primaryTypeDesc
+                          (symbol
+                            (ident))))))))))))))
+  (stmt
+    (declaration
+      (typeDef
+        (keyw)
+        (symbol
+          (ident))
+        (primaryTypeDesc
+          (objectDecl
+            (keyw)
+            (objectPart
+              (objectCase
+                (keyw)
+                (symbol
+                  (ident))
+                (typeDesc
+                  (primaryTypeDesc
+                    (symbol
+                      (ident))))
+                (objectBranches
+                  (objectBranch
+                    (keyw)
+                    (exprList
+                      (expr
+                        (primary
+                          (literal
+                            (int_lit)))))
+                    (objectPart
+                      (symbol
+                        (ident))
+                      (typeDesc
+                        (primaryTypeDesc
+                          (symbol
+                            (ident)))))
+                    (objectPart
+                      (objectCase
+                        (keyw)
+                        (symbol
+                          (ident))
+                        (typeDesc
+                          (primaryTypeDesc
+                            (symbol
+                              (ident))))
+                        (objectBranches
+                          (objectBranch
+                            (keyw)
+                            (exprList
+                              (expr
+                                (primary
+                                  (literal
+                                    (bool_lit)))))
+                            (objectPart
                               (symbol
-                                (ident))))
-                          (objectBranches
-                            (objectBranch
-                              (keyw)
-                              (exprList
-                                (expr
-                                  (primary
-                                    (literal
-                                      (bool_lit)))))
-                              (objectPart
-                                (symbol
-                                  (ident))
-                                (typeDesc
-                                  (primary
-                                    (symbol
-                                      (ident))))))
-                            (objectElse
-                              (keyw)
-                              (objectPart
-                                (symbol
-                                  (ident))
-                                (typeDesc
-                                  (primary
-                                    (symbol
-                                      (ident))))))))))
-                    (objectBranch
-                      (keyw)
-                      (exprList
-                        (expr
-                          (primary
-                            (literal
-                              (int_lit)))))
-                      (objectPart
-                        (symbol
-                          (ident))
-                        (typeDesc
-                          (primary
-                            (symbol
-                              (ident))))))
-                    (objectElse
-                      (keyw)
-                      (objectPart
-                        (symbol
-                          (ident))
-                        (typeDesc
-                          (primary
-                            (symbol
-                              (ident))))))))))))))))
+                                (ident))
+                              (typeDesc
+                                (primaryTypeDesc
+                                  (symbol
+                                    (ident))))))
+                          (objectElse
+                            (keyw)
+                            (objectPart
+                              (symbol
+                                (ident))
+                              (typeDesc
+                                (primaryTypeDesc
+                                  (symbol
+                                    (ident))))))))))
+                  (objectBranch
+                    (keyw)
+                    (exprList
+                      (expr
+                        (primary
+                          (literal
+                            (int_lit)))))
+                    (objectPart
+                      (symbol
+                        (ident))
+                      (typeDesc
+                        (primaryTypeDesc
+                          (symbol
+                            (ident))))))
+                  (objectElse
+                    (keyw)
+                    (objectPart
+                      (symbol
+                        (ident))
+                      (typeDesc
+                        (primaryTypeDesc
+                          (symbol
+                            (ident)))))))))))))))
+
 
 

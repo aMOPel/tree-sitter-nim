@@ -2,11 +2,21 @@
 // TODO: par, this is gonna be more difficult
 // TODO: arbitrary parentheses around stmts and exprs
 // TODO: complex expressions (ifExpr, ...)
+
+// TODO: reorder rules related to typeDesc etc
 // TODO: add postExprBlocks to the remaining rules
-// DONE: postExprBlocks, doBlock
 // TODO: routineExpr does not work inside str interpolation
-// TODO: look into bracketExpr for type brackets like `varargs[untyped]`
-// TODO: look into cmdCall + qualifiedSuffix like `echo args.treeRepr`
+// expr > simpleExpr > primary: pmNormal
+// exprStmt > simpleExpr > primary: pmNormal
+// par > simpleExpr > primary: pmNormal
+// typeDesc > simpleExpr > primary: pmTypeDesc
+// typeDef > typeDefAux > simpleExpr > primary: pmTypeDef
+// DONE: look into the latest version of grammar.txt
+// DONE: differentiate between primary and primary for typedef/desc
+// DONE: postExprBlocks, doBlock
+// DONE: improved on setConstr, tableConstr, objectConstr distinction
+// DONE: factored typeDescs out of primary
+// DONE: look into cmdCall + qualifiedSuffix like `echo args.treeRepr`
 // DONE: cmdCall comma list
 // DONE: conceptDecl
 // DONE: objectDecl
@@ -31,9 +41,10 @@ const PREC = {
   fromStmt: 1, // >op5
   interpolated_str_lit: 1, // >op7
 
-  tupleConstr: 1,
-  functionCall: -1,
-  immediateFunctionCall: 2,
+  tupleConstr: 2,
+  functionCall: 1,
+  immediateFunctionCall: 3,
+
 }
 
 const TOKEN_PREC = {
@@ -46,6 +57,8 @@ const TOKEN_PREC = {
   conceptOf: 100,
 
   indexSuffix: 1,
+
+  paramConstraint: 1, // > patternBind
 }
 
 const DYNAMIC_PREC = {
@@ -54,8 +67,6 @@ const DYNAMIC_PREC = {
   _primaryKeyw: -1,
   typeDef: 1,
   bindStmt: 2,
-  patternBind: 1,
-  setOrTableConstr: 0,
   exprColonExpr: 1,
   varTuple: 2,
 }
@@ -74,8 +85,9 @@ module.exports = grammar({
     [$.bindStmt, $._primaryKeyw],
     [$.variable, $._primaryKeyw],
     [$.typeDef, $._primaryKeyw],
-    [$.patternBind, $.setOrTableConstr],
     [$.exprColonExpr, $.exprColonEqExpr],
+    [$.exprColonExpr, $.symbolEqExpr],
+    [$.symbolColonExpr, $.symbolEqExpr],
     [$.varTuple, $.tupleConstr],
   ],
 
@@ -181,13 +193,24 @@ module.exports = grammar({
       alias(prec.dynamic(DYNAMIC_PREC.typeDef, 'type'), $.keyw),
       section($, seq(
         $._identVisDot,
-        optional($.pragma),
+        // optional($.pragma),
         optional($.genericParamList),
         optional($.pragma),
         '=',
-        $.typeDesc,
+        $._typeDefAux,
       )),
     ),
+
+    _typeDefAux: $ => prec.right(seq(
+      $._simpleExprTypeDesc,
+      optional(choice(
+        seq(
+          alias('not', $.keyw), 
+          $.nil_lit
+        ),
+        $.postExprBlocks,
+      )),
+    )),
 
     variable: $ => seq(
       alias(choice('const', 'let', 'var', 'using'), $.keyw),
@@ -244,7 +267,7 @@ module.exports = grammar({
 
     objectDecl: $ => prec.right(seq(
       alias('object', $.keyw),
-      optional($.pragma),
+      // optional($.pragma),
       optional(seq(
         alias('of', $.keyw),
         $.typeDesc,
@@ -350,34 +373,54 @@ module.exports = grammar({
 
     returnStmt: $ => seq(
       alias('return', $.keyw), 
-      optional(optInd($, $.expr)),
+      optional(optInd($, seq(
+        $.expr,
+        optional($.postExprBlocks)
+      ))),
     ),
 
     raiseStmt: $ => seq(
       alias('raise', $.keyw), 
-      optional(optInd($, $.expr)),
+      optional(optInd($, seq(
+        $.expr,
+        optional($.postExprBlocks)
+      ))),
     ),
 
     yieldStmt: $ => seq(
       alias('yield', $.keyw), 
-      optional(optInd($, $.expr)),
+      optional(optInd($, seq(
+        $.expr,
+        optional($.postExprBlocks)
+      ))),
     ),
 
     discardStmt: $ => seq(
       alias('discard', $.keyw), 
       optional(
-        optInd($, $.expr),
+        optInd($, seq(
+          $.expr,
+          optional($.postExprBlocks)
+        )),
       ),
     ),
 
     breakStmt: $ => seq(
       alias('break', $.keyw), 
-      optional(optInd($, $.expr)),
+      optional(optInd($, seq(
+        $.expr,
+        optional($.postExprBlocks)
+      ))),
     ),
 
     continueStmt: $ => seq(
       alias('continue', $.keyw), 
-      optional(optInd($, $.expr)),
+      optional(optInd($,
+        seq(
+          $.expr,
+          optional($.postExprBlocks)
+        )
+      )),
     ),
 
     pragmaStmt: $ => seq(
@@ -739,9 +782,8 @@ module.exports = grammar({
       
     )),
 
-    // TODO: primarySuffix hijacking paramConstraint
     paramConstraint: $ => seq(
-      '{',
+      token(prec(TOKEN_PREC.paramConstraint, '{')),
       $.expr,
       '}',
     ),
@@ -865,15 +907,39 @@ module.exports = grammar({
     )),
 
     typeDesc: $ => prec.right(seq(
-      $._simpleExpr,
+      $._simpleExprTypeDesc,
       optional(seq(
         alias('not', $.keyw), 
         $.nil_lit
       )),
     )),
 
+    _simpleExprTypeDesc: $ => prec.left(seq(
+      sep_repeat1(
+        $.primaryTypeDesc,
+        $.operator,
+        false,
+      ),
+      optional($.pragma),
+    )),
+
+    primaryTypeDesc: $ => prec.left(choice(
+      seq(
+        repeat($.primaryPrefix),
+        choice(
+          $.tupleDecl,
+          $.routineExprTypeDesc,
+          $.enumDecl,
+          $.objectDecl,
+          $.conceptDecl,
+          $.symbol,
+        ),
+        repeat($.primarySuffix),
+      ),
+    )),
+
     paramTypeDesc: $ => seq(
-      $._simpleExpr,
+      $._simpleExprTypeDesc,
       optional($.paramConstraint),
       optional(seq(
         alias('not', $.keyw), 
@@ -892,6 +958,19 @@ module.exports = grammar({
       choice('.}', '}'),
     ),
 
+    symbolEqExpr: $ => seq(
+      optional(seq(
+        $.symbol,
+        '=',
+      )),
+      $.expr,
+    ),
+
+    symbolEqExprList: $ => sep_repeat1(
+      $.symbolEqExpr,
+      $._comma,
+    ),
+
     exprColonExpr: $ => prec.dynamic(DYNAMIC_PREC.exprColonExpr, seq(
       $.expr,
       optional(seq(
@@ -899,11 +978,6 @@ module.exports = grammar({
         $.expr,
       ))
     )),
-
-    exprColonExprList: $ => sep_repeat1(
-      alias($.exprColonExpr, 'exprColonExpr'),
-      $._comma,
-    ),
 
     exprColonEqExpr: $ => seq(
       $.expr,
@@ -914,33 +988,29 @@ module.exports = grammar({
     ),
 
     exprColonEqExprList: $ => sep_repeat1(
-      alias($.exprColonEqExpr, 'exprColonEqExpr'),
+      $.exprColonEqExpr,
       $._comma,
     ),
 
     // goes into
-    // exprColonEqExpr
-    // par
-    // commandParam
-    // primarySuffix
-    // returnStmt
-    // raiseStmt
-    // yieldStmt
-    // discardStmt
-    // breakStmt
-    // continueStmt
-    // variable/constant
+    // exprColonEqExpr: do
+    //  pragma
+    //  primarySuffix
+    //  tupleConstr
+    //  arrayConstr
+    //  par
+    //  castExpr
+    //  setOrTableConstr
+    //  exprColonEqExprList
+    // par: do
+    // commandParam: do
 
     // of/else: https://nim-lang.org/docs/manual.html#macros-caseminusof-macro
-    postExprBlocks: $ => prec.left(choice(
-      $.doBlock,
-      // just `do:` without paramList etc
-      seq(
-        ':',
-        choice(
-          alias($._simpleStmts, $.block),
-          seq($._indent, $.block),
-        ),
+    postExprBlocks: $ => prec.left(seq(
+      ':',
+      choice(
+        alias($._simpleStmts, $.block),
+        seq($._indent, $.block),
       ),
     )),
 
@@ -1026,14 +1096,11 @@ module.exports = grammar({
       seq(
         repeat($.primaryPrefix),
         choice(
-          $.tupleDecl,
           $.routineExpr,
-          $.enumDecl,
-          $.objectDecl,
-          $.conceptDecl,
           $._identOrLiteral,
         ),
         repeat($.primarySuffix),
+        optional(alias($._primarySuffix, $.primarySuffix)),
       ),
     )),
 
@@ -1061,24 +1128,39 @@ module.exports = grammar({
     primarySuffix: $ => choice(
       $.functionCall,
       alias($.immediateFunctionCall, $.functionCall),
+      $.objectConstr,
       $.qualifiedSuffix,
       $.indexSuffix,
       $.patternBind,
-      // has to be in primarySuffix to cover all cases
-      $.cmdCall,
     ),
 
-    functionCall: $ => prec(PREC.functionCall, seq(
+    // has to be in primarySuffix to cover all cases
+    _primarySuffix: $ => $.cmdCall,
+
+    functionCall: $ => prec.right(PREC.functionCall, seq(
       '(',
-      optional($.exprColonEqExprList),
+      optional($.symbolEqExprList),
       ')',
+      optional($.doBlock),
     )),
 
-    immediateFunctionCall: $ => prec(PREC.immediateFunctionCall, seq(
+    // for disambiguation with tupleConstr in special cases
+    immediateFunctionCall: $ => prec.right(PREC.immediateFunctionCall, seq(
       token.immediate('('),
-      optional($.exprColonEqExprList),
+      optional($.symbolEqExprList),
       ')',
+      optional($.doBlock),
     )),
+
+    // has to be in primarySuffix because of ambiguity with functionCall
+    objectConstr: $ => seq(
+      token.immediate('('),
+      sep_repeat(
+        alias($.mandatorySymbolColonExpr, $.symbolColonExpr),
+        ',',
+      ),
+      ')',
+    ),
 
     // TODO: `a.:a` matches as primary operator primary
     // TODO: fix prec
@@ -1102,13 +1184,20 @@ module.exports = grammar({
     ),
 
     // I think it's this: https://nim-lang.org/docs/manual_experimental.html#pattern-operators-the-nim-operator
-    patternBind: $ => prec.dynamic(DYNAMIC_PREC.patternBind, seq(
-      '{',
+    patternBind: $ => seq(
+      token.immediate('{'),
       optional($.exprColonEqExprList),
       '}',
-    )),
+    ),
 
-    cmdCall: $ => prec.left(sep_repeat1($.expr, $._comma, false)),
+    // TODO: continue fixing cmdCall no arguments > doBlock
+    cmdCall: $ => prec.left(choice(
+      seq(
+        sep_repeat1($.expr, $._comma, false),
+        optional($.doBlock),
+      ),
+      $.doBlock,
+    )),
 
     // ========================================================================
     // identifier
@@ -1144,7 +1233,8 @@ module.exports = grammar({
       // $.par,
       $.symbol,
       $.arrayConstr,
-      $.setOrTableConstr,
+      $.setConstr,
+      $.tableConstr,
       $.castExpr,
     ),
 
@@ -1158,11 +1248,17 @@ module.exports = grammar({
       ')'
     ),
 
+    routineExprTypeDesc: $ => prec.right(seq(
+      alias(choice('proc', 'func', 'iterator'), $.keyw),
+      seq(optional($.paramList), optional($.paramListColon)),
+      optional($.pragma),
+    )),
+
     routineExpr: $ => prec.right(seq(
       alias(choice('proc', 'func', 'iterator'), $.keyw),
       seq(optional($.paramList), optional($.paramListColon)),
       optional($.pragma),
-      optional(seq('=', $._suite)),
+      seq('=', $._suite),
     )),
 
     // par: $ => prec.dynamic(TOKEN_PREC.par, seq(
@@ -1195,39 +1291,65 @@ module.exports = grammar({
     // TODO: narrow down exprColonEqExprList?
     arrayConstr: $ => seq(
       '[',
-      optional($.exprColonEqExprList),
+      optional($.symbolEqExprList),
       ']',
     ),
 
-    setOrTableConstr: $ => seq(
-      prec.dynamic(DYNAMIC_PREC.setOrTableConstr, '{'),
-      optional(choice(
-        $.exprColonEqExprList,
-        ':', // empty table {:}
-      )),
+    setConstr: $ => seq(
+      '{',
+      optional($.exprList),
       '}',
+    ),
+
+    tableConstr: $ => seq(
+      '{',
+      choice(
+        sep_repeat1(
+          alias($._exprMandatoryColonExpr, $.exprColonExpr),
+          ',',
+        ),
+        ':', // empty table {:}
+      ),
+      '}',
+    ),
+
+    _exprMandatoryColonExpr: $ => seq(
+      $.expr,
+      ':',
+      $.expr,
     ),
 
     // making tupleConstr as precise as possible for disambiguation with functionCall
     tupleConstr: $ => prec(PREC.tupleConstr, seq(
       '(',
       optional(choice(
+        // single element doesn't need a trailing comma if using named fields
+        alias($.mandatorySymbolColonExpr, $.symbolColonExpr),
         seq(
-          $.expr,
-          ':',
-          $.expr,
-        ), // single element doesn't need a trailing comma if using named fields
-        seq(
-          alias($.exprColonExpr, 'exprColonExpr'), // single element needs a trailing comma
+          $.symbolColonExpr, // single element needs a trailing comma
           ',',
-          optional(sep_repeat1(
-              alias($.exprColonExpr, 'exprColonExpr'),
-              $._comma,
-          )),
+          sep_repeat(
+            $.symbolColonExpr,
+            $._comma,
+          ),
         ),
       )),
       ')',
     )),
+
+    symbolColonExpr: $ => prec.dynamic(DYNAMIC_PREC.exprColonExpr, seq(
+      optional(seq(
+        $.symbol,
+        ':',
+      )),
+      $.expr,
+    )),
+
+    mandatorySymbolColonExpr: $ => seq(
+      $.symbol,
+      ':',
+      $.expr,
+    ),
 
     // ========================================================================
     // literals

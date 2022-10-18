@@ -78,11 +78,12 @@ discard a(a=9, b, c)
             (ident))
           (primarySuffix
             (functionCall
-              (exprColonEqExprList
+              (symbolEqExprList
+                (symbolEqExpr
                   (expr
                     (primary
                       (symbol
-                        (ident)))))))))))
+                        (ident))))))))))))
   (stmt
     (discardStmt
       (keyw)
@@ -92,23 +93,24 @@ discard a(a=9, b, c)
             (ident))
           (primarySuffix
             (functionCall
-              (exprColonEqExprList
-                  (expr
-                    (primary
-                      (symbol
-                        (ident))))
+              (symbolEqExprList
+                (symbolEqExpr
+                  (symbol
+                    (ident))
                   (expr
                     (primary
                       (literal
-                        (int_lit))))
+                        (int_lit)))))
+                (symbolEqExpr
                   (expr
                     (primary
                       (symbol
-                        (ident))))
+                        (ident)))))
+                (symbolEqExpr
                   (expr
                     (primary
                       (symbol
-                        (ident))))))))))))
+                        (ident)))))))))))))
 
 ==================
 qualifiedSuffix
@@ -176,10 +178,11 @@ discard a[int, int]()
           (primarySuffix
             (indexSuffix
               (exprColonEqExprList
+                (exprColonEqExpr
                   (expr
                     (primary
                       (literal
-                        (int_lit)))))))))))
+                        (int_lit))))))))))))
   (stmt
     (discardStmt
       (keyw)
@@ -194,10 +197,11 @@ discard a[int, int]()
           (primarySuffix
             (indexSuffix
               (exprColonEqExprList
+                (exprColonEqExpr
                   (expr
                     (primary
                       (literal
-                        (int_lit)))))))))))
+                        (int_lit))))))))))))
   (stmt
     (discardStmt
       (keyw)
@@ -208,16 +212,313 @@ discard a[int, int]()
           (primarySuffix
             (indexSuffix
               (exprColonEqExprList
+                (exprColonEqExpr
                   (expr
                     (primary
                       (symbol
-                        (ident))))
+                        (ident)))))
+                (exprColonEqExpr
                   (expr
                     (primary
                       (symbol
-                        (ident)))))))
+                        (ident))))))))
           (primarySuffix
             (functionCall)))))))
+
+==================
+primarySuffix combination
+==================
+
+a(b).c
+a(b)[c]
+a(b)(c)
+a[b].c
+a[b][c]
+a[b](c)
+a.b.c
+a.b[c]
+a.b(c)
+d a.c
+d a[c]
+d a(c)
+a.c d
+a[c] d
+a(c) d
+
+---
+
+(module
+  (stmt
+    (exprStmt
+      (primary
+        (symbol
+          (ident))
+        (primarySuffix
+          (functionCall
+            (symbolEqExprList
+              (symbolEqExpr
+                (expr
+                  (primary
+                    (symbol
+                      (ident))))))))
+        (primarySuffix
+          (qualifiedSuffix
+            (symbol
+              (ident)))))))
+  (stmt
+    (exprStmt
+      (primary
+        (symbol
+          (ident))
+        (primarySuffix
+          (functionCall
+            (symbolEqExprList
+              (symbolEqExpr
+                (expr
+                  (primary
+                    (symbol
+                      (ident))))))))
+        (primarySuffix
+          (indexSuffix
+            (exprColonEqExprList
+              (exprColonEqExpr
+                (expr
+                  (primary
+                    (symbol
+                      (ident)))))))))))
+  (stmt
+    (exprStmt
+      (primary
+        (symbol
+          (ident))
+        (primarySuffix
+          (functionCall
+            (symbolEqExprList
+              (symbolEqExpr
+                (expr
+                  (primary
+                    (symbol
+                      (ident))))))))
+        (primarySuffix
+          (functionCall
+            (symbolEqExprList
+              (symbolEqExpr
+                (expr
+                  (primary
+                    (symbol
+                      (ident)))))))))))
+  (stmt
+    (exprStmt
+      (primary
+        (symbol
+          (ident))
+        (primarySuffix
+          (indexSuffix
+            (exprColonEqExprList
+              (exprColonEqExpr
+                (expr
+                  (primary
+                    (symbol
+                      (ident))))))))
+        (primarySuffix
+          (qualifiedSuffix
+            (symbol
+              (ident)))))))
+  (stmt
+    (exprStmt
+      (primary
+        (symbol
+          (ident))
+        (primarySuffix
+          (indexSuffix
+            (exprColonEqExprList
+              (exprColonEqExpr
+                (expr
+                  (primary
+                    (symbol
+                      (ident))))))))
+        (primarySuffix
+          (indexSuffix
+            (exprColonEqExprList
+              (exprColonEqExpr
+                (expr
+                  (primary
+                    (symbol
+                      (ident)))))))))))
+  (stmt
+    (exprStmt
+      (primary
+        (symbol
+          (ident))
+        (primarySuffix
+          (indexSuffix
+            (exprColonEqExprList
+              (exprColonEqExpr
+                (expr
+                  (primary
+                    (symbol
+                      (ident))))))))
+        (primarySuffix
+          (functionCall
+            (symbolEqExprList
+              (symbolEqExpr
+                (expr
+                  (primary
+                    (symbol
+                      (ident)))))))))))
+  (stmt
+    (exprStmt
+      (primary
+        (symbol
+          (ident))
+        (primarySuffix
+          (qualifiedSuffix
+            (symbol
+              (ident))))
+        (primarySuffix
+          (qualifiedSuffix
+            (symbol
+              (ident)))))))
+  (stmt
+    (exprStmt
+      (primary
+        (symbol
+          (ident))
+        (primarySuffix
+          (qualifiedSuffix
+            (symbol
+              (ident))))
+        (primarySuffix
+          (indexSuffix
+            (exprColonEqExprList
+              (exprColonEqExpr
+                (expr
+                  (primary
+                    (symbol
+                      (ident)))))))))))
+  (stmt
+    (exprStmt
+      (primary
+        (symbol
+          (ident))
+        (primarySuffix
+          (qualifiedSuffix
+            (symbol
+              (ident))))
+        (primarySuffix
+          (functionCall
+            (symbolEqExprList
+              (symbolEqExpr
+                (expr
+                  (primary
+                    (symbol
+                      (ident)))))))))))
+  (stmt
+    (exprStmt
+      (primary
+        (symbol
+          (ident))
+        (primarySuffix
+          (cmdCall
+            (expr
+              (primary
+                (symbol
+                  (ident))
+                (primarySuffix
+                  (qualifiedSuffix
+                    (symbol
+                      (ident)))))))))))
+  (stmt
+    (exprStmt
+      (primary
+        (symbol
+          (ident))
+        (primarySuffix
+          (cmdCall
+            (expr
+              (primary
+                (symbol
+                  (ident))
+                (primarySuffix
+                  (indexSuffix
+                    (exprColonEqExprList
+                      (exprColonEqExpr
+                        (expr
+                          (primary
+                            (symbol
+                              (ident)))))))))))))))
+  (stmt
+    (exprStmt
+      (primary
+        (symbol
+          (ident))
+        (primarySuffix
+          (cmdCall
+            (expr
+              (primary
+                (symbol
+                  (ident))
+                (primarySuffix
+                  (functionCall
+                    (symbolEqExprList
+                      (symbolEqExpr
+                        (expr
+                          (primary
+                            (symbol
+                              (ident)))))))))))))))
+  (stmt
+    (exprStmt
+      (primary
+        (symbol
+          (ident))
+        (primarySuffix
+          (qualifiedSuffix
+            (symbol
+              (ident))))
+        (primarySuffix
+          (cmdCall
+            (expr
+              (primary
+                (symbol
+                  (ident)))))))))
+  (stmt
+    (exprStmt
+      (primary
+        (symbol
+          (ident))
+        (primarySuffix
+          (indexSuffix
+            (exprColonEqExprList
+              (exprColonEqExpr
+                (expr
+                  (primary
+                    (symbol
+                      (ident))))))))
+        (primarySuffix
+          (cmdCall
+            (expr
+              (primary
+                (symbol
+                  (ident)))))))))
+  (stmt
+    (exprStmt
+      (primary
+        (symbol
+          (ident))
+        (primarySuffix
+          (functionCall
+            (symbolEqExprList
+              (symbolEqExpr
+                (expr
+                  (primary
+                    (symbol
+                      (ident))))))))
+        (primarySuffix
+          (cmdCall
+            (expr
+              (primary
+                (symbol
+                  (ident))))))))))
 
 ==================
 patternBind
@@ -238,10 +539,11 @@ discard a{x}
           (primarySuffix
             (patternBind
               (exprColonEqExprList
+                (exprColonEqExpr
                   (expr
                     (primary
                       (symbol
-                        (ident))))))))))))
+                        (ident)))))))))))))
 
 ==================
 castExpr
@@ -260,7 +562,7 @@ discard cast[int](x)
         (primary
           (castExpr
             (typeDesc
-              (primary
+              (primaryTypeDesc
                 (symbol
                   (ident))))
             (expr
@@ -274,7 +576,7 @@ discard cast[int](x)
         (primary
           (castExpr
             (typeDesc
-              (primary
+              (primaryTypeDesc
                 (symbol
                   (ident))))
             (expr
@@ -286,12 +588,12 @@ discard cast[int](x)
 routineExpr
 ==================
 
-discard proc (x: int, y, z: int)
+discard proc (x: int, y, z: int) = discard
 discard proc (x = 5, y: int = 6): int {.inline.} =
   discard true
   discard true
-discard func
-discard iterator
+discard func = discard
+discard iterator = discard
 
 ---
 
@@ -308,7 +610,7 @@ discard iterator
                 (symbol
                   (ident))
                 (typeDesc
-                  (primary
+                  (primaryTypeDesc
                     (symbol
                       (ident)))))
               (paramColonEquals
@@ -317,9 +619,12 @@ discard iterator
                 (symbol
                   (ident))
                 (typeDesc
-                  (primary
+                  (primaryTypeDesc
                     (symbol
-                      (ident)))))))))))
+                      (ident))))))
+            (block
+              (discardStmt
+                (keyw))))))))
   (stmt
     (discardStmt
       (keyw)
@@ -339,7 +644,7 @@ discard iterator
                 (symbol
                   (ident))
                 (typeDesc
-                  (primary
+                  (primaryTypeDesc
                     (symbol
                       (ident))))
                 (expr
@@ -348,7 +653,7 @@ discard iterator
                       (int_lit))))))
             (paramListColon
               (typeDesc
-                (primary
+                (primaryTypeDesc
                   (symbol
                     (ident)))))
             (pragma
@@ -378,14 +683,20 @@ discard iterator
       (expr
         (primary
           (routineExpr
-            (keyw))))))
+            (keyw)
+            (block
+              (discardStmt
+                (keyw))))))))
   (stmt
     (discardStmt
       (keyw)
       (expr
         (primary
           (routineExpr
-            (keyw)))))))
+            (keyw)
+            (block
+              (discardStmt
+                (keyw)))))))))
 
 ==================
 cmdCall
@@ -423,13 +734,13 @@ echo test "hi", "hi", test "hi", "hi"
             (expr
               (primary
                 (symbol
-                  (ident))))))
-        (primarySuffix
-          (cmdCall
-            (expr
-              (primary
-                (literal
-                  (str_lit)))))))))
+                  (ident))
+                (primarySuffix
+                  (cmdCall
+                    (expr
+                      (primary
+                        (literal
+                          (str_lit)))))))))))))
   (stmt
     (exprStmt
       (primary
@@ -440,13 +751,13 @@ echo test "hi", "hi", test "hi", "hi"
             (expr
               (primary
                 (symbol
-                  (ident))))))
-        (primarySuffix
-          (cmdCall
-            (expr
-              (primary
-                (literal
-                  (str_lit))))
+                  (ident))
+                (primarySuffix
+                  (cmdCall
+                    (expr
+                      (primary
+                        (literal
+                          (str_lit))))))))
             (expr
               (primary
                 (literal
@@ -454,13 +765,13 @@ echo test "hi", "hi", test "hi", "hi"
             (expr
               (primary
                 (symbol
-                  (ident))))))
-        (primarySuffix
-          (cmdCall
-            (expr
-              (primary
-                (literal
-                  (str_lit))))
+                  (ident))
+                (primarySuffix
+                  (cmdCall
+                    (expr
+                      (primary
+                        (literal
+                          (str_lit))))))))
             (expr
               (primary
                 (literal
@@ -513,15 +824,17 @@ echo (((1,2),),)           # triple tuple
           (ident))
         (primarySuffix
           (functionCall
-            (exprColonEqExprList
+            (symbolEqExprList
+              (symbolEqExpr
                 (expr
                   (primary
                     (literal
-                      (int_lit))))
+                      (int_lit)))))
+              (symbolEqExpr
                 (expr
                   (primary
                     (literal
-                      (int_lit)))))))))
+                      (int_lit))))))))))
     (comment))
   (stmt
     (exprStmt
@@ -533,14 +846,16 @@ echo (((1,2),),)           # triple tuple
             (expr
               (primary
                 (tupleConstr
+                  (symbolColonExpr
                     (expr
                       (primary
                         (literal
-                          (int_lit))))
+                          (int_lit)))))
+                  (symbolColonExpr
                     (expr
                       (primary
                         (literal
-                          (int_lit)))))))))))
+                          (int_lit))))))))))))
     (comment))
   (stmt
     (exprStmt
@@ -552,22 +867,20 @@ echo (((1,2),),)           # triple tuple
             (expr
               (primary
                 (tupleConstr
-                    (expr
-                      (primary
-                        (symbol
-                          (ident))))
-                    (expr
-                      (primary
-                        (literal
-                          (int_lit))))
-                    (expr
-                      (primary
-                        (symbol
-                          (ident))))
+                  (symbolColonExpr
+                    (symbol
+                      (ident))
                     (expr
                       (primary
                         (literal
-                          (int_lit)))))))))))
+                          (int_lit)))))
+                  (symbolColonExpr
+                    (symbol
+                      (ident))
+                    (expr
+                      (primary
+                        (literal
+                          (int_lit))))))))))))
     (comment))
   (stmt
     (exprStmt
@@ -576,11 +889,12 @@ echo (((1,2),),)           # triple tuple
           (ident))
         (primarySuffix
           (functionCall
-            (exprColonEqExprList
+            (symbolEqExprList
+              (symbolEqExpr
                 (expr
                   (primary
                     (literal
-                      (int_lit)))))))))
+                      (int_lit))))))))))
     (comment))
   (stmt
     (exprStmt
@@ -589,11 +903,12 @@ echo (((1,2),),)           # triple tuple
           (ident))
         (primarySuffix
           (functionCall
-            (exprColonEqExprList
+            (symbolEqExprList
+              (symbolEqExpr
                 (expr
                   (primary
                     (literal
-                      (int_lit)))))))))
+                      (int_lit))))))))))
     (comment))
   (stmt
     (exprStmt
@@ -605,10 +920,11 @@ echo (((1,2),),)           # triple tuple
             (expr
               (primary
                 (tupleConstr
+                  (symbolColonExpr
                     (expr
                       (primary
                         (literal
-                          (int_lit)))))))))))
+                          (int_lit))))))))))))
     (comment))
   (stmt
     (exprStmt
@@ -620,14 +936,13 @@ echo (((1,2),),)           # triple tuple
             (expr
               (primary
                 (tupleConstr
-                  (expr
-                    (primary
-                      (symbol
-                        (ident))))
-                  (expr
-                    (primary
-                      (literal
-                        (int_lit)))))))))))
+                  (symbolColonExpr
+                    (symbol
+                      (ident))
+                    (expr
+                      (primary
+                        (literal
+                          (int_lit))))))))))))
     (comment))
   (stmt
     (exprStmt
@@ -636,18 +951,21 @@ echo (((1,2),),)           # triple tuple
           (ident))
         (primarySuffix
           (functionCall
-            (exprColonEqExprList
+            (symbolEqExprList
+              (symbolEqExpr
                 (expr
                   (primary
                     (tupleConstr
+                      (symbolColonExpr
                         (expr
                           (primary
                             (literal
-                              (int_lit))))
+                              (int_lit)))))
+                      (symbolColonExpr
                         (expr
                           (primary
                             (literal
-                              (int_lit))))))))))))
+                              (int_lit))))))))))))))
     (comment))
   (stmt
     (exprStmt
@@ -656,18 +974,21 @@ echo (((1,2),),)           # triple tuple
           (ident))
         (primarySuffix
           (functionCall
-            (exprColonEqExprList
+            (symbolEqExprList
+              (symbolEqExpr
                 (expr
                   (primary
                     (tupleConstr
+                      (symbolColonExpr
                         (expr
                           (primary
                             (literal
-                              (int_lit))))
+                              (int_lit)))))
+                      (symbolColonExpr
                         (expr
                           (primary
                             (literal
-                              (int_lit))))))))))))
+                              (int_lit))))))))))))))
     (comment))
   (stmt
     (exprStmt
@@ -676,21 +997,25 @@ echo (((1,2),),)           # triple tuple
           (ident))
         (primarySuffix
           (functionCall
-            (exprColonEqExprList
+            (symbolEqExprList
+              (symbolEqExpr
                 (expr
                   (primary
                     (tupleConstr
+                      (symbolColonExpr
                         (expr
                           (primary
                             (tupleConstr
+                              (symbolColonExpr
                                 (expr
                                   (primary
                                     (literal
-                                      (int_lit))))
+                                      (int_lit)))))
+                              (symbolColonExpr
                                 (expr
                                   (primary
                                     (literal
-                                      (int_lit)))))))))))))))
+                                      (int_lit))))))))))))))))))
     (comment))
   (stmt
     (exprStmt
@@ -702,20 +1027,180 @@ echo (((1,2),),)           # triple tuple
             (expr
               (primary
                 (tupleConstr
+                  (symbolColonExpr
                     (expr
                       (primary
                         (tupleConstr
+                          (symbolColonExpr
                             (expr
                               (primary
                                 (tupleConstr
+                                  (symbolColonExpr
                                     (expr
                                       (primary
                                         (literal
-                                          (int_lit))))
+                                          (int_lit)))))
+                                  (symbolColonExpr
                                     (expr
                                       (primary
                                         (literal
-                                          (int_lit))))))))))))))))))
+                                          (int_lit)))))))))))))))))))))
   (comment))
 
+==================
+objectConstr
+==================
+
+discard a(a: 9)
+discard a(a: 9, b: 9)
+discard a(
+  a: 9,
+  b: 9
+  )
+
+---
+
+(module
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident))
+          (primarySuffix
+            (objectConstr
+              (symbolColonExpr
+                (symbol
+                  (ident))
+                (expr
+                  (primary
+                    (literal
+                      (int_lit)))))))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident))
+          (primarySuffix
+            (objectConstr
+              (symbolColonExpr
+                (symbol
+                  (ident))
+                (expr
+                  (primary
+                    (literal
+                      (int_lit)))))
+              (symbolColonExpr
+                (symbol
+                  (ident))
+                (expr
+                  (primary
+                    (literal
+                      (int_lit)))))))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident))
+          (primarySuffix
+            (objectConstr
+              (symbolColonExpr
+                (symbol
+                  (ident))
+                (expr
+                  (primary
+                    (literal
+                      (int_lit)))))
+              (symbolColonExpr
+                (symbol
+                  (ident))
+                (expr
+                  (primary
+                    (literal
+                      (int_lit))))))))))))
+
+==================
+objectConstr functionCall disambiguation
+==================
+
+discard a(a: 9)
+discard a()
+discard a(a)
+discard a(a=9, b, c)
+
+---
+
+(module
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident))
+          (primarySuffix
+            (objectConstr
+              (symbolColonExpr
+                (symbol
+                  (ident))
+                (expr
+                  (primary
+                    (literal
+                      (int_lit)))))))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident))
+          (primarySuffix
+            (functionCall))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident))
+          (primarySuffix
+            (functionCall
+              (symbolEqExprList
+                (symbolEqExpr
+                  (expr
+                    (primary
+                      (symbol
+                        (ident))))))))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident))
+          (primarySuffix
+            (functionCall
+              (symbolEqExprList
+                (symbolEqExpr
+                  (symbol
+                    (ident))
+                  (expr
+                    (primary
+                      (literal
+                        (int_lit)))))
+                (symbolEqExpr
+                  (expr
+                    (primary
+                      (symbol
+                        (ident)))))
+                (symbolEqExpr
+                  (expr
+                    (primary
+                      (symbol
+                        (ident)))))))))))))
 

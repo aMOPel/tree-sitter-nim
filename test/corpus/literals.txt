@@ -1648,67 +1648,70 @@ discard [A=0, B=1]
       (expr
         (primary
           (arrayConstr
-            (exprColonEqExprList
-                (expr
-                  (primary
-                    (literal
-                      (int_lit))))))))))
-  (stmt
-    (discardStmt
-      (keyw)
-      (expr
-        (primary
-          (arrayConstr
-            (exprColonEqExprList
-                (expr
-                  (primary
-                    (literal
-                      (int_lit))))
-                (expr
-                  (primary
-                    (literal
-                      (int_lit))))))))))
-  (stmt
-    (discardStmt
-      (keyw)
-      (expr
-        (primary
-          (arrayConstr
-            (exprColonEqExprList
-                (expr
-                  (primary
-                    (literal
-                      (int_lit))))
-                (expr
-                  (primary
-                    (literal
-                      (int_lit))))))))))
-  (stmt
-    (discardStmt
-      (keyw)
-      (expr
-        (primary
-          (arrayConstr
-            (exprColonEqExprList
-                (expr
-                  (primary
-                    (symbol
-                      (ident))))
-                (expr
-                  (primary
-                    (literal
-                      (int_lit))))
-                (expr
-                  (primary
-                    (symbol
-                      (ident))))
+            (symbolEqExprList
+              (symbolEqExpr
                 (expr
                   (primary
                     (literal
                       (int_lit)))))))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (arrayConstr
+            (symbolEqExprList
+              (symbolEqExpr
+                (expr
+                  (primary
+                    (literal
+                      (int_lit)))))
+              (symbolEqExpr
+                (expr
+                  (primary
+                    (literal
+                      (int_lit)))))))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (arrayConstr
+            (symbolEqExprList
+              (symbolEqExpr
+                (expr
+                  (primary
+                    (literal
+                      (int_lit)))))
+              (symbolEqExpr
+                (expr
+                  (primary
+                    (literal
+                      (int_lit)))))))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (arrayConstr
+            (symbolEqExprList
+              (symbolEqExpr
+                (symbol
+                  (ident))
+                (expr
+                  (primary
+                    (literal
+                      (int_lit)))))
+              (symbolEqExpr
+                (symbol
+                  (ident))
+                (expr
+                  (primary
+                    (literal
+                      (int_lit))))))))))))
 
 ==================
-setOrTableConstr
+setConstr
 ==================
 
 discard {}
@@ -1719,9 +1722,6 @@ discard {
   ,
   1
 }
-discard {:}
-discard {0:1}
-discard {0:1, 5:6}
 
 ---
 
@@ -1731,92 +1731,133 @@ discard {0:1, 5:6}
       (keyw)
       (expr
         (primary
-          (setOrTableConstr)))))
+          (setConstr)))))
   (stmt
     (discardStmt
       (keyw)
       (expr
         (primary
-          (setOrTableConstr
-            (exprColonEqExprList
-                (expr
-                  (primary
-                    (literal
-                      (int_lit))))))))))
+          (setConstr
+            (exprList
+              (expr
+                (primary
+                  (literal
+                    (int_lit))))))))))
   (stmt
     (discardStmt
       (keyw)
       (expr
         (primary
-          (setOrTableConstr
-            (exprColonEqExprList
-                (expr
-                  (primary
-                    (literal
-                      (int_lit))))
-                (expr
-                  (primary
-                    (literal
-                      (int_lit))))))))))
+          (setConstr
+            (exprList
+              (expr
+                (primary
+                  (literal
+                    (int_lit))))
+              (expr
+                (primary
+                  (literal
+                    (int_lit))))))))))
   (stmt
     (discardStmt
       (keyw)
       (expr
         (primary
-          (setOrTableConstr
-            (exprColonEqExprList
-                (expr
-                  (primary
-                    (literal
-                      (int_lit))))
-                (expr
-                  (primary
-                    (literal
-                      (int_lit))))))))))
+          (setConstr
+            (exprList
+              (expr
+                (primary
+                  (literal
+                    (int_lit))))
+              (expr
+                (primary
+                  (literal
+                    (int_lit)))))))))))
+
+==================
+tableConstr
+==================
+
+discard {:}
+discard {0:1}
+discard {0:1, 5:6}
+discard {
+  0:1,
+  5:6
+  }
+
+---
+
+(module
   (stmt
     (discardStmt
       (keyw)
       (expr
         (primary
-          (setOrTableConstr)))))
+          (tableConstr)))))
   (stmt
     (discardStmt
       (keyw)
       (expr
         (primary
-          (setOrTableConstr
-            (exprColonEqExprList
-                (expr
-                  (primary
-                    (literal
-                      (int_lit))))
-                (expr
-                  (primary
-                    (literal
-                      (int_lit))))))))))
+          (tableConstr
+            (exprColonExpr
+              (expr
+                (primary
+                  (literal
+                    (int_lit))))
+              (expr
+                (primary
+                  (literal
+                    (int_lit))))))))))
   (stmt
     (discardStmt
       (keyw)
       (expr
         (primary
-          (setOrTableConstr
-            (exprColonEqExprList
-                (expr
-                  (primary
-                    (literal
-                      (int_lit))))
-                (expr
-                  (primary
-                    (literal
-                      (int_lit))))
-                (expr
-                  (primary
-                    (literal
-                      (int_lit))))
-                (expr
-                  (primary
-                    (literal
-                      (int_lit)))))))))))
+          (tableConstr
+            (exprColonExpr
+              (expr
+                (primary
+                  (literal
+                    (int_lit))))
+              (expr
+                (primary
+                  (literal
+                    (int_lit)))))
+            (exprColonExpr
+              (expr
+                (primary
+                  (literal
+                    (int_lit))))
+              (expr
+                (primary
+                  (literal
+                    (int_lit))))))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (tableConstr
+            (exprColonExpr
+              (expr
+                (primary
+                  (literal
+                    (int_lit))))
+              (expr
+                (primary
+                  (literal
+                    (int_lit)))))
+            (exprColonExpr
+              (expr
+                (primary
+                  (literal
+                    (int_lit))))
+              (expr
+                (primary
+                  (literal
+                    (int_lit)))))))))))
 
 ==================
 tupleConstr
@@ -1848,74 +1889,76 @@ discard (a:1, b:6)
       (expr
         (primary
           (tupleConstr
-              (expr
-                (primary
-                  (literal
-                    (int_lit)))))))))
-  (stmt
-    (discardStmt
-      (keyw)
-      (expr
-        (primary
-          (tupleConstr
-              (expr
-                (primary
-                  (literal
-                    (int_lit))))
-              (expr
-                (primary
-                  (literal
-                    (int_lit)))))))))
-  (stmt
-    (discardStmt
-      (keyw)
-      (expr
-        (primary
-          (tupleConstr
-              (expr
-                (primary
-                  (literal
-                    (int_lit))))
-              (expr
-                (primary
-                  (literal
-                    (int_lit)))))))))
-  (stmt
-    (discardStmt
-      (keyw)
-      (expr
-        (primary
-          (tupleConstr
-            (expr
-              (primary
-                (symbol
-                  (ident))))
-            (expr
-              (primary
-                (literal
-                  (int_lit)))))))))
-  (stmt
-    (discardStmt
-      (keyw)
-      (expr
-        (primary
-          (tupleConstr
-              (expr
-                (primary
-                  (symbol
-                    (ident))))
-              (expr
-                (primary
-                  (literal
-                    (int_lit))))
-              (expr
-                (primary
-                  (symbol
-                    (ident))))
+            (symbolColonExpr
               (expr
                 (primary
                   (literal
                     (int_lit))))))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (tupleConstr
+            (symbolColonExpr
+              (expr
+                (primary
+                  (literal
+                    (int_lit)))))
+            (symbolColonExpr
+              (expr
+                (primary
+                  (literal
+                    (int_lit))))))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (tupleConstr
+            (symbolColonExpr
+              (expr
+                (primary
+                  (literal
+                    (int_lit)))))
+            (symbolColonExpr
+              (expr
+                (primary
+                  (literal
+                    (int_lit))))))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (tupleConstr
+            (symbolColonExpr
+              (symbol
+                (ident))
+              (expr
+                (primary
+                  (literal
+                    (int_lit))))))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (tupleConstr
+            (symbolColonExpr
+              (symbol
+                (ident))
+              (expr
+                (primary
+                  (literal
+                    (int_lit)))))
+            (symbolColonExpr
+              (symbol
+                (ident))
+              (expr
+                (primary
+                  (literal
+                    (int_lit)))))))))))
 
 ==================
 interpolated_str_lit

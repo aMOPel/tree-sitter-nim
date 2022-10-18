@@ -60,7 +60,7 @@ primarySuffix = '(' (exprColonEqExpr comma?)* ')'
       | DOTLIKEOP optInd symbol generalizedLit?
       | '[' optInd exprColonEqExprList optPar ']'
       | '{' optInd exprColonEqExprList optPar '}'
-      | &( '`'|IDENT|literal|'cast'|'addr'|'type') expr # command syntax
+      | &( '`'|IDENT|literal|'cast'|'addr'|'type') expr (comma expr)* # command syntax
 pragma = '{.' optInd (exprColonEqExpr comma?)* optPar ('.}' | '}')
 identVis = symbol OPR?  # postfix position
 identVisDot = symbol '.' optInd symbol OPR?
@@ -93,7 +93,8 @@ primary = operatorB primary primarySuffix* |
           ('var' | 'out' | 'ref' | 'ptr' | 'distinct') primary
         /  prefixOperator* identOrLiteral primarySuffix*
 typeDesc = simpleExpr ('not' expr)?
-typeDefAux = simpleExpr ('not' expr)?
+typeDefAux = simpleExpr ('not' expr
+                        | postExprBlocks)?
 postExprBlocks = ':' stmt? ( IND{=} doBlock
                            | IND{=} 'of' exprList ':' stmt
                            | IND{=} 'elif' expr ':' stmt
@@ -165,17 +166,16 @@ objectBranch = 'of' exprList colcom objectPart
 objectBranches = objectBranch (IND{=} objectBranch)*
                       (IND{=} 'elif' expr colcom objectPart)*
                       (IND{=} 'else' colcom objectPart)?
-objectCase = 'case' identWithPragma ':' typeDesc ':'? COMMENT?
+objectCase = 'case' declColonEquals ':'? COMMENT?
             (IND{>} objectBranches DED
             | IND{=} objectBranches)
 objectPart = IND{>} objectPart^+IND{=} DED
            / objectWhen / objectCase / 'nil' / 'discard' / declColonEquals
-objectDecl = 'object' pragma? ('of' typeDesc)? COMMENT? objectPart
+objectDecl = 'object' ('of' typeDesc)? COMMENT? objectPart
 conceptParam = ('var' | 'out')? symbol
 conceptDecl = 'concept' conceptParam ^* ',' (pragma)? ('of' typeDesc ^* ',')?
               &IND{>} stmt
-typeDef = identWithPragmaDot genericParamList? '=' optInd typeDefAux
-            indAndComment? / identVisDot genericParamList? pragma '=' optInd typeDefAux
+typeDef = identVisDot genericParamList? pragma '=' optInd typeDefAux
             indAndComment?
 varTuple = '(' optInd identWithPragma ^+ comma optPar ')' '=' optInd expr
 colonBody = colcom stmt postExprBlocks?

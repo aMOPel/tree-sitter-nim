@@ -106,7 +106,7 @@ proc g(a: int = 1; b, c: int = 2; d: int): int
       (paramList)
       (paramListColon
         (typeDesc
-          (primary
+          (primaryTypeDesc
             (symbol
               (ident)))))))
   (stmt
@@ -120,12 +120,12 @@ proc g(a: int = 1; b, c: int = 2; d: int): int
           (symbol
             (ident))
           (typeDesc
-            (primary
+            (primaryTypeDesc
               (symbol
                 (ident))))))
       (paramListColon
         (typeDesc
-          (primary
+          (primaryTypeDesc
             (symbol
               (ident)))))))
   (stmt
@@ -141,12 +141,12 @@ proc g(a: int = 1; b, c: int = 2; d: int): int
           (symbol
             (ident))
           (typeDesc
-            (primary
+            (primaryTypeDesc
               (symbol
                 (ident))))))
       (paramListColon
         (typeDesc
-          (primary
+          (primaryTypeDesc
             (symbol
               (ident)))))))
   (stmt
@@ -160,19 +160,19 @@ proc g(a: int = 1; b, c: int = 2; d: int): int
           (symbol
             (ident))
           (typeDesc
-            (primary
+            (primaryTypeDesc
               (symbol
                 (ident)))))
         (paramColonEquals
           (symbol
             (ident))
           (typeDesc
-            (primary
+            (primaryTypeDesc
               (symbol
                 (ident))))))
       (paramListColon
         (typeDesc
-          (primary
+          (primaryTypeDesc
             (symbol
               (ident)))))))
   (stmt
@@ -186,7 +186,7 @@ proc g(a: int = 1; b, c: int = 2; d: int): int
           (symbol
             (ident))
           (typeDesc
-            (primary
+            (primaryTypeDesc
               (symbol
                 (ident)))))
         (paramColonEquals
@@ -195,19 +195,19 @@ proc g(a: int = 1; b, c: int = 2; d: int): int
           (symbol
             (ident))
           (typeDesc
-            (primary
+            (primaryTypeDesc
               (symbol
                 (ident)))))
         (paramColonEquals
           (symbol
             (ident))
           (typeDesc
-            (primary
+            (primaryTypeDesc
               (symbol
                 (ident))))))
       (paramListColon
         (typeDesc
-          (primary
+          (primaryTypeDesc
             (symbol
               (ident)))))))
   (stmt
@@ -221,7 +221,7 @@ proc g(a: int = 1; b, c: int = 2; d: int): int
           (symbol
             (ident))
           (typeDesc
-            (primary
+            (primaryTypeDesc
               (symbol
                 (ident))))
           (expr
@@ -234,7 +234,7 @@ proc g(a: int = 1; b, c: int = 2; d: int): int
           (symbol
             (ident))
           (typeDesc
-            (primary
+            (primaryTypeDesc
               (symbol
                 (ident))))
           (expr
@@ -245,15 +245,14 @@ proc g(a: int = 1; b, c: int = 2; d: int): int
           (symbol
             (ident))
           (typeDesc
-            (primary
+            (primaryTypeDesc
               (symbol
                 (ident))))))
       (paramListColon
         (typeDesc
-          (primary
+          (primaryTypeDesc
             (symbol
               (ident))))))))
-
 
 ==================
 with pragmas
@@ -278,7 +277,7 @@ proc d(a{.gc}: int): int {.inline.} =
       (paramList)
       (paramListColon
         (typeDesc
-          (primary
+          (primaryTypeDesc
             (symbol
               (ident)))))
       (pragma
@@ -321,12 +320,12 @@ proc d(a{.gc}: int): int {.inline.} =
                   (symbol
                     (ident))))))
           (typeDesc
-            (primary
+            (primaryTypeDesc
               (symbol
                 (ident))))))
       (paramListColon
         (typeDesc
-          (primary
+          (primaryTypeDesc
             (symbol
               (ident)))))))
   (stmt
@@ -346,12 +345,12 @@ proc d(a{.gc}: int): int {.inline.} =
                   (symbol
                     (ident))))))
           (typeDesc
-            (primary
+            (primaryTypeDesc
               (symbol
                 (ident))))))
       (paramListColon
         (typeDesc
-          (primary
+          (primaryTypeDesc
             (symbol
               (ident)))))
       (pragma
@@ -393,7 +392,7 @@ proc e[T, S; P]()
       (paramList)
       (paramListColon
         (typeDesc
-          (primary
+          (primaryTypeDesc
             (symbol
               (ident)))))))
   (stmt
@@ -424,7 +423,7 @@ proc e[T, S; P]()
       (paramList)
       (paramListColon
         (typeDesc
-          (primary
+          (primaryTypeDesc
             (symbol
               (ident)))))
       (block
@@ -525,7 +524,7 @@ proc g(a: int = 1; b, c: int{~nkRStrLit & ~ nkStrLit} = 2; d: int{~nkRStrLit & ~
           (symbol
             (ident))
           (typeDesc
-            (primary
+            (primaryTypeDesc
               (symbol
                 (ident)))
             (paramConstraint
@@ -538,7 +537,7 @@ proc g(a: int = 1; b, c: int{~nkRStrLit & ~ nkStrLit} = 2; d: int{~nkRStrLit & ~
                     (ident))))))))
       (paramListColon
         (typeDesc
-          (primary
+          (primaryTypeDesc
             (symbol
               (ident)))))))
   (stmt
@@ -554,7 +553,7 @@ proc g(a: int = 1; b, c: int{~nkRStrLit & ~ nkStrLit} = 2; d: int{~nkRStrLit & ~
           (symbol
             (ident))
           (typeDesc
-            (primary
+            (primaryTypeDesc
               (symbol
                 (ident)))
             (paramConstraint
@@ -564,7 +563,7 @@ proc g(a: int = 1; b, c: int{~nkRStrLit & ~ nkStrLit} = 2; d: int{~nkRStrLit & ~
                     (ident))))))))
       (paramListColon
         (typeDesc
-          (primary
+          (primaryTypeDesc
             (symbol
               (ident)))))))
   (stmt
@@ -578,14 +577,14 @@ proc g(a: int = 1; b, c: int{~nkRStrLit & ~ nkStrLit} = 2; d: int{~nkRStrLit & ~
           (symbol
             (ident))
           (typeDesc
-            (primary
+            (primaryTypeDesc
               (symbol
                 (ident)))))
         (paramColonEquals
           (symbol
             (ident))
           (typeDesc
-            (primary
+            (primaryTypeDesc
               (symbol
                 (ident)))
             (paramConstraint
@@ -605,7 +604,7 @@ proc g(a: int = 1; b, c: int{~nkRStrLit & ~ nkStrLit} = 2; d: int{~nkRStrLit & ~
                     (ident))))))))
       (paramListColon
         (typeDesc
-          (primary
+          (primaryTypeDesc
             (symbol
               (ident)))))))
   (stmt
@@ -619,7 +618,7 @@ proc g(a: int = 1; b, c: int{~nkRStrLit & ~ nkStrLit} = 2; d: int{~nkRStrLit & ~
           (symbol
             (ident))
           (typeDesc
-            (primary
+            (primaryTypeDesc
               (symbol
                 (ident)))))
         (paramColonEquals
@@ -628,7 +627,7 @@ proc g(a: int = 1; b, c: int{~nkRStrLit & ~ nkStrLit} = 2; d: int{~nkRStrLit & ~
           (symbol
             (ident))
           (typeDesc
-            (primary
+            (primaryTypeDesc
               (symbol
                 (ident)))
             (paramConstraint
@@ -650,12 +649,12 @@ proc g(a: int = 1; b, c: int{~nkRStrLit & ~ nkStrLit} = 2; d: int{~nkRStrLit & ~
           (symbol
             (ident))
           (typeDesc
-            (primary
+            (primaryTypeDesc
               (symbol
                 (ident))))))
       (paramListColon
         (typeDesc
-          (primary
+          (primaryTypeDesc
             (symbol
               (ident)))))))
   (stmt
@@ -669,7 +668,7 @@ proc g(a: int = 1; b, c: int{~nkRStrLit & ~ nkStrLit} = 2; d: int{~nkRStrLit & ~
           (symbol
             (ident))
           (typeDesc
-            (primary
+            (primaryTypeDesc
               (symbol
                 (ident))))
           (expr
@@ -682,7 +681,7 @@ proc g(a: int = 1; b, c: int{~nkRStrLit & ~ nkStrLit} = 2; d: int{~nkRStrLit & ~
           (symbol
             (ident))
           (typeDesc
-            (primary
+            (primaryTypeDesc
               (symbol
                 (ident)))
             (paramConstraint
@@ -708,7 +707,7 @@ proc g(a: int = 1; b, c: int{~nkRStrLit & ~ nkStrLit} = 2; d: int{~nkRStrLit & ~
           (symbol
             (ident))
           (typeDesc
-            (primary
+            (primaryTypeDesc
               (symbol
                 (ident)))
             (paramConstraint
@@ -728,7 +727,7 @@ proc g(a: int = 1; b, c: int{~nkRStrLit & ~ nkStrLit} = 2; d: int{~nkRStrLit & ~
                     (ident))))))))
       (paramListColon
         (typeDesc
-          (primary
+          (primaryTypeDesc
             (symbol
               (ident))))))))
 
@@ -774,7 +773,7 @@ template ex{discard; discard}[T,S;R](a{.gc}: T{noalias} not nil =1; b, c: int): 
                   (symbol
                     (ident))))))
           (typeDesc
-            (primary
+            (primaryTypeDesc
               (symbol
                 (ident)))
             (paramConstraint
@@ -794,12 +793,12 @@ template ex{discard; discard}[T,S;R](a{.gc}: T{noalias} not nil =1; b, c: int): 
           (symbol
             (ident))
           (typeDesc
-            (primary
+            (primaryTypeDesc
               (symbol
                 (ident))))))
       (paramListColon
         (typeDesc
-          (primary
+          (primaryTypeDesc
             (symbol
               (ident)))))
       (pragma
@@ -893,7 +892,7 @@ template
                   (symbol
                     (ident))))))
           (typeDesc
-            (primary
+            (primaryTypeDesc
               (primaryPrefix
                 (keyw))
               (symbol
@@ -915,12 +914,12 @@ template
           (symbol
             (ident))
           (typeDesc
-            (primary
+            (primaryTypeDesc
               (symbol
                 (ident))))))
       (paramListColon
         (typeDesc
-          (primary
+          (primaryTypeDesc
             (symbol
               (ident)))))
       (pragma

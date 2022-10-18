@@ -182,11 +182,6 @@ conceptParam = ('var'|'ref'|'ptr'|'static'|'type'|'out')? symbol
 30. what are these: `'cast'|'addr'|'type'` doing in `primarySuffix`
 31. no `objectConstr` even though it has specific syntax
 32. `objectBranches` should not allow for an `elif` branch, or at least I couldn't construct a valid example.
-33. `primarySuffix` says it allows for the command syntax 
-```
-| &( '`'|IDENT|literal|'cast'|'addr'|'type') expr # command syntax
-```
-But what about multiple arguments separated by commas?
 
 QUESTION:
 what is this about?
