@@ -345,11 +345,7 @@ module.exports = grammar({
       alias('discard', $.keyw),
       seq(
         sep_repeat1(
-          prec.right(seq(
-            $.symbol,
-            optional('*'),
-            optional($.pragma),
-          )),
+          $._identWithPragma,
           $._comma,
         ),
         ':',
@@ -764,7 +760,7 @@ module.exports = grammar({
         'template',
         'converter',
       ), $.keyw),
-      alias($._identVis, $.ident),
+      $._identVis,
       optional($.pattern),
       optional($.genericParamList),
       seq(optional($.paramList), optional($.paramListColon)),
@@ -1287,10 +1283,10 @@ module.exports = grammar({
       optional($.opr)
     ),
 
-    _identVis: $ => seq(
+    _identVis: $ => prec.right(seq(
       $.symbol,
-      optional($.opr),
-    ),
+      optional(alias('*', $.opr)),
+    )),
 
     _identOrLiteral: $ => choice(
       $.literal,

@@ -1046,25 +1046,6 @@
     }
   },
   {
-    "type": "ident",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": false,
-      "types": [
-        {
-          "type": "opr",
-          "named": true
-        },
-        {
-          "type": "symbol",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
     "type": "identColon",
     "named": true,
     "fields": {},
@@ -1749,6 +1730,10 @@
         },
         {
           "type": "objectWhen",
+          "named": true
+        },
+        {
+          "type": "opr",
           "named": true
         },
         {
@@ -2469,11 +2454,11 @@
           "named": true
         },
         {
-          "type": "ident",
+          "type": "keyw",
           "named": true
         },
         {
-          "type": "keyw",
+          "type": "opr",
           "named": true
         },
         {
@@ -2490,6 +2475,10 @@
         },
         {
           "type": "pragma",
+          "named": true
+        },
+        {
+          "type": "symbol",
           "named": true
         }
       ]
@@ -3439,6 +3428,10 @@
   {
     "type": "from",
     "named": false
+  },
+  {
+    "type": "ident",
+    "named": true
   },
   {
     "type": "in",

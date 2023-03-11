@@ -277,6 +277,7 @@ type
             (objectPart
               (symbol
                 (ident))
+              (opr)
               (typeDesc
                 (primaryTypeDesc
                   (routineExprTypeDesc
@@ -285,6 +286,7 @@ type
             (objectPart
               (symbol
                 (ident))
+              (opr)
               (typeDesc
                 (primaryTypeDesc
                   (routineExprTypeDesc
@@ -302,6 +304,7 @@ type
             (objectPart
               (symbol
                 (ident))
+              (opr)
               (typeDesc
                 (primaryTypeDesc
                   (routineExprTypeDesc
@@ -320,6 +323,7 @@ type
             (objectPart
               (symbol
                 (ident))
+              (opr)
               (typeDesc
                 (primaryTypeDesc
                   (routineExprTypeDesc
@@ -360,6 +364,7 @@ type
             (objectPart
               (symbol
                 (ident))
+              (opr)
               (typeDesc
                 (primaryTypeDesc
                   (routineExprTypeDesc
@@ -1302,6 +1307,7 @@ type c{.deprecated.} = object
             (objectPart
               (symbol
                 (ident))
+              (opr)
               (typeDesc
                 (primaryTypeDesc
                   (symbol
@@ -1309,8 +1315,10 @@ type c{.deprecated.} = object
             (objectPart
               (symbol
                 (ident))
+              (opr)
               (symbol
                 (ident))
+              (opr)
               (pragma
                 (exprColonEqExpr
                   (expr

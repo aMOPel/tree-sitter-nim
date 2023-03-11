@@ -16,47 +16,38 @@ converter g
   (stmt
     (routine
       (keyw)
-      (ident
-        (symbol
-          (ident)))))
+      (symbol
+        (ident))))
   (stmt
     (routine
       (keyw)
-      (ident
-        (symbol
-          (ident)))))
+      (symbol
+        (ident))))
   (stmt
     (routine
       (keyw)
-      (ident
-        (symbol
-          (ident)))))
+      (symbol
+        (ident))))
   (stmt
     (routine
       (keyw)
-      (ident
-        (symbol
-          (ident)))))
+      (symbol
+        (ident))))
   (stmt
     (routine
       (keyw)
-      (ident
-        (symbol
-          (ident)))))
+      (symbol
+        (ident))))
   (stmt
     (routine
       (keyw)
-      (ident
-        (symbol
-          (ident)))))
+      (symbol
+        (ident))))
   (stmt
     (routine
       (keyw)
-      (ident
-        (symbol
-          (ident))))))
-
-
+      (symbol
+        (ident)))))
 
 ==================
 simple
@@ -78,9 +69,8 @@ proc g(a: int = 1; b, c: int = 2; d: int): int
   (stmt
     (routine
       (keyw)
-      (ident
-        (symbol
-          (ident)))
+      (symbol
+        (ident))
       (paramList)
       (block
         (stmt
@@ -100,9 +90,8 @@ proc g(a: int = 1; b, c: int = 2; d: int): int
   (stmt
     (routine
       (keyw)
-      (ident
-        (symbol
-          (ident)))
+      (symbol
+        (ident))
       (paramList)
       (paramListColon
         (typeDesc
@@ -112,9 +101,8 @@ proc g(a: int = 1; b, c: int = 2; d: int): int
   (stmt
     (routine
       (keyw)
-      (ident
-        (symbol
-          (ident)))
+      (symbol
+        (ident))
       (paramList
         (paramColonEquals
           (symbol
@@ -131,9 +119,8 @@ proc g(a: int = 1; b, c: int = 2; d: int): int
   (stmt
     (routine
       (keyw)
-      (ident
-        (symbol
-          (ident)))
+      (symbol
+        (ident))
       (paramList
         (paramColonEquals
           (symbol
@@ -152,11 +139,44 @@ proc g(a: int = 1; b, c: int = 2; d: int): int
   (stmt
     (routine
       (keyw)
-      (ident
-        (symbol
-          (ident)))
+      (symbol
+        (ident))
       (paramList
         (paramColonEquals
+          (symbol
+            (ident))
+          (typeDesc
+            (primaryTypeDesc
+              (symbol
+                (ident)))))
+        (paramColonEquals
+          (symbol
+            (ident))
+          (typeDesc
+            (primaryTypeDesc
+              (symbol
+                (ident))))))
+      (paramListColon
+        (typeDesc
+          (primaryTypeDesc
+            (symbol
+              (ident)))))))
+  (stmt
+    (routine
+      (keyw)
+      (symbol
+        (ident))
+      (paramList
+        (paramColonEquals
+          (symbol
+            (ident))
+          (typeDesc
+            (primaryTypeDesc
+              (symbol
+                (ident)))))
+        (paramColonEquals
+          (symbol
+            (ident))
           (symbol
             (ident))
           (typeDesc
@@ -178,44 +198,8 @@ proc g(a: int = 1; b, c: int = 2; d: int): int
   (stmt
     (routine
       (keyw)
-      (ident
-        (symbol
-          (ident)))
-      (paramList
-        (paramColonEquals
-          (symbol
-            (ident))
-          (typeDesc
-            (primaryTypeDesc
-              (symbol
-                (ident)))))
-        (paramColonEquals
-          (symbol
-            (ident))
-          (symbol
-            (ident))
-          (typeDesc
-            (primaryTypeDesc
-              (symbol
-                (ident)))))
-        (paramColonEquals
-          (symbol
-            (ident))
-          (typeDesc
-            (primaryTypeDesc
-              (symbol
-                (ident))))))
-      (paramListColon
-        (typeDesc
-          (primaryTypeDesc
-            (symbol
-              (ident)))))))
-  (stmt
-    (routine
-      (keyw)
-      (ident
-        (symbol
-          (ident)))
+      (symbol
+        (ident))
       (paramList
         (paramColonEquals
           (symbol
@@ -271,9 +255,8 @@ proc d(a{.gc}: int): int {.inline.} =
   (stmt
     (routine
       (keyw)
-      (ident
-        (symbol
-          (ident)))
+      (symbol
+        (ident))
       (paramList)
       (paramListColon
         (typeDesc
@@ -289,9 +272,8 @@ proc d(a{.gc}: int): int {.inline.} =
   (stmt
     (routine
       (keyw)
-      (ident
-        (symbol
-          (ident)))
+      (symbol
+        (ident))
       (paramList)
       (pragma
         (exprColonEqExpr
@@ -306,9 +288,8 @@ proc d(a{.gc}: int): int {.inline.} =
   (stmt
     (routine
       (keyw)
-      (ident
-        (symbol
-          (ident)))
+      (symbol
+        (ident))
       (paramList
         (paramColonEquals
           (symbol
@@ -331,9 +312,8 @@ proc d(a{.gc}: int): int {.inline.} =
   (stmt
     (routine
       (keyw)
-      (ident
-        (symbol
-          (ident)))
+      (symbol
+        (ident))
       (paramList
         (paramColonEquals
           (symbol
@@ -382,9 +362,8 @@ proc e[T, S; P]()
   (stmt
     (routine
       (keyw)
-      (ident
-        (symbol
-          (ident)))
+      (symbol
+        (ident))
       (genericParamList
         (genericParam
           (symbol
@@ -398,9 +377,8 @@ proc e[T, S; P]()
   (stmt
     (routine
       (keyw)
-      (ident
-        (symbol
-          (ident)))
+      (symbol
+        (ident))
       (genericParamList
         (genericParam
           (symbol
@@ -413,9 +391,8 @@ proc e[T, S; P]()
   (stmt
     (routine
       (keyw)
-      (ident
-        (symbol
-          (ident)))
+      (symbol
+        (ident))
       (genericParamList
         (genericParam
           (symbol
@@ -433,17 +410,15 @@ proc e[T, S; P]()
   (stmt
     (routine
       (keyw)
-      (ident
-        (symbol
-          (ident)))
+      (symbol
+        (ident))
       (genericParamList)
       (paramList)))
   (stmt
     (routine
       (keyw)
-      (ident
-        (symbol
-          (ident)))
+      (symbol
+        (ident))
       (genericParamList
         (genericParam
           (symbol
@@ -473,9 +448,8 @@ proc b{
   (stmt
     (routine
       (keyw)
-      (ident
-        (symbol
-          (ident)))
+      (symbol
+        (ident))
       (pattern
         (discardStmt
           (keyw)))
@@ -483,9 +457,8 @@ proc b{
   (stmt
     (routine
       (keyw)
-      (ident
-        (symbol
-          (ident)))
+      (symbol
+        (ident))
       (pattern
         (block
           (stmt
@@ -498,7 +471,6 @@ proc b{
             (discardStmt
               (keyw)))))
       (paramList))))
-
 
 ==================
 with parameter constraint
@@ -516,9 +488,8 @@ proc g(a: int = 1; b, c: int{~nkRStrLit & ~ nkStrLit} = 2; d: int{~nkRStrLit & ~
   (stmt
     (routine
       (keyw)
-      (ident
-        (symbol
-          (ident)))
+      (symbol
+        (ident))
       (paramList
         (paramColonEquals
           (symbol
@@ -543,9 +514,8 @@ proc g(a: int = 1; b, c: int{~nkRStrLit & ~ nkStrLit} = 2; d: int{~nkRStrLit & ~
   (stmt
     (routine
       (keyw)
-      (ident
-        (symbol
-          (ident)))
+      (symbol
+        (ident))
       (paramList
         (paramColonEquals
           (symbol
@@ -569,9 +539,8 @@ proc g(a: int = 1; b, c: int{~nkRStrLit & ~ nkStrLit} = 2; d: int{~nkRStrLit & ~
   (stmt
     (routine
       (keyw)
-      (ident
-        (symbol
-          (ident)))
+      (symbol
+        (ident))
       (paramList
         (paramColonEquals
           (symbol
@@ -610,9 +579,8 @@ proc g(a: int = 1; b, c: int{~nkRStrLit & ~ nkStrLit} = 2; d: int{~nkRStrLit & ~
   (stmt
     (routine
       (keyw)
-      (ident
-        (symbol
-          (ident)))
+      (symbol
+        (ident))
       (paramList
         (paramColonEquals
           (symbol
@@ -660,9 +628,8 @@ proc g(a: int = 1; b, c: int{~nkRStrLit & ~ nkStrLit} = 2; d: int{~nkRStrLit & ~
   (stmt
     (routine
       (keyw)
-      (ident
-        (symbol
-          (ident)))
+      (symbol
+        (ident))
       (paramList
         (paramColonEquals
           (symbol
@@ -744,9 +711,8 @@ template ex{discard; discard}[T,S;R](a{.gc}: T{noalias} not nil =1; b, c: int): 
   (stmt
     (routine
       (keyw)
-      (ident
-        (symbol
-          (ident)))
+      (symbol
+        (ident))
       (pattern
         (discardStmt
           (keyw))
@@ -860,9 +826,8 @@ template
   (stmt
     (routine
       (keyw)
-      (ident
-        (symbol
-          (ident)))
+      (symbol
+        (ident))
       (pattern
         (block
           (stmt
