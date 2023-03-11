@@ -1336,10 +1336,8 @@ module.exports = grammar({
         repeat1(choice(
           $.ident,
           $.literal,
-          prec.left(repeat1(choice(
-            $.operator,
-            /[\(\)\[\]\{\}]/
-          ))),
+          $.operator,
+          alias(choice("(",")","[","]","{","}","=","!","?","'","."), $.operator),
         )),
         '`',
       ),
