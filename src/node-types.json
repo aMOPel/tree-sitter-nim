@@ -3022,7 +3022,7 @@
   },
   {
     "type": "tupleDesc",
-    "named": false,
+    "named": true,
     "fields": {},
     "children": {
       "multiple": true,

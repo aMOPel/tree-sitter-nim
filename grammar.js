@@ -228,7 +228,6 @@ module.exports = grammar({
         repeat($.primaryPrefix),
         choice(
           $.tupleDecl,
-          $.routineExprTypeDesc,
           $.enumDecl,
           $.objectDecl,
           $.conceptDecl,
@@ -236,6 +235,10 @@ module.exports = grammar({
           $.symbol,
         ),
         repeat($.primarySuffix),
+      ),
+      seq(
+        repeat($.primaryPrefix),
+        $.routineExprTypeDesc,
       ),
     )),
 
@@ -986,10 +989,13 @@ module.exports = grammar({
         repeat($.primaryPrefix),
         choice(
           $.tupleDesc,
-          $.routineExprTypeDesc,
           $.symbol,
         ),
         repeat($.primarySuffix),
+      ),
+      seq(
+        repeat($.primaryPrefix),
+        $.routineExprTypeDesc,
       ),
     )),
 
@@ -1310,7 +1316,8 @@ module.exports = grammar({
 
     routineExprTypeDesc: $ => prec.right(seq(
       alias(choice('proc', 'func', 'iterator'), $.keyw),
-      seq(optional($.paramList), optional($.paramListColon)),
+      optional($.paramList),
+      optional($.paramListColon),
       optional($.pragma),
     )),
 

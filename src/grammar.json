@@ -488,10 +488,6 @@
                   },
                   {
                     "type": "SYMBOL",
-                    "name": "routineExprTypeDesc"
-                  },
-                  {
-                    "type": "SYMBOL",
                     "name": "enumDecl"
                   },
                   {
@@ -518,6 +514,22 @@
                   "type": "SYMBOL",
                   "name": "primarySuffix"
                 }
+              }
+            ]
+          },
+          {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "REPEAT",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "primaryPrefix"
+                }
+              },
+              {
+                "type": "SYMBOL",
+                "name": "routineExprTypeDesc"
               }
             ]
           }
@@ -4752,10 +4764,6 @@
                   },
                   {
                     "type": "SYMBOL",
-                    "name": "routineExprTypeDesc"
-                  },
-                  {
-                    "type": "SYMBOL",
                     "name": "symbol"
                   }
                 ]
@@ -4766,6 +4774,22 @@
                   "type": "SYMBOL",
                   "name": "primarySuffix"
                 }
+              }
+            ]
+          },
+          {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "REPEAT",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "primaryPrefix"
+                }
+              },
+              {
+                "type": "SYMBOL",
+                "name": "routineExprTypeDesc"
               }
             ]
           }
@@ -6084,31 +6108,26 @@
             "value": "keyw"
           },
           {
-            "type": "SEQ",
+            "type": "CHOICE",
             "members": [
               {
-                "type": "CHOICE",
-                "members": [
-                  {
-                    "type": "SYMBOL",
-                    "name": "paramList"
-                  },
-                  {
-                    "type": "BLANK"
-                  }
-                ]
+                "type": "SYMBOL",
+                "name": "paramList"
               },
               {
-                "type": "CHOICE",
-                "members": [
-                  {
-                    "type": "SYMBOL",
-                    "name": "paramListColon"
-                  },
-                  {
-                    "type": "BLANK"
-                  }
-                ]
+                "type": "BLANK"
+              }
+            ]
+          },
+          {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "paramListColon"
+              },
+              {
+                "type": "BLANK"
               }
             ]
           },

@@ -131,6 +131,263 @@ type j[T] = var ref int not nil
         (nil_lit)))))
 
 ==================
+routineExprTypeDesc
+==================
+
+type
+  a* = proc
+  b* = proc()
+  c* = proc(x, y: int)
+  d* = proc: int {.gcsafe.}
+  e* = proc {.gcsafe.}
+  f* = proc(a: int): int {.gcsafe.}
+  g* = proc(cb: proc(cb: proc(): int))
+  o* = object
+    b* : proc()
+    c* : proc(x, y: int)
+    d* : proc: int {.gcsafe.}
+    e* : proc() {.gcsafe.}
+    f: proc(a: int): int {.gcsafe.}
+    g* : proc(cb: proc(cb: proc(): int))
+
+---
+
+(module
+  (stmt
+    (declaration
+      (typeDef
+        (keyw)
+        (symbol
+          (ident))
+        (opr)
+        (primaryTypeDef
+          (routineExprTypeDesc
+            (keyw)))
+        (symbol
+          (ident))
+        (opr)
+        (primaryTypeDef
+          (routineExprTypeDesc
+            (keyw)
+            (paramList)))
+        (symbol
+          (ident))
+        (opr)
+        (primaryTypeDef
+          (routineExprTypeDesc
+            (keyw)
+            (paramList
+              (paramColonEquals
+                (symbol
+                  (ident))
+                (symbol
+                  (ident))
+                (typeDesc
+                  (primaryTypeDesc
+                    (symbol
+                      (ident))))))))
+        (symbol
+          (ident))
+        (opr)
+        (primaryTypeDef
+          (routineExprTypeDesc
+            (keyw)
+            (paramListColon
+              (typeDesc
+                (primaryTypeDesc
+                  (symbol
+                    (ident)))))
+            (pragma
+              (exprColonEqExpr
+                (expr
+                  (primary
+                    (symbol
+                      (ident))))))))
+        (symbol
+          (ident))
+        (opr)
+        (primaryTypeDef
+          (routineExprTypeDesc
+            (keyw)
+            (pragma
+              (exprColonEqExpr
+                (expr
+                  (primary
+                    (symbol
+                      (ident))))))))
+        (symbol
+          (ident))
+        (opr)
+        (primaryTypeDef
+          (routineExprTypeDesc
+            (keyw)
+            (paramList
+              (paramColonEquals
+                (symbol
+                  (ident))
+                (typeDesc
+                  (primaryTypeDesc
+                    (symbol
+                      (ident))))))
+            (paramListColon
+              (typeDesc
+                (primaryTypeDesc
+                  (symbol
+                    (ident)))))
+            (pragma
+              (exprColonEqExpr
+                (expr
+                  (primary
+                    (symbol
+                      (ident))))))))
+        (symbol
+          (ident))
+        (opr)
+        (primaryTypeDef
+          (routineExprTypeDesc
+            (keyw)
+            (paramList
+              (paramColonEquals
+                (symbol
+                  (ident))
+                (typeDesc
+                  (primaryTypeDesc
+                    (routineExprTypeDesc
+                      (keyw)
+                      (paramList
+                        (paramColonEquals
+                          (symbol
+                            (ident))
+                          (typeDesc
+                            (primaryTypeDesc
+                              (routineExprTypeDesc
+                                (keyw)
+                                (paramList)
+                                (paramListColon
+                                  (typeDesc
+                                    (primaryTypeDesc
+                                      (symbol
+                                        (ident)))))))))))))))))
+        (symbol
+          (ident))
+        (opr)
+        (primaryTypeDef
+          (objectDecl
+            (keyw)
+            (objectPart
+              (symbol
+                (ident))
+              (typeDesc
+                (primaryTypeDesc
+                  (routineExprTypeDesc
+                    (keyw)
+                    (paramList)))))
+            (objectPart
+              (symbol
+                (ident))
+              (typeDesc
+                (primaryTypeDesc
+                  (routineExprTypeDesc
+                    (keyw)
+                    (paramList
+                      (paramColonEquals
+                        (symbol
+                          (ident))
+                        (symbol
+                          (ident))
+                        (typeDesc
+                          (primaryTypeDesc
+                            (symbol
+                              (ident))))))))))
+            (objectPart
+              (symbol
+                (ident))
+              (typeDesc
+                (primaryTypeDesc
+                  (routineExprTypeDesc
+                    (keyw)
+                    (paramListColon
+                      (typeDesc
+                        (primaryTypeDesc
+                          (symbol
+                            (ident)))))
+                    (pragma
+                      (exprColonEqExpr
+                        (expr
+                          (primary
+                            (symbol
+                              (ident))))))))))
+            (objectPart
+              (symbol
+                (ident))
+              (typeDesc
+                (primaryTypeDesc
+                  (routineExprTypeDesc
+                    (keyw)
+                    (paramList)
+                    (pragma
+                      (exprColonEqExpr
+                        (expr
+                          (primary
+                            (symbol
+                              (ident))))))))))
+            (objectPart
+              (symbol
+                (ident))
+              (typeDesc
+                (primaryTypeDesc
+                  (routineExprTypeDesc
+                    (keyw)
+                    (paramList
+                      (paramColonEquals
+                        (symbol
+                          (ident))
+                        (typeDesc
+                          (primaryTypeDesc
+                            (symbol
+                              (ident))))))
+                    (paramListColon
+                      (typeDesc
+                        (primaryTypeDesc
+                          (symbol
+                            (ident)))))
+                    (pragma
+                      (exprColonEqExpr
+                        (expr
+                          (primary
+                            (symbol
+                              (ident))))))))))
+            (objectPart
+              (symbol
+                (ident))
+              (typeDesc
+                (primaryTypeDesc
+                  (routineExprTypeDesc
+                    (keyw)
+                    (paramList
+                      (paramColonEquals
+                        (symbol
+                          (ident))
+                        (typeDesc
+                          (primaryTypeDesc
+                            (routineExprTypeDesc
+                              (keyw)
+                              (paramList
+                                (paramColonEquals
+                                  (symbol
+                                    (ident))
+                                  (typeDesc
+                                    (primaryTypeDesc
+                                      (routineExprTypeDesc
+                                        (keyw)
+                                        (paramList)
+                                        (paramListColon
+                                          (typeDesc
+                                            (primaryTypeDesc
+                                              (symbol
+                                                (ident)))))))))))))))))))))))))
+
+==================
 subrange types
 ==================
 
