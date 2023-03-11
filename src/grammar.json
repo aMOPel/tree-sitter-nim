@@ -7933,7 +7933,7 @@
               "type": "IMMEDIATE_TOKEN",
               "content": {
                 "type": "PATTERN",
-                "value": "[^#].*"
+                "value": ".*"
               }
             }
           ]

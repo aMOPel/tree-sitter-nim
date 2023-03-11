@@ -5,6 +5,8 @@ comment
 # testing comments
 discard true # testing comments
   # testing comments
+#
+discard true
 
 ---
 
@@ -16,10 +18,17 @@ discard true # testing comments
       (expr
         (primary
           (literal
-            (bool_lit))))))
+            (bool_lit)))))
+    (comment))
   (comment)
-  (comment))
-
+  (comment)
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (literal
+            (bool_lit)))))))
 
 ==================
 docComment

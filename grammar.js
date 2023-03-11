@@ -1724,7 +1724,7 @@ module.exports = grammar({
 
     comment: $ => token(prec(TOKEN_PREC.comment, seq(
       '#',
-      token.immediate(/[^#].*/),
+      token.immediate(/.*/),
     ))),
 
     // TODO: nested multilineComment
