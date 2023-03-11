@@ -131,6 +131,54 @@ type j[T] = var ref int not nil
         (nil_lit)))))
 
 ==================
+subrange types
+==================
+
+type
+  a = x..5
+  b = 0..x
+  c = range[0..5]
+
+---
+
+(module
+  (stmt
+    (declaration
+      (typeDef
+        (keyw)
+        (symbol
+          (ident))
+        (primaryTypeDef
+          (subrangeDecl
+            (symbol
+              (ident))
+            (int_lit)))
+        (symbol
+          (ident))
+        (primaryTypeDef
+          (subrangeDecl
+            (int_lit)
+            (symbol
+              (ident))))
+        (symbol
+          (ident))
+        (primaryTypeDef
+          (symbol
+            (ident))
+          (primarySuffix
+            (indexSuffix
+              (exprColonEqExprList
+                (exprColonEqExpr
+                  (expr
+                    (primary
+                      (literal
+                        (int_lit)))
+                    (operator)
+                    (primary
+                      (literal
+                        (int_lit)))))))))))))
+
+==================
 constant simple
 ==================
 

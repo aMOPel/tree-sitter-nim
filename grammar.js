@@ -46,6 +46,7 @@ const PREC = {
   functionCall: 1,
   immediateFunctionCall: 3,
 
+  subrangeDecl: 1 // > symbol in primaryTypeDef
 }
 
 const TOKEN_PREC = {
@@ -231,6 +232,7 @@ module.exports = grammar({
           $.enumDecl,
           $.objectDecl,
           $.conceptDecl,
+          $.subrangeDecl,
           $.symbol,
         ),
         repeat($.primarySuffix),
@@ -254,6 +256,19 @@ module.exports = grammar({
       ')',
       '=',
       $.expr,
+    )),
+
+    // special case for type `slice = 0..5`
+    subrangeDecl: $ => prec(PREC.subrangeDecl, seq(
+      choice(
+        $.int_lit,
+        $.symbol,
+      ),
+      $._op6,
+      choice(
+        $.int_lit,
+        $.symbol,
+      ),
     )),
 
     // tupleDesc gets extra rule compared to seq[..] or array[..,..],

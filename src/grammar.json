@@ -504,6 +504,10 @@
                   },
                   {
                     "type": "SYMBOL",
+                    "name": "subrangeDecl"
+                  },
+                  {
+                    "type": "SYMBOL",
                     "name": "symbol"
                   }
                 ]
@@ -690,6 +694,45 @@
           {
             "type": "SYMBOL",
             "name": "expr"
+          }
+        ]
+      }
+    },
+    "subrangeDecl": {
+      "type": "PREC",
+      "value": 1,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "int_lit"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "symbol"
+              }
+            ]
+          },
+          {
+            "type": "SYMBOL",
+            "name": "_op6"
+          },
+          {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "int_lit"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "symbol"
+              }
+            ]
           }
         ]
       }

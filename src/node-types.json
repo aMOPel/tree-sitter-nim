@@ -2331,6 +2331,10 @@
           "named": true
         },
         {
+          "type": "subrangeDecl",
+          "named": true
+        },
+        {
           "type": "symbol",
           "named": true
         },
@@ -2741,6 +2745,25 @@
       "types": [
         {
           "type": "str_esc_seq",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "subrangeDecl",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "int_lit",
+          "named": true
+        },
+        {
+          "type": "symbol",
           "named": true
         }
       ]
