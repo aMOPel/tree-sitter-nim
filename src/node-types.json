@@ -1752,10 +1752,6 @@
           "named": true
         },
         {
-          "type": "opr",
-          "named": true
-        },
-        {
           "type": "pragma",
           "named": true
         },

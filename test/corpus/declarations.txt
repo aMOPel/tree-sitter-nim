@@ -941,7 +941,8 @@ type a = object
 type b = object of RootObj
 type c{.deprecated.} = object 
   a: int
-  c, b: int
+  z*: int
+  c*, b*{.deprecated.}: int
   nil
   discard
 
@@ -996,8 +997,21 @@ type c{.deprecated.} = object
             (objectPart
               (symbol
                 (ident))
+              (typeDesc
+                (primaryTypeDesc
+                  (symbol
+                    (ident)))))
+            (objectPart
               (symbol
                 (ident))
+              (symbol
+                (ident))
+              (pragma
+                (exprColonEqExpr
+                  (expr
+                    (primary
+                      (symbol
+                        (ident))))))
               (typeDesc
                 (primaryTypeDesc
                   (symbol

@@ -327,7 +327,11 @@ module.exports = grammar({
       alias('discard', $.keyw),
       seq(
         sep_repeat1(
-          $._identWithPragma,
+          prec.right(seq(
+            $.symbol,
+            optional('*'),
+            optional($.pragma),
+          )),
           $._comma,
         ),
         ':',
