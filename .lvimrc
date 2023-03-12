@@ -1,0 +1,56 @@
+" either add this to your vimrc (inconvenient) 
+" or use https://github.com/embear/vim-localvimrc to securely source this on a
+" only when in this project
+
+" to `:make` inside the `grammar.js`
+au MyAutoCmd Filetype javascript setl makeprg=npx\ tree-sitter\ generate
+au MyAutoCmd Filetype javascript nnoremap <silent> <space>m :make<cr>
+
+" The general idea is to have a nim file (./examples/ex.nim), in which tests
+" can be written, and a scheme file (./parsed.scm), in which the AST of that
+" nim file is kept.
+
+" to run the parser (from anywhere) on the `examples/ex.nim` file, writing to `parsed.scm`
+" (depends on floaterm)
+nnoremap <silent> <space>n :exec "FloatermNew --autoclose=0 --disposable --width=0.5 --height=1.0 --position=left npx tree-sitter parse ./examples/ex.nim \| tee ./parsed.scm"<cr>
+
+" Insert Parsed: (for writing tests) pastes content from `parsed.scm` over current paragraph, substituting the [x - x] ranges
+nnoremap <space>ip Vip:.!cat ./parsed.scm<cr>V}:s/\ \[.*\]//g<cr>o<esc>
+" Insert Example: (for writing tests) pastes content from `examples/ex.nim` over current paragraph
+nnoremap <space>ie Vip:!cat ./examples/ex.nim<cr>
+" Insert Test: (for iterating on tests) pastes content from current paragraph back into `examples/ex.nim`
+nnoremap <space>it Vip:!tee ./examples/ex.nim<cr>
+" runs full test suite
+" (depends on floaterm)
+nnoremap <space>tt :FloatermNew --autoclose=0 --disposable npx tree-sitter test<CR>
+
+" with cursor on AST paragraph in test file:
+" in a new tab, make a diff between that AST and the AST in ./parsed.scm
+nnoremap <space>ss yip:tabnew<cr>:vnew<cr>p:diffthis<cr>:wincmd h<cr>:e ./parsed.scm<cr>:%s/\ \[.*\]//g<cr>:diffthis<cr>
+" close that diff again
+au MyAutoCmd BufEnter parsed.scm nnoremap <buffer> <space>ss :bd!<cr>:bd!<cr>
+" close the diff and accept the AST in ./parsed.scm and jump to the next test case
+au MyAutoCmd BufEnter parsed.scm nmap <buffer> <space>yy :bd!<cr>:bd!<cr><space>ip/==================<cr>kdd
+" close the diff and jump to the next test case
+au MyAutoCmd BufEnter parsed.scm nmap <buffer> <space>nn :bd!<cr>:bd!<cr>/==================<cr>
+
+" utility mapping for <space>dd
+" run parse on ex.nim, put AST in ./parsed.scm
+nnoremap <silent> <space>run :set cmdheight=2<cr>:exec "!npx tree-sitter parse ./examples/ex.nim > ./parsed.scm"<cr>
+
+" begin a workflow to update the ASTs in test cases
+" where you jump from test case to test case,
+" opening diffs between the AST from the test and the AST as the current
+" parser version parses it
+nmap <silent> <space>dd *njj<space>it<space>run}}j<space>ss
+" the workflow goes like this:
+" with cursor on the first =========== of a test case
+" <space>dd => opens the diff
+" in the diff: <space>yy => accept the new AST and jump to the next test case
+" in the diff: <space>nn => don't accept the new AST and jump to the next test case
+" in the diff: <space>ss => just close the diff
+" after <space>yy or <space>nn: <space>dd => opens the next diff and so on
+
+
+" au MyAutoCmd Filetype scheme set ft=query
+

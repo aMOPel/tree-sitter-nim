@@ -59,7 +59,10 @@ If you're experienced in writing TS queries, you can also get started on writing
 
 __Be warned__, that the rule structure is still subject to change, entailing an update to the queries.
 
-### for vim users
+## For Vim Users
+
+### Snippets
+
 I use these snippets (vsnip):
 * to create rules
 `javascript.json`
@@ -100,27 +103,9 @@ I use these snippets (vsnip):
 }
 ```
 
-As well as this in my vimrc:
-```viml
-" to `:make` inside the `grammar.js`
-set makeprg=npx\ tree-sitter\ generate
+### Write and Update Test Cases
 
-" to run the parser inside the `grammar.js` file on the `examples/ex.nim` file, writing to `parsed.scm`
-" (depends on floaterm)
-nnoremap <silent> <leader>n :exec "FloatermNew --autoclose=0 --disposable npx tree-sitter parse ./examples/ex.nim \| tee ./parsed.scm"<cr>
+Also have a look at my [`.lvimrc`](.lvimrc) for **extremely** convenient mappings
+to write and update test cases. Their usage is explained there as well.
 
-" Insert Parsed: (for writing tests) pastes content from `parsed.scm` over current paragraph, substituting the [x - x] ranges
-nnoremap <leader>ip Vip:.!cat ./parsed.scm<cr>V}:s/\ \[.*\]//g<cr>o<esc>
-" Insert Example: (for writing tests) pastes content from `examples/ex.nim` over current paragraph
-nnoremap <leader>ie Vip:!cat ./examples/ex.nim<cr>
-" Insert Test: (for iterating on tests) pastes content from current paragraph back into `examples/ex.nim`
-nnoremap <leader>it Vip:!tee ./examples/ex.nim<cr>
-
-" runs full test suite
-" (depends on dispatch)
-nnoremap <leader>tt :Dispatch npx tree-sitter test<CR>
-
-" just for syntax highlighting in queries
-au MyAutoCmd Filetype scheme set ft=query
-```
 
