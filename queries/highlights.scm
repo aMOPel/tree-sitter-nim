@@ -1,226 +1,209 @@
-; [
-;   "end"
-;   "cast"
-;   "out"
-;   "using"
-;   "ptr"
-;   "ref"
-;   "nil"
-;   "addr"
-; ] @keyword
-(staticStmt (keyw) @keyword)
-(deferStmt (keyw) @keyword)
-(asmStmt (keyw) @keyword)
-(bindStmt (keyw) @keyword)
-(mixinStmt (keyw) @keyword)
+; (keyw) @keyword             ; various keywords
 
-(blockStmt
-  (keyw) @keyword.control
-  (symbol) @label)
+(comment)
+@comment               ; line and block comments
 
-(ifStmt (keyw) @keyword.control.conditional)
-(whenStmt (keyw) @keyword.control.conditional)
-(elifStmt (keyw) @keyword.control.conditional)
-(elseStmt (keyw) @keyword.control.conditional)
-(caseStmt (keyw) @keyword.control.conditional)
-(ofBranch (keyw) @keyword.control.conditional)
-(inlineIfStmt (keyw) @keyword.control.conditional)
-(inlineWhenStmt (keyw) @keyword.control.conditional)
-; todo: do
+(docComment)
+@comment.documentation ; comments documenting code
 
-(forStmt
-  (keyw) @keyword.control.repeat
-  (symbol) @variable)
-(whileStmt (keyw) @keyword.control.repeat)
+(ERROR)
+@error                 ; syntax/parser errors
 
-(importStmt (keyw) @keyword.control.import) @namespace
-(importExceptStmt (keyw) @keyword.control.import) @namespace
-(exportStmt (keyw) @keyword.control.import) @namespace
-(fromStmt (keyw) @keyword.control.import) @namespace
-(includeStmt (keyw) @keyword.control.import) @namespace
+;@none                  ; completely disable the highlight
 
-(returnStmt (keyw) @keyword.control.repeat)
-(yieldStmt (keyw) @keyword.control.repeat)
-(discardStmt (keyw) @keyword.control.repeat)
-(breakStmt (keyw) @keyword.control.repeat)
-(continueStmt (keyw) @keyword.control.repeat)
+(pragma)
+@preproc               ; various preprocessor directives & shebangs
 
-(raiseStmt (keyw) @keyword.control.exception)
-(tryStmt (keyw) @keyword.control.exception)
-(tryExceptStmt (keyw) @keyword.control.exception)
-(tryFinallyStmt (keyw) @keyword.control.exception)
-(inlineTryStmt (keyw) @keyword.control.exception)
-; (inlineTryExceptStmt (keyw) @keyword.control.exception)
-; (inlineTryFinallyStmt (keyw) @keyword.control.exception)
+;@define                ; preprocessor definition directives
 
 [
-  "and"
-  "or"
-  "xor"
-  "not"
-  "in"
-  "notin"
-  "is"
-  "isnot"
-  "div"
-  "mod"
-  "shl"
-  "shr"
-] @keyword.operator
+(operator)
+(opr)
+] 
+@operator               ; symbolic operators (e.g. `+` / `*`)
 
-(typeDef
-  (keyw) @keyword.storage.type
-  (symbol) @type)
+[
+";"
+","
+"."
+":"
+]
+@punctuation.delimiter ; delimiters (e.g. `;` / `.` / `,`)
 
-; fixme: introspect
+(tupleConstr ["(" ")"] @punctuation.bracket   )
+(arrayConstr ["[" "]"] @punctuation.bracket   )
+(tableConstr ["{" "}"] @punctuation.bracket   )
+(genericParamList ["[" "]"] @punctuation.bracket   )
+; TODO: doesn't work with ["(" ")"] because of token schenanigans in grammar
+(indexSuffix)  @punctuation.bracket
+;@punctuation.bracket   ; brackets (e.g. `()` / `{}` / `[]`)
+
+(interpolated_str_lit "&" @punctuation.special)
+(interpolated_str_lit "{" @punctuation.special)
+(interpolated_str_lit "}" @punctuation.special)
+;@punctuation.special   ; special symbols (e.g. `{}` in string interpolation)
+
+[
+(str_lit)
+(rstr_lit)
+(triplestr_lit)
+(interpolated_str_lit)
+(interpolated_triplestr_lit)
+]
+@string               ; string literals
+
+;@string.documentation ; string documenting code (e.g. Python docstrings)
+
+; TODO:
+;@string.regex         ; regular expressions
+
+[
+(str_esc_seq)
+(char_esc_seq)
+]
+@string.escape        ; escape sequences
+
+;@string.special       ; other special strings (e.g. dates)
+
+(char_lit) 
+@character            ; character literals
+
+;@character.special    ; special characters (e.g. wildcards)
+
+[
+(bool_lit)
+(nil_lit)
+]
+@boolean              ; boolean literals
+
+[
+(int_lit)
+(custom_numeric_lit)
+]
+@number               ; numeric literals
+
+
+(float_lit)
+@float                ; floating-point number literals
+
+
+(routine (symbol [(ident) (operator)] @function)) 
+(routine (paramList ["(" ")"] @function))
+(routine "=" @function)
+; @function         ; function definitions
+
+;@function.builtin ; built-in functions
+
+;(cmdCall)
+(functionCall ["(" ")"] @function.call) 
+; @function.call    ; function calls
+
+(routine (pragma) @function.macro)
+;@function.macro   ; preprocessor macros
+
+;@method           ; method definitions
+;@method.call      ; method calls
+
+(primary (symbol (ident) @constructor) . (primarySuffix (objectConstr ["(" ")"] @constructor)))
+;@constructor      ; constructor calls and definitions
+
+(paramList (paramColonEquals (symbol) @parameter))
+;@parameter        ; parameters of a function
+
+;@keyword.coroutine   ; keywords related to coroutines (e.g. `go` in Go, `async/await` in Python)
+
+(routineExprTypeDesc (keyw) @keyword.function)
+(routineExpr (keyw) @keyword.function)
+(routine (keyw) @keyword.function)
+;@keyword.function    ; keywords that define a function (e.g. `func` in Go, `def` in Python)
+
+(operator (keyw) @keyword.operator)
+;@keyword.operator    ; operators that are English words (e.g. `and` / `or`)
+
+(returnStmt (keyw) @keyword.return)
+(yieldStmt (keyw) @keyword.return)
+(raiseStmt (keyw) @keyword.return)
+(discardStmt (keyw) @keyword.return)
+;@keyword.return      ; keywords like `return` and `yield`
+
+(caseStmt (keyw) @conditional)
+(ofBranch (keyw) @conditional)
+(ifStmt (keyw) @conditional)
+(elifStmt (keyw) @conditional)
+(elseStmt (keyw) @conditional)
+(inlineIfStmt (keyw) @conditional)
+(whenStmt (keyw) @conditional)
+(inlineWhenStmt (keyw) @conditional)
+;@conditional         ; keywords related to conditionals (e.g. `if` / `else`)
+
+;@conditional.ternary ; ternary operator (e.g. `?` / `:`)
+
+(forStmt (keyw) @repeat)
+(whileStmt (keyw) @repeat)
+;@repeat              ; keywords related to loops (e.g. `for` / `while`)
+
+;@debug               ; keywords related to debugging
+;@label               ; GOTO and other labels (e.g. `label:` in C)
+
+(importStmt (keyw) @include)
+(includeStmt (keyw) @include)
+(fromStmt (keyw) @include)
+(importExceptStmt (keyw) @include)
+(exportStmt (keyw) @include)
+;@include             ; keywords for including modules (e.g. `import` / `from` in Python)
+
+(tryStmt (keyw) @exception)
+(tryExceptStmt (keyw) @exception)
+(tryFinallyStmt (keyw) @exception)
+;@exception           ; keywords related to exceptions (e.g. `throw` / `catch`)
+
 (typeDesc) @type
+(genericParam (symbol) @type)
+(primaryTypeDef (symbol) @type)
+(tupleDecl (keyw) @type)
+(enumDecl (keyw) @type)
+(objectDecl (keyw) @type)
+(conceptDecl (keyw) @type)
+;@type            ; type or class definitions and annotations
 
-(variable
-  (keyw) @keyword.storage.type
-  (declColonEquals
-    (symbol) @variable))
+;@type.builtin    ; built-in types
 
-(paramList
-  (paramColonEquals
-    (symbol) @variable.parameter))
+(typeDef (symbol) @type.definition)
+;@type.definition ; type definitions (e.g. `typedef` in C)
 
-; broken
-; (enumDecl
-;   (declColonEquals
-;     (symbol) @type.enum.variant))
+(typeDesc (primaryTypeDesc (primaryPrefix (keyw) @type.qualifier)+))
+;@type.qualifier  ; type qualifiers (e.g. `const`)
 
-(enumDecl (keyw) @keyword.storage.modifier)
-(tupleDecl (keyw) @keyword.storage.modifier)
-; objectDecl, conceptDecl not implemented
-; distinct?
+;@storageclass    ; modifiers that affect storage in memory or life-time
+;@attribute       ; attribute annotations (e.g. Python decorators)
 
-[(operator) (opr) "="] @operator
+(primary (primarySuffix (qualifiedSuffix (symbol) @field)))
+;@field           ; object and struct fields
 
-[
-  "."
-  ","
-  ";"
-  ":"
-] @punctuation.delimiter
-[
-  "("
-  ")"
-  "["
-  "]"
-  "{"
-  "}"
-  "{."
-  ".}"
-  "#["
-  "]#"
-] @punctuation.bracket
-; [] @punctuation.special
+;@property        ; similar to `@field`
 
-; [
-;   "array"
-;   "seq"
-;   "range"
-;   ; array, seq, range: *_type?
-;   "int"
-;   "uint"
-;   "int8"
-;   "int16"
-;   "int32"
-;   "int64"
-;   "uint8"
-;   "uint16"
-;   "uint32"
-;   "uint64"
-;   "float"
-;   "float32"
-;   "float64"
-;   "bool"
-;   "string"
-;   "char"
-; ] @type.builtin
-; [] @type.constructor
+(primary (symbol) @variable)
+(
+	(declaration (variable (keyw) @keyword (declColonEquals (symbol) @variable)))
+    (#match? @keyword "(let)|(var)|(using)")
+)
+;@variable         ; various variable names
 
-[(literal) (generalizedLit)] @constant
-[(nil_lit)] @constant.builtin
-[(bool_lit)] @constant.builtin.boolean
-[(char_lit)] @constant.character
-[(char_esc_seq)] @constant.character.escape
-[(custom_numeric_lit)] @constant.numeric
-[(int_lit) (int_suffix)] @constant.numeric.integer
-[(float_lit) (float_suffix)] @constant.numeric.float
+(
+	(primary (symbol) @variable.builtin) 
+    (#match? @variable.builtin "result")
+)
+@variable.builtin ; built-in variable names (e.g. `this`)
 
-[(str_lit) (triplestr_lit)] @string
-; [] @string.regexp
-[(generalized_str_lit) (generalized_triplestr_lit)] @string.special
-; [] @string.special.path
-; [] @string.special.url
-; [] @string.special.symbol
+(
+	(declaration (variable (keyw) @keyword (declColonEquals (symbol) @constant)))
+    (#match? @keyword "const")
+)
+;@constant         ; constant identifiers
 
-(comment) @comment.line
-(multilineComment) @comment.block
-(docComment) @comment.documentation
-(multilineDocComment) @comment.block.documentation
+;@constant.builtin ; built-in constant values
+;@constant.macro   ; constants defined by the preprocessor
 
-(pragma) @attribute
+;@namespace        ; modules or namespaces
+;@symbol           ; symbols or atoms
 
-; broken
-; ["result"] @variable.builtin ; in function scopes only
-; [] @variable.other
-; [] @variable.other.member
-
-(routine
-  . (keyw) @keyword.function
-  . (ident) @function)
-
-(primary
-  . (symbol (ident) @function.call)
-  . (primarySuffix (functionCall)))
-
-(primary
-  (primarySuffix (qualifiedSuffix (symbol (ident) @function.call)))
-  . (primarySuffix (functionCall)))
-
-; does not appear to be a way to distinguish these without verbatium matching
-; [] @function.builtin
-; [] @function.method
-; [] @function.macro
-; [] @function.special
-
-(keyw) @keyword
-
-; "expr"
-; "declaration"
-; "varTuple"
-
-; "exprStmt"
-
-; "pattern"
-; "genericParam"
-; "genericParamList"
-; "paramList"
-; "paramListSuffix"
-; "paramColonEquals"
-; "paramConstraint"
-; "declColonEquals"
-; "identColonEquals"
-; "paramTypeDesc"
-; "exprColonEqExpr"
-; "exprColonEqExprList"
-; "colonBody"
-; "postExprBlocks"
-; "doBlock"
-; "exprList"
-; "primary"
-; "primaryPrefix"
-; "prefixOperator"
-; "primarySuffix"
-; "functionCall"
-; "qualifiedSuffix"
-; "indexSuffix"
-; "patternBind"
-; "cmdCall"
-; "arrayConstr"
-; "setOrTableConstr"
-; "tupleConstr"
-
-; "block"

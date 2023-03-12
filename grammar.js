@@ -2,6 +2,20 @@
 // TODO: par, this is gonna be more difficult
 // TODO: arbitrary parentheses around stmts and exprs
 // TODO: complex expressions (ifExpr, ...)
+// TODO: std/re support
+// BUG: simpleStmts swallow what comes after
+// BUG: let section only works for first definitions
+// BUG:  actually ther might be some issue with scanner.cc not parsing indent
+// correctly if some is tabs and some is spaces
+// BUG:     result.add &"{5}" ; & gets parsed as operator
+// BUG:     let a = b and c ; "and" gets parsed as prefixoperator
+// BUG:
+// assert (prc != nil), $opr.loc.r
+// assert prc != nil, $opr.loc.r
+
+// TODO: queries
+// add fields for () [] {}
+// , . ;
 
 // TODO: separating typeDef and typeDesc properly
 // TODO: reorder rules related to typeDesc etc
@@ -1651,13 +1665,13 @@ module.exports = grammar({
       /[@:?][=+\-*\/<>@$~&%|!?^.:\\][=+\-*\/<>@$~&%|!?^.:\\]+/,
     ),
 
-    _op3: $ => choice('or', 'xor'),
+    _op3: $ => alias(choice('or', 'xor'), $.keyw),
 
-    _op4: $ => choice('and'),
+    _op4: $ => alias(choice('and'), $.keyw),
 
     // token(prec( because 'of' and 'from' can be used in other contexts
     _op5: $ => choice(
-      'in', 'notin', 'is', 'isnot', 'not', 'of', 'as', 'from',
+      alias(choice('in', 'notin', 'is', 'isnot', 'not', 'of', 'as', 'from'), $.keyw),
       '==', '<=', '<', '>=', '>', '!=',
       /[=<>!][=+\-*\/<>@$~&%|!?^.:\\]+/, //no =
     ),
@@ -1683,7 +1697,7 @@ module.exports = grammar({
     ),
 
     _op9: $ => choice(
-      'div', 'mod', 'shl', 'shr',
+      alias(choice('div', 'mod', 'shl', 'shr'), $.keyw),
       '*', '/', '%', 
       /[*%/\\][=+\-*\/<>@$~&%|!?^.:\\]+/,
     ),

@@ -1808,7 +1808,17 @@
   {
     "type": "operator",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "keyw",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "opr",
@@ -3374,14 +3384,6 @@
     "named": false
   },
   {
-    "type": "and",
-    "named": false
-  },
-  {
-    "type": "as",
-    "named": false
-  },
-  {
     "type": "cast",
     "named": false
   },
@@ -3396,10 +3398,6 @@
   {
     "type": "customNumericLitSuffix",
     "named": true
-  },
-  {
-    "type": "div",
-    "named": false
   },
   {
     "type": "docComment",
@@ -3426,63 +3424,19 @@
     "named": false
   },
   {
-    "type": "from",
-    "named": false
-  },
-  {
     "type": "ident",
     "named": true
-  },
-  {
-    "type": "in",
-    "named": false
   },
   {
     "type": "int_suffix",
     "named": true
   },
   {
-    "type": "is",
-    "named": false
-  },
-  {
-    "type": "isnot",
-    "named": false
-  },
-  {
     "type": "keyw",
     "named": true
   },
   {
-    "type": "mod",
-    "named": false
-  },
-  {
     "type": "nil",
-    "named": false
-  },
-  {
-    "type": "not",
-    "named": false
-  },
-  {
-    "type": "notin",
-    "named": false
-  },
-  {
-    "type": "of",
-    "named": false
-  },
-  {
-    "type": "or",
-    "named": false
-  },
-  {
-    "type": "shl",
-    "named": false
-  },
-  {
-    "type": "shr",
     "named": false
   },
   {
@@ -3491,10 +3445,6 @@
   },
   {
     "type": "true",
-    "named": false
-  },
-  {
-    "type": "xor",
     "named": false
   },
   {

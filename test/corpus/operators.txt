@@ -174,7 +174,8 @@ discard a xor b
         (primary
           (symbol
             (ident)))
-        (operator)
+        (operator
+          (keyw))
         (primary
           (symbol
             (ident))))))
@@ -185,7 +186,8 @@ discard a xor b
         (primary
           (symbol
             (ident)))
-        (operator)
+        (operator
+          (keyw))
         (primary
           (symbol
             (ident)))))))
@@ -206,7 +208,8 @@ discard a and b
         (primary
           (symbol
             (ident)))
-        (operator)
+        (operator
+          (keyw))
         (primary
           (symbol
             (ident)))))))
@@ -310,7 +313,8 @@ discard a !+ b
         (primary
           (symbol
             (ident)))
-        (operator)
+        (operator
+          (keyw))
         (primary
           (symbol
             (ident))))))
@@ -321,7 +325,8 @@ discard a !+ b
         (primary
           (symbol
             (ident)))
-        (operator)
+        (operator
+          (keyw))
         (primary
           (symbol
             (ident))))))
@@ -332,7 +337,8 @@ discard a !+ b
         (primary
           (symbol
             (ident)))
-        (operator)
+        (operator
+          (keyw))
         (primary
           (symbol
             (ident))))))
@@ -343,7 +349,8 @@ discard a !+ b
         (primary
           (symbol
             (ident)))
-        (operator)
+        (operator
+          (keyw))
         (primary
           (symbol
             (ident))))))
@@ -354,7 +361,8 @@ discard a !+ b
         (primary
           (symbol
             (ident)))
-        (operator)
+        (operator
+          (keyw))
         (primary
           (symbol
             (ident))))))
@@ -365,7 +373,8 @@ discard a !+ b
         (primary
           (symbol
             (ident)))
-        (operator)
+        (operator
+          (keyw))
         (primary
           (symbol
             (ident))))))
@@ -376,7 +385,8 @@ discard a !+ b
         (primary
           (symbol
             (ident)))
-        (operator)
+        (operator
+          (keyw))
         (primary
           (symbol
             (ident))))))
@@ -387,7 +397,8 @@ discard a !+ b
         (primary
           (symbol
             (ident)))
-        (operator)
+        (operator
+          (keyw))
         (primary
           (symbol
             (ident))))))
@@ -645,7 +656,8 @@ discard a \>>> b
         (primary
           (symbol
             (ident)))
-        (operator)
+        (operator
+          (keyw))
         (primary
           (symbol
             (ident))))))
@@ -656,7 +668,8 @@ discard a \>>> b
         (primary
           (symbol
             (ident)))
-        (operator)
+        (operator
+          (keyw))
         (primary
           (symbol
             (ident))))))
@@ -667,7 +680,8 @@ discard a \>>> b
         (primary
           (symbol
             (ident)))
-        (operator)
+        (operator
+          (keyw))
         (primary
           (symbol
             (ident))))))
@@ -678,7 +692,8 @@ discard a \>>> b
         (primary
           (symbol
             (ident)))
-        (operator)
+        (operator
+          (keyw))
         (primary
           (symbol
             (ident))))))
