@@ -110,6 +110,7 @@
   (primarySuffix (functionCall ["(" ")"] @function.call))
 )
 (primary . (symbol (ident) @function.call) . (primarySuffix (cmdCall)))
+(primary (primarySuffix (qualifiedSuffix (symbol (ident) @function.call))) . (primarySuffix (cmdCall)))
 ; @function.call    ; function calls
 
 (routine (pragma) @function.macro)
@@ -216,7 +217,32 @@
  (#match? @keyword.operator "is"))
 ;@type            ; type or class definitions and annotations
 
-;@type.builtin    ; built-in types
+(primaryTypeDef (symbol (ident) @type.builtin)
+  (#match? @type.builtin "int|float|string|cstring|bool|array|seq|tuple|set|varargs|openArray|typed|untyped|auto"))
+(primaryTypeDesc (symbol (ident) @type.builtin)
+  (#match? @type.builtin "int|float|string|cstring|bool|array|seq|tuple|set|varargs|openArray|typed|untyped|auto"))
+(primaryTypeDesc (tupleDesc (keyw) @type.builtin))
+(primaryTypeDesc 
+  (primarySuffix
+    (indexSuffix
+      (exprColonEqExprList
+        (exprColonEqExpr
+          (expr
+            (primary
+              (symbol) @type.builtin)
+              (#match? @type.builtin "int|float|string|cstring|bool|array|seq|tuple|set|varargs|openArray|typed|untyped|auto")
+            ))))))
+(primaryTypeDef 
+  (primarySuffix
+    (indexSuffix
+      (exprColonEqExprList
+        (exprColonEqExpr
+          (expr
+            (primary
+              (symbol) @type.builtin)
+              (#match? @type.builtin "int|float|string|cstring|bool|array|seq|tuple|set|varargs|openArray|typed|untyped|auto")
+            ))))))
+; @type.builtin    ; built-in types
 
 (typeDef (keyw) @keyword (symbol) @type.definition)
 ;@type.definition ; type definitions (e.g. `typedef` in C)
@@ -245,6 +271,7 @@
 
 ;@property        ; similar to `@field`
 
+(tupleDesc (identColon (ident) @variable))
 (conceptParam (symbol) @variable)
 (forStmt (symbol) @variable)
 (declaration (variable (keyw) @keyword (declColonEquals (symbol) @variable)))
