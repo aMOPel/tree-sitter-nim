@@ -12,6 +12,8 @@
 // BUG:
 // assert (prc != nil), $opr.loc.r
 // assert prc != nil, $opr.loc.r
+// BUG: a(c=proc () = b, c=d)
+// TODO: split up index suffix and generic params for types
 
 // TODO: queries
 // add fields for () [] {}
@@ -203,6 +205,7 @@ module.exports = grammar({
     declaration: $ => choice(
       $.typeDef,
       $.variable,
+      $.constant,
     ),
 
     typeDef: $ => seq(
@@ -257,7 +260,18 @@ module.exports = grammar({
     )),
 
     variable: $ => seq(
-      alias(choice('const', 'let', 'var', 'using'), $.keyw),
+      alias(choice('let', 'var', 'using'), $.keyw),
+      section($, seq(
+        choice(
+          $.varTuple,
+          $.declColonEquals,
+        ),
+        optional($.postExprBlocks),
+      )),
+    ),
+
+    constant: $ => seq(
+      alias('const', $.keyw),
       section($, seq(
         choice(
           $.varTuple,

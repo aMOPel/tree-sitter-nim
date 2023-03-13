@@ -364,6 +364,33 @@
     }
   },
   {
+    "type": "constant",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "declColonEquals",
+          "named": true
+        },
+        {
+          "type": "keyw",
+          "named": true
+        },
+        {
+          "type": "postExprBlocks",
+          "named": true
+        },
+        {
+          "type": "varTuple",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "continueStmt",
     "named": true,
     "fields": {},
@@ -448,6 +475,10 @@
       "multiple": false,
       "required": true,
       "types": [
+        {
+          "type": "constant",
+          "named": true
+        },
         {
           "type": "typeDef",
           "named": true

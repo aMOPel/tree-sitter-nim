@@ -1214,7 +1214,7 @@ const
 (module
   (stmt
     (declaration
-      (variable
+      (constant
         (keyw)
         (declColonEquals
           (symbol
@@ -1225,7 +1225,7 @@ const
                 (int_lit))))))))
   (stmt
     (declaration
-      (variable
+      (constant
         (keyw)
         (declColonEquals
           (symbol
@@ -1240,7 +1240,7 @@ const
                 (int_lit))))))))
   (stmt
     (declaration
-      (variable
+      (constant
         (keyw)
         (declColonEquals
           (symbol
@@ -1257,7 +1257,7 @@ const
                 (int_lit))))))))
   (stmt
     (declaration
-      (variable
+      (constant
         (keyw)
         (declColonEquals
           (symbol

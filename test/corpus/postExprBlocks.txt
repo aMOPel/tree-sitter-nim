@@ -467,7 +467,7 @@ type a = test:
 (module
   (stmt
     (declaration
-      (variable
+      (constant
         (keyw)
         (declColonEquals
           (symbol

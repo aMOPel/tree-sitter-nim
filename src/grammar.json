@@ -245,6 +245,10 @@
         {
           "type": "SYMBOL",
           "name": "variable"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "constant"
         }
       ]
     },
@@ -546,10 +550,6 @@
             "members": [
               {
                 "type": "STRING",
-                "value": "const"
-              },
-              {
-                "type": "STRING",
                 "value": "let"
               },
               {
@@ -561,6 +561,101 @@
                 "value": "using"
               }
             ]
+          },
+          "named": true,
+          "value": "keyw"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "CHOICE",
+                  "members": [
+                    {
+                      "type": "SYMBOL",
+                      "name": "varTuple"
+                    },
+                    {
+                      "type": "SYMBOL",
+                      "name": "declColonEquals"
+                    }
+                  ]
+                },
+                {
+                  "type": "CHOICE",
+                  "members": [
+                    {
+                      "type": "SYMBOL",
+                      "name": "postExprBlocks"
+                    },
+                    {
+                      "type": "BLANK"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "_indent"
+                },
+                {
+                  "type": "REPEAT1",
+                  "content": {
+                    "type": "SEQ",
+                    "members": [
+                      {
+                        "type": "CHOICE",
+                        "members": [
+                          {
+                            "type": "SYMBOL",
+                            "name": "varTuple"
+                          },
+                          {
+                            "type": "SYMBOL",
+                            "name": "declColonEquals"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "CHOICE",
+                        "members": [
+                          {
+                            "type": "SYMBOL",
+                            "name": "postExprBlocks"
+                          },
+                          {
+                            "type": "BLANK"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "_dedent"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "constant": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "STRING",
+            "value": "const"
           },
           "named": true,
           "value": "keyw"
