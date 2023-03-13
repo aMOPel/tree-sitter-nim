@@ -14,6 +14,7 @@
 // assert prc != nil, $opr.loc.r
 // BUG: a(c=proc () = b, c=d)
 // TODO: split up index suffix and generic params for types
+// TODO: make operators in import specific
 
 // TODO: queries
 // add fields for () [] {}

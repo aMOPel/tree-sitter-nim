@@ -15,6 +15,7 @@
 (pragma)
 @preproc               ; various preprocessor directives & shebangs
 
+; TODO: maybe put pragma definitions or macro definitions here
 ;@define                ; preprocessor definition directives
 
 (declaration (variable (declColonEquals "=" @operator)))
@@ -103,10 +104,9 @@
 
 ;@function.builtin ; built-in functions
 
-; BUG:     if not isDeepConstExpr(n) or n.len == 0:
 ; primaryPrefix breaks function.call query
 (castExpr ["(" ")"] @function.call)
-(primary . (symbol (ident) @function.call) .
+(primary (symbol (ident) @function.call) .
   (primarySuffix (functionCall ["(" ")"] @function.call))
 )
 (primary . (symbol (ident) @function.call) . (primarySuffix (cmdCall)))
@@ -158,9 +158,8 @@
 ;@conditional.ternary ; ternary operator (e.g. `?` / `:`)
 
 (forStmt
-.  (keyw) @repeat
-.  (symbol) @variable
-.  (keyw) @repeat)
+. (keyw) @repeat
+  (keyw) @repeat)
 (whileStmt (keyw) @repeat)
 (breakStmt (keyw) @repeat)
 (continueStmt (keyw) @repeat)
@@ -230,15 +229,15 @@
 ;@storageclass    ; modifiers that affect storage in memory or life-time
 ;@attribute       ; attribute annotations (e.g. Python decorators)
 
-(conceptParam (symbol) @variable)
 (objectPart (symbol) @variable)
+; has to be here because below is more specific
+
+(objectDecl (objectPart (symbol) @field))
 (primary (primarySuffix (qualifiedSuffix (symbol) @field)))
 (objectConstr (symbolColonExpr (symbol) @field))
-(objectDecl (objectPart (symbol) @field))
 (tupleConstr (symbolColonExpr (symbol) @field))
 (tupleDecl (identColon (ident) @field))
 ;@field           ; object and struct fields
-; TODO: type a = ref object
 
 (primary
   (primarySuffix (qualifiedSuffix (symbol) @function.call))
@@ -246,6 +245,8 @@
 
 ;@property        ; similar to `@field`
 
+(conceptParam (symbol) @variable)
+(forStmt (symbol) @variable)
 (declaration (variable (keyw) @keyword (declColonEquals (symbol) @variable)))
 ;@variable         ; various variable names
 
@@ -254,6 +255,7 @@
 ;@variable.builtin ; built-in variable names (e.g. `this`)
 
 
+(enumElement (symbol) @constant)
 (declaration (constant (keyw) @keyword (declColonEquals (symbol) @constant)))
 ;@constant         ; constant identifiers
 
