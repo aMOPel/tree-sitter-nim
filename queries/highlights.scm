@@ -1,4 +1,5 @@
-; (keyw) @keyword             ; various keywords
+(keyw) @keyword             ; various keywords
+(primary (symbol) @variable)
 
 (comment)
 @comment               ; line and block comments
@@ -16,6 +17,8 @@
 
 ;@define                ; preprocessor definition directives
 
+(declaration (variable (declColonEquals "=" @operator)))
+(exprStmt "=" @operator)
 [
 (operator)
 (opr)
@@ -33,6 +36,7 @@
 (tupleConstr ["(" ")"] @punctuation.bracket   )
 (arrayConstr ["[" "]"] @punctuation.bracket   )
 (tableConstr ["{" "}"] @punctuation.bracket   )
+(setConstr ["{" "}"] @punctuation.bracket   )
 (genericParamList ["[" "]"] @punctuation.bracket   )
 ; TODO: doesn't work with ["(" ")"] because of token schenanigans in grammar
 (indexSuffix)  @punctuation.bracket
@@ -49,6 +53,8 @@
 (triplestr_lit)
 (interpolated_str_lit)
 (interpolated_triplestr_lit)
+(generalized_str_lit)
+(generalized_triplestr_lit)
 ]
 @string               ; string literals
 
@@ -78,12 +84,15 @@
 
 [
 (int_lit)
+(int_suffix)
 (custom_numeric_lit)
 ]
 @number               ; numeric literals
 
-
+[
 (float_lit)
+(float_suffix)
+]
 @float                ; floating-point number literals
 
 
@@ -94,8 +103,13 @@
 
 ;@function.builtin ; built-in functions
 
-;(cmdCall)
-(functionCall ["(" ")"] @function.call) 
+; BUG:     if not isDeepConstExpr(n) or n.len == 0:
+; primaryPrefix breaks function.call query
+(castExpr ["(" ")"] @function.call)
+(primary . (symbol (ident) @function.call) .
+  (primarySuffix (functionCall ["(" ")"] @function.call))
+)
+(primary . (symbol (ident) @function.call) . (primarySuffix (cmdCall)))
 ; @function.call    ; function calls
 
 (routine (pragma) @function.macro)
@@ -108,6 +122,7 @@
 ;@constructor      ; constructor calls and definitions
 
 (paramList (paramColonEquals (symbol) @parameter))
+(functionCall (symbolEqExprList (symbolEqExpr (symbol) @paramter)))
 ;@parameter        ; parameters of a function
 
 ;@keyword.coroutine   ; keywords related to coroutines (e.g. `go` in Go, `async/await` in Python)
@@ -122,7 +137,6 @@
 
 (returnStmt (keyw) @keyword.return)
 (yieldStmt (keyw) @keyword.return)
-(raiseStmt (keyw) @keyword.return)
 (discardStmt (keyw) @keyword.return)
 ;@keyword.return      ; keywords like `return` and `yield`
 
@@ -134,12 +148,22 @@
 (inlineIfStmt (keyw) @conditional)
 (whenStmt (keyw) @conditional)
 (inlineWhenStmt (keyw) @conditional)
+(objectCase (keyw) @conditional (symbol) @variable)
+(objectBranch (keyw) @conditional)
+(objectElif (keyw) @conditional)
+(objectElse (keyw) @conditional)
+(objectWhen (keyw) @conditional)
 ;@conditional         ; keywords related to conditionals (e.g. `if` / `else`)
 
 ;@conditional.ternary ; ternary operator (e.g. `?` / `:`)
 
-(forStmt (keyw) @repeat)
+(forStmt
+.  (keyw) @repeat
+.  (symbol) @variable
+.  (keyw) @repeat)
 (whileStmt (keyw) @repeat)
+(breakStmt (keyw) @repeat)
+(continueStmt (keyw) @repeat)
 ;@repeat              ; keywords related to loops (e.g. `for` / `while`)
 
 ;@debug               ; keywords related to debugging
@@ -152,53 +176,85 @@
 (exportStmt (keyw) @include)
 ;@include             ; keywords for including modules (e.g. `import` / `from` in Python)
 
+(raiseStmt (keyw) @exception)
 (tryStmt (keyw) @exception)
 (tryExceptStmt (keyw) @exception)
 (tryFinallyStmt (keyw) @exception)
 ;@exception           ; keywords related to exceptions (e.g. `throw` / `catch`)
 
-(typeDesc) @type
-(genericParam (symbol) @type)
 (primaryTypeDef (symbol) @type)
+(primaryTypeDesc (symbol) @type)
+(primaryTypeDesc 
+  (primarySuffix
+    (indexSuffix
+      (exprColonEqExprList
+        (exprColonEqExpr
+          (expr
+            (primary
+              (symbol) @type)))))))
+(primaryTypeDef 
+  (primarySuffix
+    (indexSuffix
+      (exprColonEqExprList
+        (exprColonEqExpr
+          (expr
+            (primary
+              (symbol) @type)))))))
+(genericParam (symbol) @type)
 (tupleDecl (keyw) @type)
 (enumDecl (keyw) @type)
 (objectDecl (keyw) @type)
 (conceptDecl (keyw) @type)
+((exprStmt
+  (primary (symbol))
+  (operator) @keyword.operator
+  (primary (symbol) @type))
+ (#match? @keyword.operator "is"))
+((expr
+  (primary (symbol))
+  (operator) @keyword.operator
+  (primary (symbol) @type))
+ (#match? @keyword.operator "is"))
 ;@type            ; type or class definitions and annotations
 
 ;@type.builtin    ; built-in types
 
-(typeDef (symbol) @type.definition)
+(typeDef (keyw) @keyword (symbol) @type.definition)
 ;@type.definition ; type definitions (e.g. `typedef` in C)
 
-(typeDesc (primaryTypeDesc (primaryPrefix (keyw) @type.qualifier)+))
+(typeDesc (primaryTypeDesc (primaryPrefix (keyw) @type.qualifier)))
+(typeDef (primaryTypeDef (primaryPrefix (keyw) @type.qualifier)))
+(conceptParam (keyw)  @type.qualifier)
 ;@type.qualifier  ; type qualifiers (e.g. `const`)
 
 ;@storageclass    ; modifiers that affect storage in memory or life-time
 ;@attribute       ; attribute annotations (e.g. Python decorators)
 
+(conceptParam (symbol) @variable)
+(objectPart (symbol) @variable)
 (primary (primarySuffix (qualifiedSuffix (symbol) @field)))
+(objectConstr (symbolColonExpr (symbol) @field))
+(objectDecl (objectPart (symbol) @field))
+(tupleConstr (symbolColonExpr (symbol) @field))
+(tupleDecl (identColon (ident) @field))
 ;@field           ; object and struct fields
+; TODO: type a = ref object
+
+(primary
+  (primarySuffix (qualifiedSuffix (symbol) @function.call))
+  . (primarySuffix (functionCall ["(" ")"] @function.call)))
 
 ;@property        ; similar to `@field`
 
-(primary (symbol) @variable)
-(
-	(declaration (variable (keyw) @keyword (declColonEquals (symbol) @variable)))
-    (#match? @keyword "(let)|(var)|(using)")
-)
+(declaration (variable (keyw) @keyword (declColonEquals (symbol) @variable)))
 ;@variable         ; various variable names
 
-(
-	(primary (symbol) @variable.builtin) 
-    (#match? @variable.builtin "result")
-)
-@variable.builtin ; built-in variable names (e.g. `this`)
+((primary (symbol) @variable.builtin) 
+  (#match? @variable.builtin "result"))
+;@variable.builtin ; built-in variable names (e.g. `this`)
 
-(
-	(declaration (variable (keyw) @keyword (declColonEquals (symbol) @constant)))
-    (#match? @keyword "const")
-)
+
+(declaration (constant (keyw) @keyword (declColonEquals (symbol) @constant)))
 ;@constant         ; constant identifiers
 
 ;@constant.builtin ; built-in constant values
