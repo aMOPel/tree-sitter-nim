@@ -1,10 +1,16 @@
 (keyw) @keyword             ; various keywords
 (primary (symbol) @variable)
 
+[
 (comment)
+(multilinecomment)
+]
 @comment               ; line and block comments
 
+[
 (docComment)
+(multilinedocComment)
+]
 @comment.documentation ; comments documenting code
 
 (ERROR)
