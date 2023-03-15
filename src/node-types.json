@@ -1,24 +1,112 @@
 [
   {
+    "type": "bool_lit",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "char_lit",
+    "named": true,
+    "fields": {
+      "close": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "'",
+            "named": false
+          }
+        ]
+      },
+      "open": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "'",
+            "named": false
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "char_esc_seq",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "expr",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "literal",
+          "named": true
+        },
+        {
+          "type": "symbol",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "float_lit",
-    "named": true,
-    "fields": {}
-  },
-  {
-    "type": "int_lit",
-    "named": true,
-    "fields": {}
-  },
-  {
-    "type": "literal",
     "named": true,
     "fields": {},
     "children": {
       "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "custom_numeric_lit_suffix",
+          "named": true
+        },
+        {
+          "type": "exponent",
+          "named": true
+        },
+        {
+          "type": "float_suffix",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "generalized_string_prefix",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
       "required": true,
       "types": [
         {
-          "type": "float_lit",
+          "type": "symbol",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "int_lit",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "custom_numeric_lit_suffix",
           "named": true
         },
         {
@@ -26,11 +114,142 @@
           "named": true
         },
         {
+          "type": "int_suffix",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "interpolated_multi_string_lit",
+    "named": true,
+    "fields": {
+      "close": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "\"\"\"",
+            "named": false
+          }
+        ]
+      },
+      "open": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "\"\"\"",
+            "named": false
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "interpolated_string_prefix",
+          "named": true
+        },
+        {
+          "type": "multi_string_interpolation",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "interpolated_string_lit",
+    "named": true,
+    "fields": {
+      "close": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "\"",
+            "named": false
+          }
+        ]
+      },
+      "open": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "\"",
+            "named": false
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "interpolated_string_prefix",
+          "named": true
+        },
+        {
+          "type": "str_esc_seq",
+          "named": true
+        },
+        {
+          "type": "string_interpolation",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "literal",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "bool_lit",
+          "named": true
+        },
+        {
+          "type": "char_lit",
+          "named": true
+        },
+        {
+          "type": "float_lit",
+          "named": true
+        },
+        {
           "type": "int_lit",
           "named": true
         },
         {
-          "type": "int_suffix",
+          "type": "interpolated_multi_string_lit",
+          "named": true
+        },
+        {
+          "type": "interpolated_string_lit",
+          "named": true
+        },
+        {
+          "type": "multi_string_lit",
+          "named": true
+        },
+        {
+          "type": "nil_lit",
+          "named": true
+        },
+        {
+          "type": "raw_string_lit",
+          "named": true
+        },
+        {
+          "type": "string_lit",
           "named": true
         }
       ]
@@ -52,11 +271,333 @@
     }
   },
   {
+    "type": "multi_string_interpolation",
+    "named": true,
+    "fields": {
+      "close": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "}",
+            "named": false
+          }
+        ]
+      },
+      "open": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "{",
+            "named": false
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "expr",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "multi_string_lit",
+    "named": true,
+    "fields": {
+      "close": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "\"\"\"",
+            "named": false
+          }
+        ]
+      },
+      "open": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "\"\"\"",
+            "named": false
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "generalized_string_prefix",
+          "named": true
+        },
+        {
+          "type": "raw_string_prefix",
+          "named": true
+        },
+        {
+          "type": "regex_string_prefix",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "raw_string_lit",
+    "named": true,
+    "fields": {
+      "close": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "\"",
+            "named": false
+          }
+        ]
+      },
+      "open": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "\"",
+            "named": false
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "generalized_string_prefix",
+          "named": true
+        },
+        {
+          "type": "raw_string_prefix",
+          "named": true
+        },
+        {
+          "type": "regex_string_prefix",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "raw_string_prefix",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "string_interpolation",
+    "named": true,
+    "fields": {
+      "close": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "}",
+            "named": false
+          }
+        ]
+      },
+      "open": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "{",
+            "named": false
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "expr",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "string_lit",
+    "named": true,
+    "fields": {
+      "close": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "\"",
+            "named": false
+          }
+        ]
+      },
+      "open": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "\"",
+            "named": false
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "str_esc_seq",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "symbol",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "ticked_identifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ticked_identifier",
+    "named": true,
+    "fields": {
+      "close": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "`",
+            "named": false
+          }
+        ]
+      },
+      "open": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "`",
+            "named": false
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": " ",
+    "named": false
+  },
+  {
+    "type": "\"",
+    "named": false
+  },
+  {
+    "type": "\"\"\"",
+    "named": false
+  },
+  {
+    "type": "'",
+    "named": false
+  },
+  {
+    "type": "R",
+    "named": false
+  },
+  {
+    "type": "`",
+    "named": false
+  },
+  {
+    "type": "char_esc_seq",
+    "named": true
+  },
+  {
+    "type": "custom_numeric_lit_suffix",
+    "named": true
+  },
+  {
+    "type": "exponent",
+    "named": true
+  },
+  {
+    "type": "false",
+    "named": false
+  },
+  {
     "type": "float_suffix",
+    "named": true
+  },
+  {
+    "type": "identifier",
     "named": true
   },
   {
     "type": "int_suffix",
     "named": true
+  },
+  {
+    "type": "interpolated_string_prefix",
+    "named": true
+  },
+  {
+    "type": "nil_lit",
+    "named": true
+  },
+  {
+    "type": "r",
+    "named": false
+  },
+  {
+    "type": "regex_string_prefix",
+    "named": true
+  },
+  {
+    "type": "str_esc_seq",
+    "named": true
+  },
+  {
+    "type": "true",
+    "named": false
+  },
+  {
+    "type": "{",
+    "named": false
+  },
+  {
+    "type": "}",
+    "named": false
   }
 ]
