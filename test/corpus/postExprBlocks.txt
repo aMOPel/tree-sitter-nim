@@ -154,7 +154,8 @@ else:
             (primary
               (symbol
                 (ident)))
-            (operator)
+            (operator
+              (keyw))
             (primary
               (symbol
                 (ident))))
@@ -215,6 +216,7 @@ else:
           (stmt
             (discardStmt
               (keyw))))))))
+
 
 ==================
 exprStmt doBlock
@@ -465,7 +467,7 @@ type a = test:
 (module
   (stmt
     (declaration
-      (variable
+      (constant
         (keyw)
         (declColonEquals
           (symbol

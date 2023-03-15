@@ -574,77 +574,64 @@ discard `||`
       (expr
         (primary
           (symbol
-            (operator))))))
+            (operator
+              (keyw)))))))
   (stmt
     (discardStmt
       (keyw)
       (expr
         (primary
           (symbol
-            (operator))))))
+            (operator
+              (keyw)))))))
   (stmt
     (discardStmt
       (keyw)
       (expr
         (primary
           (symbol
-            (operator))))))
+            (operator
+              (keyw)))))))
   (stmt
     (discardStmt
       (keyw)
       (expr
         (primary
           (symbol
-            (operator))))))
+            (operator
+              (keyw)))))))
   (stmt
     (discardStmt
       (keyw)
       (expr
         (primary
           (symbol
-            (operator))))))
+            (operator
+              (keyw)))))))
   (stmt
     (discardStmt
       (keyw)
       (expr
         (primary
           (symbol
-            (operator))))))
+            (operator
+              (keyw)))))))
   (stmt
     (discardStmt
       (keyw)
       (expr
         (primary
           (symbol
-            (operator))))))
+            (operator
+              (keyw)))))))
   (stmt
     (discardStmt
       (keyw)
       (expr
         (primary
           (symbol
-            (operator))))))
-  (stmt
-    (discardStmt
-      (keyw)
-      (expr
-        (primary
-          (symbol
-            (ident))))))
-  (stmt
-    (discardStmt
-      (keyw)
-      (expr
-        (primary
-          (symbol
-            (operator))))))
-  (stmt
-    (discardStmt
-      (keyw)
-      (expr
-        (primary
-          (symbol
-            (operator))))))
+            (operator
+              (keyw)))))))
   (stmt
     (discardStmt
       (keyw)
@@ -658,21 +645,16 @@ discard `||`
       (expr
         (primary
           (symbol
-            (ident))))))
+            (operator
+              (keyw)))))))
   (stmt
     (discardStmt
       (keyw)
       (expr
         (primary
           (symbol
-            (operator))))))
-  (stmt
-    (discardStmt
-      (keyw)
-      (expr
-        (primary
-          (symbol
-            (operator))))))
+            (operator
+              (keyw)))))))
   (stmt
     (discardStmt
       (keyw)
@@ -693,6 +675,29 @@ discard `||`
       (expr
         (primary
           (symbol
+            (operator
+              (keyw)))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (operator
+              (keyw)))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (ident))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
             (ident))))))
   (stmt
     (discardStmt
@@ -707,7 +712,15 @@ discard `||`
       (expr
         (primary
           (symbol
-            (operator))))))
+            (ident))))))
+  (stmt
+    (discardStmt
+      (keyw)
+      (expr
+        (primary
+          (symbol
+            (operator
+              (keyw)))))))
   (stmt
     (discardStmt
       (keyw)
@@ -739,6 +752,7 @@ discard `||`
         (primary
           (symbol
             (operator)))))))
+
 
 
 ==================
@@ -1200,7 +1214,7 @@ const
 (module
   (stmt
     (declaration
-      (variable
+      (constant
         (keyw)
         (declColonEquals
           (symbol
@@ -1211,7 +1225,7 @@ const
                 (int_lit))))))))
   (stmt
     (declaration
-      (variable
+      (constant
         (keyw)
         (declColonEquals
           (symbol
@@ -1226,7 +1240,7 @@ const
                 (int_lit))))))))
   (stmt
     (declaration
-      (variable
+      (constant
         (keyw)
         (declColonEquals
           (symbol
@@ -1243,7 +1257,7 @@ const
                 (int_lit))))))))
   (stmt
     (declaration
-      (variable
+      (constant
         (keyw)
         (declColonEquals
           (symbol
