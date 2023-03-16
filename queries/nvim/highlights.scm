@@ -3,13 +3,13 @@
 
 [
 (comment)
-(multilinecomment)
+(multilineComment)
 ]
 @comment               ; line and block comments
 
 [
 (docComment)
-(multilinedocComment)
+(multilineDocComment)
 ]
 @comment.documentation ; comments documenting code
 
