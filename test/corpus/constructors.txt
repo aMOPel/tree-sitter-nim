@@ -1,0 +1,404 @@
+==================
+array constr
+==================
+
+[]
+[0]
+[0, 1]
+[
+0
+,
+1
+]
+[A:0, B:1, C:2]
+['A':0]
+[5:0]
+
+---
+
+(module
+  (stmt
+    (expr_stmt
+      (primary
+        (constructor
+          (array_constr)))))
+  (stmt
+    (expr_stmt
+      (primary
+        (constructor
+          (array_constr
+            (expr
+              (primary
+                (literal
+                  (int_lit)))))))))
+  (stmt
+    (expr_stmt
+      (primary
+        (constructor
+          (array_constr
+            (expr
+              (primary
+                (literal
+                  (int_lit))))
+            (expr
+              (primary
+                (literal
+                  (int_lit)))))))))
+  (stmt
+    (expr_stmt
+      (primary
+        (constructor
+          (array_constr
+            (expr
+              (primary
+                (literal
+                  (int_lit))))
+            (expr
+              (primary
+                (literal
+                  (int_lit)))))))))
+  (stmt
+    (expr_stmt
+      (primary
+        (constructor
+          (array_constr
+            (expr
+              (primary
+                (symbol
+                  (identifier))))
+            (expr
+              (primary
+                (literal
+                  (int_lit))))
+            (expr
+              (primary
+                (symbol
+                  (identifier))))
+            (expr
+              (primary
+                (literal
+                  (int_lit))))
+            (expr
+              (primary
+                (symbol
+                  (identifier))))
+            (expr
+              (primary
+                (literal
+                  (int_lit)))))))))
+  (stmt
+    (expr_stmt
+      (primary
+        (constructor
+          (array_constr
+            (expr
+              (primary
+                (literal
+                  (char_lit))))
+            (expr
+              (primary
+                (literal
+                  (int_lit)))))))))
+  (stmt
+    (expr_stmt
+      (primary
+        (constructor
+          (array_constr
+            (expr
+              (primary
+                (literal
+                  (int_lit))))
+            (expr
+              (primary
+                (literal
+                  (int_lit))))))))))
+
+==================
+object constr
+==================
+
+A()
+A(a:1, b:2)
+`asdf`(a:1)
+`a`(
+`a`
+:
+`a`
+)
+
+---
+
+(module
+  (stmt
+    (expr_stmt
+      (primary
+        (constructor
+          (object_constr
+            (symbol
+              (identifier)))))))
+  (stmt
+    (expr_stmt
+      (primary
+        (constructor
+          (object_constr
+            (symbol
+              (identifier))
+            (symbol
+              (identifier))
+            (expr
+              (primary
+                (literal
+                  (int_lit))))
+            (symbol
+              (identifier))
+            (expr
+              (primary
+                (literal
+                  (int_lit)))))))))
+  (stmt
+    (expr_stmt
+      (primary
+        (constructor
+          (object_constr
+            (symbol
+              (ticked_identifier))
+            (symbol
+              (identifier))
+            (expr
+              (primary
+                (literal
+                  (int_lit)))))))))
+  (stmt
+    (expr_stmt
+      (primary
+        (constructor
+          (object_constr
+            (symbol
+              (ticked_identifier))
+            (symbol
+              (ticked_identifier))
+            (expr
+              (primary
+                (symbol
+                  (ticked_identifier))))))))))
+
+==================
+tuple constr
+==================
+
+()
+(0,)
+(0, 1)
+(
+  0
+  ,
+  1
+)
+(a:1)
+(a:1, b:6)
+
+---
+
+(module
+  (stmt
+    (expr_stmt
+      (primary
+        (constructor
+          (tuple_constr)))))
+  (stmt
+    (expr_stmt
+      (primary
+        (constructor
+          (tuple_constr
+            (expr
+              (primary
+                (literal
+                  (int_lit)))))))))
+  (stmt
+    (expr_stmt
+      (primary
+        (constructor
+          (tuple_constr
+            (expr
+              (primary
+                (literal
+                  (int_lit))))
+            (expr
+              (primary
+                (literal
+                  (int_lit)))))))))
+  (stmt
+    (expr_stmt
+      (primary
+        (constructor
+          (tuple_constr
+            (expr
+              (primary
+                (literal
+                  (int_lit))))
+            (expr
+              (primary
+                (literal
+                  (int_lit)))))))))
+  (stmt
+    (expr_stmt
+      (primary
+        (constructor
+          (tuple_constr
+            (symbol
+              (identifier))
+            (expr
+              (primary
+                (literal
+                  (int_lit)))))))))
+  (stmt
+    (expr_stmt
+      (primary
+        (constructor
+          (tuple_constr
+            (symbol
+              (identifier))
+            (expr
+              (primary
+                (literal
+                  (int_lit))))
+            (symbol
+              (identifier))
+            (expr
+              (primary
+                (literal
+                  (int_lit))))))))))
+
+==================
+set_constr
+==================
+
+{}
+{0}
+{0, 1}
+{
+  0
+  ,
+  1
+}
+
+---
+
+(module
+  (stmt
+    (expr_stmt
+      (primary
+        (constructor
+          (set_constr)))))
+  (stmt
+    (expr_stmt
+      (primary
+        (constructor
+          (set_constr
+            (expr
+              (primary
+                (literal
+                  (int_lit)))))))))
+  (stmt
+    (expr_stmt
+      (primary
+        (constructor
+          (set_constr
+            (expr
+              (primary
+                (literal
+                  (int_lit))))
+            (expr
+              (primary
+                (literal
+                  (int_lit)))))))))
+  (stmt
+    (expr_stmt
+      (primary
+        (constructor
+          (set_constr
+            (expr
+              (primary
+                (literal
+                  (int_lit))))
+            (expr
+              (primary
+                (literal
+                  (int_lit))))))))))
+
+==================
+table_constr
+==================
+
+{:}
+{0:1}
+{0:1, 5:6}
+{
+  0:1,
+  5:6
+  }
+
+---
+
+(module
+  (stmt
+    (expr_stmt
+      (primary
+        (constructor
+          (table_constr)))))
+  (stmt
+    (expr_stmt
+      (primary
+        (constructor
+          (table_constr
+            (expr
+              (primary
+                (literal
+                  (int_lit))))
+            (expr
+              (primary
+                (literal
+                  (int_lit)))))))))
+  (stmt
+    (expr_stmt
+      (primary
+        (constructor
+          (table_constr
+            (expr
+              (primary
+                (literal
+                  (int_lit))))
+            (expr
+              (primary
+                (literal
+                  (int_lit))))
+            (expr
+              (primary
+                (literal
+                  (int_lit))))
+            (expr
+              (primary
+                (literal
+                  (int_lit)))))))))
+  (stmt
+    (expr_stmt
+      (primary
+        (constructor
+          (table_constr
+            (expr
+              (primary
+                (literal
+                  (int_lit))))
+            (expr
+              (primary
+                (literal
+                  (int_lit))))
+            (expr
+              (primary
+                (literal
+                  (int_lit))))
+            (expr
+              (primary
+                (literal
+                  (int_lit))))))))))
+

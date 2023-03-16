@@ -1,0 +1,694 @@
+==================
+op0
+==================
+
+a -> b
+a ~> b
+a => b
+a =+\-*\/<>@$~&%|!?^:\=> b
+a @=> b
+
+---
+
+(module
+  (stmt
+    (expr_stmt
+      (primary
+        (symbol
+          (identifier)))
+      (operator)
+      (primary
+        (symbol
+          (identifier)))))
+  (stmt
+    (expr_stmt
+      (primary
+        (symbol
+          (identifier)))
+      (operator)
+      (primary
+        (symbol
+          (identifier)))))
+  (stmt
+    (expr_stmt
+      (primary
+        (symbol
+          (identifier)))
+      (operator)
+      (primary
+        (symbol
+          (identifier)))))
+  (stmt
+    (expr_stmt
+      (primary
+        (symbol
+          (identifier)))
+      (operator)
+      (primary
+        (symbol
+          (identifier)))))
+  (stmt
+    (expr_stmt
+      (primary
+        (symbol
+          (identifier)))
+      (operator)
+      (primary
+        (symbol
+          (identifier))))))
+
+==================
+op1
+==================
+
+a |== b
+a ^== b
+a @== b
+
+---
+
+(module
+  (stmt
+    (expr_stmt
+      (primary
+        (symbol
+          (identifier)))
+      (operator)
+      (primary
+        (symbol
+          (identifier)))))
+  (stmt
+    (expr_stmt
+      (primary
+        (symbol
+          (identifier)))
+      (operator)
+      (primary
+        (symbol
+          (identifier)))))
+  (stmt
+    (expr_stmt
+      (primary
+        (symbol
+          (identifier)))
+      (operator)
+      (primary
+        (symbol
+          (identifier))))))
+
+==================
+op2
+==================
+
+a @=? b
+a :?+ b
+a ?? b
+
+---
+
+(module
+  (stmt
+    (expr_stmt
+      (primary
+        (symbol
+          (identifier)))
+      (operator)
+      (primary
+        (symbol
+          (identifier)))))
+  (stmt
+    (expr_stmt
+      (primary
+        (symbol
+          (identifier)))
+      (operator)
+      (primary
+        (symbol
+          (identifier)))))
+  (stmt
+    (expr_stmt
+      (primary
+        (symbol
+          (identifier)))
+      (operator)
+      (primary
+        (symbol
+          (identifier))))))
+
+==================
+op3
+==================
+
+a or b
+a xor b
+
+---
+
+(module
+  (stmt
+    (expr_stmt
+      (primary
+        (symbol
+          (identifier)))
+      (operator
+        (keyw))
+      (primary
+        (symbol
+          (identifier)))))
+  (stmt
+    (expr_stmt
+      (primary
+        (symbol
+          (identifier)))
+      (operator
+        (keyw))
+      (primary
+        (symbol
+          (identifier))))))
+
+==================
+op4
+==================
+
+a and b
+
+---
+
+(module
+  (stmt
+    (expr_stmt
+      (primary
+        (symbol
+          (identifier)))
+      (operator
+        (keyw))
+      (primary
+        (symbol
+          (identifier))))))
+
+==================
+op5
+==================
+
+a <= b
+a >= b
+a > b
+a < b
+a != b
+a != b
+a in b
+a notin b
+a is b
+a isnot b
+a not b
+a of b
+a as b
+a from b
+a ==+\-*\/<>@$~&%|!?^:\ b
+a <! b
+a >\/ b
+a !+ b
+
+---
+
+(module
+  (stmt
+    (expr_stmt
+      (primary
+        (symbol
+          (identifier)))
+      (operator)
+      (primary
+        (symbol
+          (identifier)))))
+  (stmt
+    (expr_stmt
+      (primary
+        (symbol
+          (identifier)))
+      (operator)
+      (primary
+        (symbol
+          (identifier)))))
+  (stmt
+    (expr_stmt
+      (primary
+        (symbol
+          (identifier)))
+      (operator)
+      (primary
+        (symbol
+          (identifier)))))
+  (stmt
+    (expr_stmt
+      (primary
+        (symbol
+          (identifier)))
+      (operator)
+      (primary
+        (symbol
+          (identifier)))))
+  (stmt
+    (expr_stmt
+      (primary
+        (symbol
+          (identifier)))
+      (operator)
+      (primary
+        (symbol
+          (identifier)))))
+  (stmt
+    (expr_stmt
+      (primary
+        (symbol
+          (identifier)))
+      (operator)
+      (primary
+        (symbol
+          (identifier)))))
+  (stmt
+    (expr_stmt
+      (primary
+        (symbol
+          (identifier)))
+      (operator
+        (keyw))
+      (primary
+        (symbol
+          (identifier)))))
+  (stmt
+    (expr_stmt
+      (primary
+        (symbol
+          (identifier)))
+      (operator
+        (keyw))
+      (primary
+        (symbol
+          (identifier)))))
+  (stmt
+    (expr_stmt
+      (primary
+        (symbol
+          (identifier)))
+      (operator
+        (keyw))
+      (primary
+        (symbol
+          (identifier)))))
+  (stmt
+    (expr_stmt
+      (primary
+        (symbol
+          (identifier)))
+      (operator
+        (keyw))
+      (primary
+        (symbol
+          (identifier)))))
+  (stmt
+    (expr_stmt
+      (primary
+        (symbol
+          (identifier)))
+      (operator
+        (keyw))
+      (primary
+        (symbol
+          (identifier)))))
+  (stmt
+    (expr_stmt
+      (primary
+        (symbol
+          (identifier)))
+      (operator
+        (keyw))
+      (primary
+        (symbol
+          (identifier)))))
+  (stmt
+    (expr_stmt
+      (primary
+        (symbol
+          (identifier)))
+      (operator
+        (keyw))
+      (primary
+        (symbol
+          (identifier)))))
+  (stmt
+    (expr_stmt
+      (primary
+        (symbol
+          (identifier)))
+      (operator
+        (keyw))
+      (primary
+        (symbol
+          (identifier)))))
+  (stmt
+    (expr_stmt
+      (primary
+        (symbol
+          (identifier)))
+      (operator)
+      (primary
+        (symbol
+          (identifier)))))
+  (stmt
+    (expr_stmt
+      (primary
+        (symbol
+          (identifier)))
+      (operator)
+      (primary
+        (symbol
+          (identifier)))))
+  (stmt
+    (expr_stmt
+      (primary
+        (symbol
+          (identifier)))
+      (operator)
+      (primary
+        (symbol
+          (identifier)))))
+  (stmt
+    (expr_stmt
+      (primary
+        (symbol
+          (identifier)))
+      (operator)
+      (primary
+        (symbol
+          (identifier))))))
+
+==================
+op6
+==================
+
+a .. b
+a ... b
+a ..+ b
+a .=+\-*\/<>@$~&%|!?^:\=> b
+a .== b
+
+---
+
+(module
+  (stmt
+    (expr_stmt
+      (primary
+        (symbol
+          (identifier)))
+      (operator)
+      (primary
+        (symbol
+          (identifier)))))
+  (stmt
+    (expr_stmt
+      (primary
+        (symbol
+          (identifier)))
+      (operator)
+      (primary
+        (symbol
+          (identifier)))))
+  (stmt
+    (expr_stmt
+      (primary
+        (symbol
+          (identifier)))
+      (operator)
+      (primary
+        (symbol
+          (identifier)))))
+  (stmt
+    (expr_stmt
+      (primary
+        (symbol
+          (identifier)))
+      (operator)
+      (primary
+        (symbol
+          (identifier)))))
+  (stmt
+    (expr_stmt
+      (primary
+        (symbol
+          (identifier)))
+      (operator)
+      (primary
+        (symbol
+          (identifier))))))
+
+==================
+op7
+==================
+
+a & b
+a &=+\-*\/<>@$~&%|!?^.:\\ b
+
+---
+
+(module
+  (stmt
+    (expr_stmt
+      (primary
+        (symbol
+          (identifier)))
+      (operator)
+      (primary
+        (symbol
+          (identifier)))))
+  (stmt
+    (expr_stmt
+      (primary
+        (symbol
+          (identifier)))
+      (operator)
+      (primary
+        (symbol
+          (identifier))))))
+
+==================
+op8
+==================
+
+a + b
+a - b
+a ++ b
+a -? b
+a ~-~ b
+a || b
+
+---
+
+(module
+  (stmt
+    (expr_stmt
+      (primary
+        (symbol
+          (identifier)))
+      (operator)
+      (primary
+        (symbol
+          (identifier)))))
+  (stmt
+    (expr_stmt
+      (primary
+        (symbol
+          (identifier)))
+      (operator)
+      (primary
+        (symbol
+          (identifier)))))
+  (stmt
+    (expr_stmt
+      (primary
+        (symbol
+          (identifier)))
+      (operator)
+      (primary
+        (symbol
+          (identifier)))))
+  (stmt
+    (expr_stmt
+      (primary
+        (symbol
+          (identifier)))
+      (operator)
+      (primary
+        (symbol
+          (identifier)))))
+  (stmt
+    (expr_stmt
+      (primary
+        (symbol
+          (identifier)))
+      (operator)
+      (primary
+        (symbol
+          (identifier)))))
+  (stmt
+    (expr_stmt
+      (primary
+        (symbol
+          (identifier)))
+      (operator)
+      (primary
+        (symbol
+          (identifier))))))
+
+==================
+op9
+==================
+
+a div  b
+a mod  b
+a shl  b
+a shr  b
+a *  b
+a /  b
+a %	 b
+a ** b
+a %/ b
+a // b
+a \>>> b
+
+---
+
+(module
+  (stmt
+    (expr_stmt
+      (primary
+        (symbol
+          (identifier)))
+      (operator
+        (keyw))
+      (primary
+        (symbol
+          (identifier)))))
+  (stmt
+    (expr_stmt
+      (primary
+        (symbol
+          (identifier)))
+      (operator
+        (keyw))
+      (primary
+        (symbol
+          (identifier)))))
+  (stmt
+    (expr_stmt
+      (primary
+        (symbol
+          (identifier)))
+      (operator
+        (keyw))
+      (primary
+        (symbol
+          (identifier)))))
+  (stmt
+    (expr_stmt
+      (primary
+        (symbol
+          (identifier)))
+      (operator
+        (keyw))
+      (primary
+        (symbol
+          (identifier)))))
+  (stmt
+    (expr_stmt
+      (primary
+        (symbol
+          (identifier)))
+      (operator)
+      (primary
+        (symbol
+          (identifier)))))
+  (stmt
+    (expr_stmt
+      (primary
+        (symbol
+          (identifier)))
+      (operator)
+      (primary
+        (symbol
+          (identifier)))))
+  (stmt
+    (expr_stmt
+      (primary
+        (symbol
+          (identifier)))
+      (operator)
+      (primary
+        (symbol
+          (identifier)))))
+  (stmt
+    (expr_stmt
+      (primary
+        (symbol
+          (identifier)))
+      (operator)
+      (primary
+        (symbol
+          (identifier)))))
+  (stmt
+    (expr_stmt
+      (primary
+        (symbol
+          (identifier)))
+      (operator)
+      (primary
+        (symbol
+          (identifier)))))
+  (stmt
+    (expr_stmt
+      (primary
+        (symbol
+          (identifier)))
+      (operator)
+      (primary
+        (symbol
+          (identifier)))))
+  (stmt
+    (expr_stmt
+      (primary
+        (symbol
+          (identifier)))
+      (operator)
+      (primary
+        (symbol
+          (identifier))))))
+
+==================
+op10
+==================
+
+a $$ b
+a ^!@ b
+
+---
+
+(module
+  (stmt
+    (expr_stmt
+      (primary
+        (symbol
+          (identifier)))
+      (operator)
+      (primary
+        (symbol
+          (identifier)))))
+  (stmt
+    (expr_stmt
+      (primary
+        (symbol
+          (identifier)))
+      (operator)
+      (primary
+        (symbol
+          (identifier))))))
+

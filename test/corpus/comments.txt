@@ -1,0 +1,178 @@
+==================
+comment
+==================
+
+# TODO:
+  # TODO:
+5 # BUG: bla
+# BUG: bla
+5
+#
+5
+
+---
+
+(module
+  (comment
+    (content))
+  (comment
+    (content))
+  (stmt
+    (expr_stmt
+      (primary
+        (literal
+          (int_lit))))
+    (comment
+      (content)))
+  (comment
+    (content))
+  (stmt
+    (expr_stmt
+      (primary
+        (literal
+          (int_lit)))))
+  (comment
+    (content))
+  (stmt
+    (expr_stmt
+      (primary
+        (literal
+          (int_lit))))))
+
+==================
+doc_comment
+==================
+
+## *test* **test** `test` ``test``
+  ## *test* **test** `test` ``test``
+5 ## *test* **test** `test` ``test``
+## *test* **test** `test` ``test``
+5
+#
+5
+
+---
+
+(module
+  (doc_comment
+    (content))
+  (doc_comment
+    (content))
+  (stmt
+    (expr_stmt
+      (primary
+        (literal
+          (int_lit))))
+    (doc_comment
+      (content)))
+  (doc_comment
+    (content))
+  (stmt
+    (expr_stmt
+      (primary
+        (literal
+          (int_lit)))))
+  (comment
+    (content))
+  (stmt
+    (expr_stmt
+      (primary
+        (literal
+          (int_lit))))))
+
+==================
+multi_comment
+==================
+
+#[ 
+TODO: ]#
+#[ 
+  TODO:
+]#
+#[]#
+#[ ]#
+
+---
+
+(module
+  (multi_comment
+    (content))
+  (multi_comment
+    (content))
+  (multi_comment)
+  (multi_comment))
+
+==================
+multi_doc_comment
+==================
+
+##[ 
+*test*
+**test**
+`test`
+``test``
+`url <url>`_
+`A cool website`_
+.. _A cool website: http://sphinx-doc.org
+.. code-block:: python
+  print("hi")
+Title
+=====
+Subsection
+~~~~~~~~~~
+]##
+##[]##
+
+---
+
+(module
+  (multi_doc_comment
+    (content))
+  (multi_doc_comment))
+
+
+==================
+string comment collision
+==================
+
+"#"
+"##"
+"#["
+"]#"
+"##["
+"]##"
+
+---
+
+(module
+  (stmt
+    (expr_stmt
+      (primary
+        (literal
+          (string_lit)))))
+  (stmt
+    (expr_stmt
+      (primary
+        (literal
+          (string_lit)))))
+  (stmt
+    (expr_stmt
+      (primary
+        (literal
+          (string_lit)))))
+  (stmt
+    (expr_stmt
+      (primary
+        (literal
+          (string_lit)))))
+  (stmt
+    (expr_stmt
+      (primary
+        (literal
+          (string_lit)))))
+  (stmt
+    (expr_stmt
+      (primary
+        (literal
+          (string_lit))))))
+
