@@ -116,7 +116,6 @@
   (primarySuffix (functionCall ["(" ")"] @function.call))
 )
 (primary . (symbol (ident) @function.call) . (primarySuffix (cmdCall)))
-(primary (primarySuffix (qualifiedSuffix (symbol (ident) @function.call))) . (primarySuffix (cmdCall)))
 ; @function.call    ; function calls
 
 (routine (pragma) @function.macro)
@@ -129,7 +128,7 @@
 ;@constructor      ; constructor calls and definitions
 
 (paramList (paramColonEquals (symbol) @parameter))
-(functionCall (symbolEqExprList (symbolEqExpr (symbol) @paramter)))
+(functionCall (symbolEqExprList (symbolEqExpr (symbol) @parameter)))
 ;@parameter        ; parameters of a function
 
 ;@keyword.coroutine   ; keywords related to coroutines (e.g. `go` in Go, `async/await` in Python)
@@ -173,6 +172,11 @@
 ;@repeat              ; keywords related to loops (e.g. `for` / `while`)
 
 ;@debug               ; keywords related to debugging
+
+(blockStmt
+  (keyw)
+  .
+  (symbol) @label)
 ;@label               ; GOTO and other labels (e.g. `label:` in C)
 
 (importStmt (keyw) @include)
@@ -184,9 +188,23 @@
 
 (raiseStmt (keyw) @exception)
 (tryStmt (keyw) @exception)
+(inlineTryStmt (keyw) @exception)
 (tryExceptStmt (keyw) @exception)
 (tryFinallyStmt (keyw) @exception)
 ;@exception           ; keywords related to exceptions (e.g. `throw` / `catch`)
+
+(primarySuffix
+  (indexSuffix
+    (exprColonEqExprList
+      (exprColonEqExpr
+        (expr
+          (primary
+            (symbol) @type))))))
+; nested types in brackets, i.e. seq[string]
+(exprColonEqExpr
+  . (expr (primary (symbol) @parameter))
+  . (expr (primary (symbol) @type)))
+; variables in inline tuple declarations
 
 (primaryTypeDef (symbol) @type)
 (primaryTypeDesc (symbol) @type)
@@ -223,31 +241,6 @@
  (#match? @keyword.operator "is"))
 ;@type            ; type or class definitions and annotations
 
-(primaryTypeDef (symbol (ident) @type.builtin)
-  (#match? @type.builtin "int|float|string|cstring|bool|array|seq|tuple|set|varargs|openArray|typed|untyped|auto"))
-(primaryTypeDesc (symbol (ident) @type.builtin)
-  (#match? @type.builtin "int|float|string|cstring|bool|array|seq|tuple|set|varargs|openArray|typed|untyped|auto"))
-(primaryTypeDesc (tupleDesc (keyw) @type.builtin))
-(primaryTypeDesc 
-  (primarySuffix
-    (indexSuffix
-      (exprColonEqExprList
-        (exprColonEqExpr
-          (expr
-            (primary
-              (symbol) @type.builtin)
-              (#match? @type.builtin "int|float|string|cstring|bool|array|seq|tuple|set|varargs|openArray|typed|untyped|auto")
-            ))))))
-(primaryTypeDef 
-  (primarySuffix
-    (indexSuffix
-      (exprColonEqExprList
-        (exprColonEqExpr
-          (expr
-            (primary
-              (symbol) @type.builtin)
-              (#match? @type.builtin "int|float|string|cstring|bool|array|seq|tuple|set|varargs|openArray|typed|untyped|auto")
-            ))))))
 ; @type.builtin    ; built-in types
 
 (typeDef (keyw) @keyword (symbol) @type.definition)
@@ -271,9 +264,11 @@
 (tupleDecl (identColon (ident) @field))
 ;@field           ; object and struct fields
 
+(primary (primarySuffix (qualifiedSuffix (symbol (ident) @function.call))) . (primarySuffix (cmdCall)))
 (primary
   (primarySuffix (qualifiedSuffix (symbol) @function.call))
   . (primarySuffix (functionCall ["(" ")"] @function.call)))
+; has to be after @field
 
 ;@property        ; similar to `@field`
 
