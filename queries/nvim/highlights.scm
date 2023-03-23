@@ -106,6 +106,9 @@
 (routine (symbol [(ident) (operator)] @function)) 
 (routine (paramList ["(" ")"] @function))
 (routine "=" @function)
+(routineExpr (paramList ["(" ")"] @function))
+(routineExpr "=" @function)
+(routineExprTypeDesc (paramList ["(" ")"] @function))
 ; @function         ; function definitions
 
 ;@function.builtin ; built-in functions
@@ -118,7 +121,6 @@
 (primary . (symbol (ident) @function.call) . (primarySuffix (cmdCall)))
 ; @function.call    ; function calls
 
-(routine (pragma) @function.macro)
 ;@function.macro   ; preprocessor macros
 
 ;@method           ; method definitions
@@ -129,6 +131,7 @@
 
 (paramList (paramColonEquals (symbol) @parameter))
 (functionCall (symbolEqExprList (symbolEqExpr (symbol) @parameter)))
+(genericParam (symbol)  @parameter)
 ;@parameter        ; parameters of a function
 
 ;@keyword.coroutine   ; keywords related to coroutines (e.g. `go` in Go, `async/await` in Python)
@@ -199,6 +202,8 @@
       (exprColonEqExpr
         (expr
           (primary
+            (primaryPrefix
+              (keyw) @type.qualifier)?
             (symbol) @type))))))
 ; nested types in brackets, i.e. seq[string]
 (exprColonEqExpr
@@ -206,6 +211,7 @@
   . (expr (primary (symbol) @type)))
 ; variables in inline tuple declarations
 
+(genericParam (expr (primary (symbol) @type)))
 (primaryTypeDef (symbol) @type)
 (primaryTypeDesc (symbol) @type)
 (primaryTypeDesc 
@@ -224,10 +230,12 @@
           (expr
             (primary
               (symbol) @type)))))))
-(genericParam (symbol) @type)
 (tupleDecl (keyw) @type)
 (enumDecl (keyw) @type)
-(objectDecl (keyw) @type)
+((objectDecl (keyw) @type)
+ (#match? @type "object"))
+((objectDecl (keyw) @keyword.operator)
+ (#match? @keyword.operator "of"))
 (conceptDecl (keyw) @type)
 ((exprStmt
   (primary (symbol))

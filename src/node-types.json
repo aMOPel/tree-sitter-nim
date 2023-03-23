@@ -226,6 +226,10 @@
           "named": true
         },
         {
+          "type": "keyw",
+          "named": true
+        },
+        {
           "type": "typeDesc",
           "named": true
         }
@@ -2175,7 +2179,22 @@
       "required": false,
       "types": [
         {
-          "type": "exprColonEqExpr",
+          "type": "pragmaExprColonEqExpr",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "pragmaExprColonEqExpr",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "expr",
           "named": true
         }
       ]
@@ -3412,10 +3431,6 @@
   },
   {
     "type": "`",
-    "named": false
-  },
-  {
-    "type": "cast",
     "named": false
   },
   {

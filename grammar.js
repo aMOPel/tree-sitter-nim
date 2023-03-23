@@ -1037,7 +1037,7 @@ module.exports = grammar({
       '{.',
       repeat(
         seq(
-          $.exprColonEqExpr,
+          alias($.exprColonEqExpr, $.pragmaExprColonEqExpr),
           optional($._comma),
         ),
       ),
@@ -1330,7 +1330,7 @@ module.exports = grammar({
     ),
 
     castExpr: $ => seq(
-      'cast',
+      alias('cast', $.keyw),
       '[',
       $.typeDesc,
       ']',

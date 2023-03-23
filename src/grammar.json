@@ -4880,8 +4880,13 @@
             "type": "SEQ",
             "members": [
               {
-                "type": "SYMBOL",
-                "name": "exprColonEqExpr"
+                "type": "ALIAS",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "exprColonEqExpr"
+                },
+                "named": true,
+                "value": "pragmaExprColonEqExpr"
               },
               {
                 "type": "CHOICE",
@@ -6083,8 +6088,13 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "STRING",
-          "value": "cast"
+          "type": "ALIAS",
+          "content": {
+            "type": "STRING",
+            "value": "cast"
+          },
+          "named": true,
+          "value": "keyw"
         },
         {
           "type": "STRING",
