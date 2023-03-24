@@ -1,25 +1,26 @@
-(keyw) @keyword             ; various keywords
+(keyw) @keyword
+; various keywords
+
 (primary (symbol) @variable)
+; variables - overzealous, so placed first
 
 [
-(comment)
-(multilineComment)
-]
-@comment               ; line and block comments
+  (comment)
+  (multilineComment)
+] @comment
+; line and block comments
 
 [
-(docComment)
-(multilineDocComment)
-]
-@comment.documentation ; comments documenting code
+  (docComment)
+  (multilineDocComment)
+] @comment.documentation
+; comments documenting code
 
-(ERROR)
-@error                 ; syntax/parser errors
+(ERROR) @error
+; syntax/parser errors
 
-;@none                  ; completely disable the highlight
-
-(pragma)
-@preproc               ; various preprocessor directives & shebangs
+(pragma) @preproc
+; various preprocessor directives & shebangs
 
 ; TODO: maybe put pragma definitions or macro definitions here
 ;@define                ; preprocessor definition directives
@@ -27,175 +28,166 @@
 (declaration (variable (declColonEquals "=" @operator)))
 (exprStmt "=" @operator)
 [
-(operator)
-(opr)
-] 
-@operator               ; symbolic operators (e.g. `+` / `*`)
+  (operator)
+  (opr)
+] @operator
+; symbolic operators (e.g. `+` / `*`)
 
 [
-";"
-","
-"."
-":"
-]
-@punctuation.delimiter ; delimiters (e.g. `;` / `.` / `,`)
+  "."
+  ","
+  ";"
+  ":"
+] @punctuation.delimiter
+; delimiters (e.g. `;` / `.` / `,`)
+
+(tupleConstr ["(" ")"] @punctuation.bracket   )
+(arrayConstr ["[" "]"] @punctuation.bracket   )
+(tableConstr ["{" "}"] @punctuation.bracket   )
+(setConstr ["{" "}"] @punctuation.bracket   )
+(genericParamList ["[" "]"] @punctuation.bracket   )
+; TODO: doesn't work with ["(" ")"] because of token schenanigans in grammar
+(indexSuffix)  @punctuation.bracket
+; brackets (e.g. `()` / `{}` / `[]`)
+
+(interpolated_str_lit "&" @punctuation.special)
+(interpolated_str_lit "{" @punctuation.special)
+(interpolated_str_lit "}" @punctuation.special)
+; special symbols (e.g. `{}` in string interpolation)
 
 [
-"("
-")"
-"["
-"[:"
-"]"
-"{"
-"}"
-]
-@punctuation.bracket   ; brackets (e.g. `()` / `{}` / `[]`)
+  "("
+  ")"
+  "["
+  "[:"
+  "]"
+  "{"
+  "}"
+] @punctuation.brackets
+; brackets (e.g. `()` / `{}` / `[]`)
 
 (interpolated_str_lit ["&" "{" "}"] @punctuation.special)
-;@punctuation.special   ; special symbols (e.g. `{}` in string interpolation)
+; special symbols (e.g. `{}` in string interpolation)
 
 [
-(str_lit)
-(rstr_lit)
-(triplestr_lit)
-(interpolated_str_lit)
-(interpolated_triplestr_lit)
-(generalized_str_lit)
-(generalized_triplestr_lit)
-]
-@string               ; string literals
-
-;@string.documentation ; string documenting code (e.g. Python docstrings)
+  (str_lit)
+  (rstr_lit)
+  (triplestr_lit)
+  (interpolated_str_lit)
+  (interpolated_triplestr_lit)
+  (generalized_str_lit)
+  (generalized_triplestr_lit)
+] @string
+; string literals
 
 ; TODO:
 ;@string.regex         ; regular expressions
 
 [
-(str_esc_seq)
-(char_esc_seq)
-]
-@string.escape        ; escape sequences
-
-;@string.special       ; other special strings (e.g. dates)
-
-(char_lit) 
-@character            ; character literals
-
-;@character.special    ; special characters (e.g. wildcards)
+  (str_esc_seq)
+  (char_esc_seq)
+] @string.escape
+; escape sequences
 
 [
-(bool_lit)
-(nil_lit)
-]
-@boolean              ; boolean literals
+  (char_lit)
+] @character
+; character literals
 
 [
-(int_lit)
-(int_suffix)
-(custom_numeric_lit)
-]
-@number               ; numeric literals
+  (bool_lit)
+  (nil_lit)
+] @boolean
+; boolean literals
 
 [
-(float_lit)
-(float_suffix)
-]
-@float                ; floating-point number literals
+  (int_lit)
+  (int_suffix)
+  (custom_numeric_lit)
+] @number
+; numeric literals
 
+[
+  (float_lit)
+  (float_suffix)
+] @float
+; floating-point number literals
 
-(routine (symbol [(ident) (operator)] @function)) 
-; @function         ; function definitions
+(routine (symbol [(ident) (operator)] @function))
+; function definitions
 
-;@function.builtin ; built-in functions
-
-; primaryPrefix breaks function.call query
-(primary 
-  (symbol (ident) @function.call) 
+(primary
+  (symbol (ident) @function.call)
   . (primarySuffix (indexSuffix))?
   . (primarySuffix (functionCall)))
-(primary 
-  . (symbol (ident) @function.call) 
+; regular function calls
+(primary
+  . (symbol (ident) @function.call)
   . (primarySuffix (indexSuffix))?
   . (primarySuffix (cmdCall)))
-; @function.call    ; function calls
+; function calls without parenthesis
 
-;@function.macro   ; preprocessor macros
-
-;@method           ; method definitions
-;@method.call      ; method calls
-
-(primary 
-  (symbol (ident) @constructor) 
-  . (primarySuffix (indexSuffix))? 
+(primary
+  (symbol (ident) @constructor)
+  . (primarySuffix (indexSuffix))?
   . (primarySuffix (objectConstr)))
-;@constructor      ; constructor calls and definitions
+; constructor calls and definitions
 
 (paramList (paramColonEquals (symbol) @parameter))
 (functionCall (symbolEqExprList (symbolEqExpr (symbol) @parameter)))
 (genericParam (symbol)  @parameter)
-;@parameter        ; parameters of a function
-
-;@keyword.coroutine   ; keywords related to coroutines (e.g. `go` in Go, `async/await` in Python)
+; parameters of a function
 
 (routineExprTypeDesc (keyw) @keyword.function)
 (routineExpr (keyw) @keyword.function)
 (routine (keyw) @keyword.function)
-;@keyword.function    ; keywords that define a function (e.g. `func` in Go, `def` in Python)
+; keywords that define a function (e.g. `func` in Go, `def` in Python)
 
 (operator (keyw) @keyword.operator)
-;@keyword.operator    ; operators that are English words (e.g. `and` / `or`)
+; operators that are English words (e.g. `and` / `or`)
 
 (returnStmt (keyw) @keyword.return)
 (yieldStmt (keyw) @keyword.return)
 (discardStmt (keyw) @keyword.return)
-;@keyword.return      ; keywords like `return` and `yield`
+; keywords like `return` and `yield`
 
-(caseStmt (keyw) @conditional)
-(ofBranch (keyw) @conditional)
 (ifStmt (keyw) @conditional)
+(whenStmt (keyw) @conditional)
 (elifStmt (keyw) @conditional)
 (elseStmt (keyw) @conditional)
+(caseStmt (keyw) @conditional)
+(ofBranch (keyw) @conditional)
 (inlineIfStmt (keyw) @conditional)
-(whenStmt (keyw) @conditional)
 (inlineWhenStmt (keyw) @conditional)
 (objectCase (keyw) @conditional (symbol) @variable)
 (objectBranch (keyw) @conditional)
 (objectElif (keyw) @conditional)
 (objectElse (keyw) @conditional)
 (objectWhen (keyw) @conditional)
-;@conditional         ; keywords related to conditionals (e.g. `if` / `else`)
+; keywords related to conditionals (e.g. `if` / `else`)
 
-;@conditional.ternary ; ternary operator (e.g. `?` / `:`)
-
-(forStmt
-. (keyw) @repeat
-  (keyw) @repeat)
+(forStmt . (keyw) @repeat (keyw) @repeat)
 (whileStmt (keyw) @repeat)
 (breakStmt (keyw) @repeat)
 (continueStmt (keyw) @repeat)
-;@repeat              ; keywords related to loops (e.g. `for` / `while`)
+; keywords related to loops (e.g. `for` / `while`)
 
-;@debug               ; keywords related to debugging
-
-(blockStmt
-  (keyw)
-  .
-  (symbol) @label)
-;@label               ; GOTO and other labels (e.g. `label:` in C)
+(blockStmt (keyw) . (symbol) @label)
+; GOTO and other labels (e.g. `label:` in C)
 
 (importStmt (keyw) @include)
-(includeStmt (keyw) @include)
-(fromStmt (keyw) @include)
 (importExceptStmt (keyw) @include)
 (exportStmt (keyw) @include)
-;@include             ; keywords for including modules (e.g. `import` / `from` in Python)
+(fromStmt (keyw) @include)
+(includeStmt (keyw) @include)
+; keywords for including modules (e.g. `import` / `from` in Python)
 
 (raiseStmt (keyw) @exception)
 (tryStmt (keyw) @exception)
 (inlineTryStmt (keyw) @exception)
 (tryExceptStmt (keyw) @exception)
 (tryFinallyStmt (keyw) @exception)
-;@exception           ; keywords related to exceptions (e.g. `throw` / `catch`)
+; keywords related to exceptions (e.g. `throw` / `catch`)
 
 (primarySuffix
   (indexSuffix
@@ -207,7 +199,8 @@
               (keyw) @type.qualifier)?
             (symbol) @type))))))
 ; nested types in brackets, i.e. seq[string]
-; BUG: the problem is, this also matches array indexing syntax
+; BUG: the problem is, this also matches array indexing syntax,
+; but it can't be done any better
 
 (genericParam (expr (primary (symbol) @type)))
 (primaryTypeDef (symbol) @type)
@@ -230,20 +223,15 @@
   (operator) @keyword.operator
   (primary (symbol) @type))
  (#match? @keyword.operator "is"))
-;@type            ; type or class definitions and annotations
-
-; @type.builtin    ; built-in types
+; type or class definitions and annotations
 
 (typeDef (keyw) @keyword (symbol) @type.definition)
-;@type.definition ; type definitions (e.g. `typedef` in C)
+; type definitions (e.g. `typedef` in C)
 
 (typeDesc (primaryTypeDesc (primaryPrefix (keyw) @type.qualifier)))
 (typeDef (primaryTypeDef (primaryPrefix (keyw) @type.qualifier)))
-(conceptParam (keyw)  @type.qualifier)
-;@type.qualifier  ; type qualifiers (e.g. `const`)
-
-;@storageclass    ; modifiers that affect storage in memory or life-time
-;@attribute       ; attribute annotations (e.g. Python decorators)
+(conceptParam (keyw) @type.qualifier)
+; type qualifiers (e.g. `const`)
 
 (objectPart (symbol) @variable)
 ; has to be here because below is more specific
@@ -254,37 +242,28 @@
 (tupleConstr (symbolColonExpr (symbol) @field))
 (tupleDecl (identColon (ident) @field))
 (tupleDesc (identColon (ident) @field))
-;@field           ; object and struct fields
+; object and struct fields
 
-(primary 
-  (primarySuffix (qualifiedSuffix (symbol (ident) @function.call)))
-  . (primarySuffix (indexSuffix))? 
+(primary
+  (primarySuffix
+    (qualifiedSuffix (symbol (ident) @function.call)))
+  . (primarySuffix (indexSuffix))?
   . (primarySuffix (cmdCall)))
 (primary
   (primarySuffix (qualifiedSuffix (symbol) @function.call))
   . (primarySuffix (indexSuffix))?
   . (primarySuffix (functionCall)))
-; has to be after @field
-
-;@property        ; similar to `@field`
+; must come after @field
 
 (conceptParam (symbol) @variable)
 (forStmt (symbol) @variable)
 (declaration (variable (keyw) @keyword (declColonEquals (symbol) @variable)))
-;@variable         ; various variable names
+; various variable names
 
-((primary (symbol) @variable.builtin) 
+((primary (symbol) @variable.builtin)
   (#match? @variable.builtin "result"))
-;@variable.builtin ; built-in variable names (e.g. `this`)
-
+; built-in variable names (e.g. `this`)
 
 (enumElement (symbol) @constant)
 (declaration (constant (keyw) @keyword (declColonEquals (symbol) @constant)))
-;@constant         ; constant identifiers
-
-;@constant.builtin ; built-in constant values
-;@constant.macro   ; constants defined by the preprocessor
-
-;@namespace        ; modules or namespaces
-;@symbol           ; symbols or atoms
-
+; constant identifiers
