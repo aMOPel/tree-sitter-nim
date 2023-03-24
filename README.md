@@ -1,65 +1,45 @@
-# 🚫 NOT READY FOR USE 🚫
-
 # tree-sitter-nim
-tree-sitter parser for the nim programming language
+[Tree-Sitter](https://tree-sitter.github.io/tree-sitter/) grammar for the [Nim](https://nim-lang.org/) programming language
 
-## ⚠️  __WIP__ ⚠️
+## State of the Project
 
-In [`test/corpus/`](test/corpus/), are all the tests that are currently working.
+### Mostly working but unfinished
 
-Looking at that, you can see that quite a lot of language features are already working.
+On the `main` branch is a version of the grammar that works for 95% of the cases.
+It does fairly well, highlighting `.nim` files for example with [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter).
 
-## Roadmap
+⚠️  However there are many minor issues and corner cases where the parsing does not
+work correctly or breaks down completely. 
 
-__currently__
+The grammar is still missing 2 important syntax features:
+1. arbitrary parantheses eg `-(5+5)`
+2. complex expressions, like if-expresssions eg `let a = if true: "foo" else: "bar"`
 
-*  trying to implement the missing language features
+So syntax nodes that are part of such expressions won't be parsed correctly and
+in some cases this will also break parsing on subsequent lines.
 
-__next__
+There is a [pending PR at nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter/pull/4439) to merge the highlighting queries.
 
-* try to do big integration tests, trying the parse on big nim files with complex syntax
+### Why
 
-* fix all the newly surfaced bugs
+The structure of the grammar on `main` is problematic and fixing all the issues
+requires a major refactoring of the entire thing.
 
-* write queries for highlighting and all the other features in 
-[nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter/tree/master/queries)
+## Alternatives
 
-This will probably entail restructuring of rules, aliasing, hiding superfluous rules,
-adding fields etc.
-I've held off on perfecting the rule structure for now, since things might have to change anyways,
-to accommodate the missing features. Also I didn't learn how to write queries yet.
+### Alaviss's Neovim Plugin
 
-## Contributions
+[https://github.com/alaviss/nim.nvim](https://github.com/alaviss/nim.nvim)
 
-Contributions are welcome.
+It does a great job at highlighting, but it won't give you tree-sitter text-objects and the like.
 
-Read [the tree-sitter docs](https://tree-sitter.github.io/tree-sitter/creating-parsers)
+### Alaviss's upcoming tree-sitter grammar
 
-I'm trying to put comments where things are too cryptic.
+[https://github.com/alaviss/tree-sitter-nim/tree/rewrite](https://github.com/alaviss/tree-sitter-nim/tree/rewrite)
 
-__contribute to the parser:__
+Still a work in progress but promising.
 
-I've added a list of TODOs at the top of the [`grammar.js` file](grammar.js).
-Those have been added as __issues__ to this repo. If you want to contribute please __state so
-in the issue__.
-
-If you make a contribution, changing something in `grammar.js`,
-please make sure the parser builds without problems:
-
-`tree-sitter generate`
-
-And the all tests still work:
-
-`tree-sitter test`
-
-__write queries:__
-
-If you're experienced in writing TS queries, you can also get started on writing queries for
-`nvim-treesitter` and/or make proposals to change the rules structure in some way.
-
-__Be warned__, that the rule structure is still subject to change, entailing an update to the queries.
-
-## For Vim Users
+## Contributing Tips For Vim Users
 
 ### Snippets
 
