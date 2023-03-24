@@ -933,13 +933,8 @@
       "type": "CHOICE",
       "members": [
         {
-          "type": "ALIAS",
-          "content": {
-            "type": "SYMBOL",
-            "name": "tupleDesc"
-          },
-          "named": false,
-          "value": "tupleDesc"
+          "type": "SYMBOL",
+          "name": "tupleDesc"
         },
         {
           "type": "SEQ",
@@ -5809,24 +5804,31 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "IMMEDIATE_TOKEN",
-          "content": {
-            "type": "PREC",
-            "value": 1,
-            "content": {
-              "type": "CHOICE",
-              "members": [
-                {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "IMMEDIATE_TOKEN",
+              "content": {
+                "type": "PREC",
+                "value": 1,
+                "content": {
                   "type": "STRING",
                   "value": "["
-                },
-                {
+                }
+              }
+            },
+            {
+              "type": "IMMEDIATE_TOKEN",
+              "content": {
+                "type": "PREC",
+                "value": 1,
+                "content": {
                   "type": "STRING",
                   "value": "[:"
                 }
-              ]
+              }
             }
-          }
+          ]
         },
         {
           "type": "CHOICE",

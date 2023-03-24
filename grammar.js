@@ -317,7 +317,7 @@ module.exports = grammar({
     ),
 
     tupleDecl: $ => choice(
-      alias($.tupleDesc, "tupleDesc"),
+      $.tupleDesc,
       seq(
         alias('tuple', $.keyw),
         $._indent,
@@ -1269,7 +1269,10 @@ module.exports = grammar({
     // eg function calls, like `a[int, int]()`
     indexSuffix: $ => seq(
       // has to be token(prec( for some reason
-      token.immediate(prec(TOKEN_PREC.indexSuffix, choice('[', '[:'))),
+      choice(
+        token.immediate(prec(TOKEN_PREC.indexSuffix, '[')),
+        token.immediate(prec(TOKEN_PREC.indexSuffix, '[:')),
+      ),
       optional($.exprColonEqExprList),
       ']',
     ),

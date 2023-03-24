@@ -561,6 +561,7 @@ discard cast[int](x)
       (expr
         (primary
           (castExpr
+            (keyw)
             (typeDesc
               (primaryTypeDesc
                 (symbol
@@ -575,6 +576,7 @@ discard cast[int](x)
       (expr
         (primary
           (castExpr
+            (keyw)
             (typeDesc
               (primaryTypeDesc
                 (symbol
@@ -657,7 +659,7 @@ discard iterator = discard
                   (symbol
                     (ident)))))
             (pragma
-              (exprColonEqExpr
+              (pragmaExprColonEqExpr
                 (expr
                   (primary
                     (symbol

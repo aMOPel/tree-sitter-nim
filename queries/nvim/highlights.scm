@@ -40,18 +40,18 @@
 ]
 @punctuation.delimiter ; delimiters (e.g. `;` / `.` / `,`)
 
-(tupleConstr ["(" ")"] @punctuation.bracket   )
-(arrayConstr ["[" "]"] @punctuation.bracket   )
-(tableConstr ["{" "}"] @punctuation.bracket   )
-(setConstr ["{" "}"] @punctuation.bracket   )
-(genericParamList ["[" "]"] @punctuation.bracket   )
-; TODO: doesn't work with ["(" ")"] because of token schenanigans in grammar
-(indexSuffix)  @punctuation.bracket
-;@punctuation.bracket   ; brackets (e.g. `()` / `{}` / `[]`)
+[
+"("
+")"
+"["
+"[:"
+"]"
+"{"
+"}"
+]
+@punctuation.bracket   ; brackets (e.g. `()` / `{}` / `[]`)
 
-(interpolated_str_lit "&" @punctuation.special)
-(interpolated_str_lit "{" @punctuation.special)
-(interpolated_str_lit "}" @punctuation.special)
+(interpolated_str_lit ["&" "{" "}"] @punctuation.special)
 ;@punctuation.special   ; special symbols (e.g. `{}` in string interpolation)
 
 [
@@ -104,21 +104,19 @@
 
 
 (routine (symbol [(ident) (operator)] @function)) 
-(routine (paramList ["(" ")"] @function))
-(routine "=" @function)
-(routineExpr (paramList ["(" ")"] @function))
-(routineExpr "=" @function)
-(routineExprTypeDesc (paramList ["(" ")"] @function))
 ; @function         ; function definitions
 
 ;@function.builtin ; built-in functions
 
 ; primaryPrefix breaks function.call query
-(castExpr ["(" ")"] @function.call)
-(primary (symbol (ident) @function.call) .
-  (primarySuffix (functionCall ["(" ")"] @function.call))
-)
-(primary . (symbol (ident) @function.call) . (primarySuffix (cmdCall)))
+(primary 
+  (symbol (ident) @function.call) 
+  . (primarySuffix (indexSuffix))?
+  . (primarySuffix (functionCall)))
+(primary 
+  . (symbol (ident) @function.call) 
+  . (primarySuffix (indexSuffix))?
+  . (primarySuffix (cmdCall)))
 ; @function.call    ; function calls
 
 ;@function.macro   ; preprocessor macros
@@ -126,7 +124,10 @@
 ;@method           ; method definitions
 ;@method.call      ; method calls
 
-(primary (symbol (ident) @constructor) . (primarySuffix (objectConstr ["(" ")"] @constructor)))
+(primary 
+  (symbol (ident) @constructor) 
+  . (primarySuffix (indexSuffix))? 
+  . (primarySuffix (objectConstr)))
 ;@constructor      ; constructor calls and definitions
 
 (paramList (paramColonEquals (symbol) @parameter))
@@ -206,31 +207,13 @@
               (keyw) @type.qualifier)?
             (symbol) @type))))))
 ; nested types in brackets, i.e. seq[string]
-(exprColonEqExpr
-  . (expr (primary (symbol) @parameter))
-  . (expr (primary (symbol) @type)))
-; variables in inline tuple declarations
+; BUG: the problem is, this also matches array indexing syntax
 
 (genericParam (expr (primary (symbol) @type)))
 (primaryTypeDef (symbol) @type)
 (primaryTypeDesc (symbol) @type)
-(primaryTypeDesc 
-  (primarySuffix
-    (indexSuffix
-      (exprColonEqExprList
-        (exprColonEqExpr
-          (expr
-            (primary
-              (symbol) @type)))))))
-(primaryTypeDef 
-  (primarySuffix
-    (indexSuffix
-      (exprColonEqExprList
-        (exprColonEqExpr
-          (expr
-            (primary
-              (symbol) @type)))))))
 (tupleDecl (keyw) @type)
+(tupleDesc (keyw) @type)
 (enumDecl (keyw) @type)
 ((objectDecl (keyw) @type)
  (#match? @type "object"))
@@ -270,17 +253,21 @@
 (objectConstr (symbolColonExpr (symbol) @field))
 (tupleConstr (symbolColonExpr (symbol) @field))
 (tupleDecl (identColon (ident) @field))
+(tupleDesc (identColon (ident) @field))
 ;@field           ; object and struct fields
 
-(primary (primarySuffix (qualifiedSuffix (symbol (ident) @function.call))) . (primarySuffix (cmdCall)))
+(primary 
+  (primarySuffix (qualifiedSuffix (symbol (ident) @function.call)))
+  . (primarySuffix (indexSuffix))? 
+  . (primarySuffix (cmdCall)))
 (primary
   (primarySuffix (qualifiedSuffix (symbol) @function.call))
-  . (primarySuffix (functionCall ["(" ")"] @function.call)))
+  . (primarySuffix (indexSuffix))?
+  . (primarySuffix (functionCall)))
 ; has to be after @field
 
 ;@property        ; similar to `@field`
 
-(tupleDesc (identColon (ident) @variable))
 (conceptParam (symbol) @variable)
 (forStmt (symbol) @variable)
 (declaration (variable (keyw) @keyword (declColonEquals (symbol) @variable)))

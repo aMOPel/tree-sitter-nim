@@ -3056,7 +3056,7 @@
     "fields": {},
     "children": {
       "multiple": true,
-      "required": false,
+      "required": true,
       "types": [
         {
           "type": "identColon",
@@ -3064,6 +3064,10 @@
         },
         {
           "type": "keyw",
+          "named": true
+        },
+        {
+          "type": "tupleDesc",
           "named": true
         }
       ]
@@ -3415,6 +3419,10 @@
   },
   {
     "type": "[",
+    "named": false
+  },
+  {
+    "type": "[:",
     "named": false
   },
   {

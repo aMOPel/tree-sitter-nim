@@ -596,7 +596,7 @@ pragmaStmt
   (stmt
     (pragmaStmt
       (pragma
-        (exprColonEqExpr
+        (pragmaExprColonEqExpr
           (expr
             (primary
               (symbol
@@ -605,17 +605,17 @@ pragmaStmt
             (primary
               (symbol
                 (ident)))))
-        (exprColonEqExpr
+        (pragmaExprColonEqExpr
           (expr
             (primary
               (symbol
                 (ident)))))
-        (exprColonEqExpr
+        (pragmaExprColonEqExpr
           (expr
             (primary
               (symbol
                 (ident)))))
-        (exprColonEqExpr
+        (pragmaExprColonEqExpr
           (expr
             (primary
               (symbol
@@ -630,7 +630,7 @@ pragmaStmt
   (stmt
     (pragmaStmt
       (pragma
-        (exprColonEqExpr
+        (pragmaExprColonEqExpr
           (expr
             (primary
               (symbol
@@ -639,12 +639,12 @@ pragmaStmt
             (primary
               (symbol
                 (ident)))))
-        (exprColonEqExpr
+        (pragmaExprColonEqExpr
           (expr
             (primary
               (symbol
                 (ident)))))
-        (exprColonEqExpr
+        (pragmaExprColonEqExpr
           (expr
             (primary
               (symbol
@@ -653,7 +653,7 @@ pragmaStmt
             (primary
               (literal
                 (str_lit)))))
-        (exprColonEqExpr
+        (pragmaExprColonEqExpr
           (expr
             (primary
               (symbol
@@ -661,7 +661,7 @@ pragmaStmt
   (stmt
     (pragmaStmt
       (pragma
-        (exprColonEqExpr
+        (pragmaExprColonEqExpr
           (expr
             (primary
               (symbol
@@ -670,12 +670,12 @@ pragmaStmt
             (primary
               (symbol
                 (ident)))))
-        (exprColonEqExpr
+        (pragmaExprColonEqExpr
           (expr
             (primary
               (symbol
                 (ident)))))
-        (exprColonEqExpr
+        (pragmaExprColonEqExpr
           (expr
             (primary
               (symbol
@@ -684,7 +684,7 @@ pragmaStmt
             (primary
               (literal
                 (str_lit)))))
-        (exprColonEqExpr
+        (pragmaExprColonEqExpr
           (expr
             (primary
               (symbol
@@ -703,4 +703,5 @@ pragmaStmt
               (primary
                 (literal
                   (bool_lit))))))))))
+
 

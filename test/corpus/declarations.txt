@@ -840,7 +840,7 @@ type j[T] = var ref int not nil
         (symbol
           (ident))
         (pragma
-          (exprColonEqExpr
+          (pragmaExprColonEqExpr
             (expr
               (primary
                 (symbol
@@ -859,7 +859,7 @@ type j[T] = var ref int not nil
             (symbol
               (ident))))
         (pragma
-          (exprColonEqExpr
+          (pragmaExprColonEqExpr
             (expr
               (primary
                 (symbol
@@ -955,7 +955,7 @@ type
                   (symbol
                     (ident)))))
             (pragma
-              (exprColonEqExpr
+              (pragmaExprColonEqExpr
                 (expr
                   (primary
                     (symbol
@@ -967,7 +967,7 @@ type
           (routineExprTypeDesc
             (keyw)
             (pragma
-              (exprColonEqExpr
+              (pragmaExprColonEqExpr
                 (expr
                   (primary
                     (symbol
@@ -992,7 +992,7 @@ type
                   (symbol
                     (ident)))))
             (pragma
-              (exprColonEqExpr
+              (pragmaExprColonEqExpr
                 (expr
                   (primary
                     (symbol
@@ -1072,7 +1072,7 @@ type
                           (symbol
                             (ident)))))
                     (pragma
-                      (exprColonEqExpr
+                      (pragmaExprColonEqExpr
                         (expr
                           (primary
                             (symbol
@@ -1087,7 +1087,7 @@ type
                     (keyw)
                     (paramList)
                     (pragma
-                      (exprColonEqExpr
+                      (pragmaExprColonEqExpr
                         (expr
                           (primary
                             (symbol
@@ -1113,7 +1113,7 @@ type
                           (symbol
                             (ident)))))
                     (pragma
-                      (exprColonEqExpr
+                      (pragmaExprColonEqExpr
                         (expr
                           (primary
                             (symbol
@@ -1246,7 +1246,7 @@ const
           (symbol
             (ident))
           (pragma
-            (exprColonEqExpr
+            (pragmaExprColonEqExpr
               (expr
                 (primary
                   (symbol
@@ -1263,7 +1263,7 @@ const
           (symbol
             (ident))
           (pragma
-            (exprColonEqExpr
+            (pragmaExprColonEqExpr
               (expr
                 (primary
                   (symbol
@@ -1298,7 +1298,7 @@ const
           (symbol
             (ident))
           (pragma
-            (exprColonEqExpr
+            (pragmaExprColonEqExpr
               (expr
                 (primary
                   (symbol
@@ -1431,7 +1431,7 @@ var
           (symbol
             (ident))
           (pragma
-            (exprColonEqExpr
+            (pragmaExprColonEqExpr
               (expr
                 (primary
                   (symbol
@@ -1459,7 +1459,7 @@ var
           (symbol
             (ident))
           (pragma
-            (exprColonEqExpr
+            (pragmaExprColonEqExpr
               (expr
                 (primary
                   (symbol
@@ -1494,7 +1494,7 @@ var
           (symbol
             (ident))
           (pragma
-            (exprColonEqExpr
+            (pragmaExprColonEqExpr
               (expr
                 (primary
                   (symbol
@@ -1556,6 +1556,7 @@ var x: tuple[x: int; y, z: int]
           (ident))
         (primaryTypeDef
           (tupleDecl
+            (tupleDesc
               (keyw)
               (identColon
                 (ident)
@@ -1575,7 +1576,7 @@ var x: tuple[x: int; y, z: int]
                 (typeDesc
                   (primaryTypeDesc
                     (symbol
-                      (ident))))))))))
+                      (ident)))))))))))
   (stmt
     (declaration
       (typeDef
@@ -1595,13 +1596,14 @@ var x: tuple[x: int; y, z: int]
           (ident))
         (primaryTypeDef
           (tupleDecl
+            (tupleDesc
               (keyw)
               (identColon
                 (ident)
                 (typeDesc
                   (primaryTypeDesc
                     (symbol
-                      (ident))))))))))
+                      (ident)))))))))))
   (stmt
     (declaration
       (variable
@@ -1654,7 +1656,7 @@ type b {.pure.} = enum A{.deprecated.} = 9, B{.deprecated.} C D = 17
               (symbol
                 (ident))
               (pragma
-                (exprColonEqExpr
+                (pragmaExprColonEqExpr
                   (expr
                     (primary
                       (symbol
@@ -1667,7 +1669,7 @@ type b {.pure.} = enum A{.deprecated.} = 9, B{.deprecated.} C D = 17
               (symbol
                 (ident))
               (pragma
-                (exprColonEqExpr
+                (pragmaExprColonEqExpr
                   (expr
                     (primary
                       (symbol
@@ -1689,7 +1691,7 @@ type b {.pure.} = enum A{.deprecated.} = 9, B{.deprecated.} C D = 17
         (symbol
           (ident))
         (pragma
-          (exprColonEqExpr
+          (pragmaExprColonEqExpr
             (expr
               (primary
                 (symbol
@@ -1701,7 +1703,7 @@ type b {.pure.} = enum A{.deprecated.} = 9, B{.deprecated.} C D = 17
               (symbol
                 (ident))
               (pragma
-                (exprColonEqExpr
+                (pragmaExprColonEqExpr
                   (expr
                     (primary
                       (symbol
@@ -1714,7 +1716,7 @@ type b {.pure.} = enum A{.deprecated.} = 9, B{.deprecated.} C D = 17
               (symbol
                 (ident))
               (pragma
-                (exprColonEqExpr
+                (pragmaExprColonEqExpr
                   (expr
                     (primary
                       (symbol
@@ -1920,7 +1922,7 @@ type f = concept x
               (symbol
                 (ident)))
             (pragma
-              (exprColonEqExpr
+              (pragmaExprColonEqExpr
                 (expr
                   (primary
                     (symbol
@@ -1965,7 +1967,7 @@ type f = concept x
               (symbol
                 (ident)))
             (pragma
-              (exprColonEqExpr
+              (pragmaExprColonEqExpr
                 (expr
                   (primary
                     (symbol
@@ -2046,7 +2048,7 @@ type c{.deprecated.} = object
         (symbol
           (ident))
         (pragma
-          (exprColonEqExpr
+          (pragmaExprColonEqExpr
             (expr
               (primary
                 (symbol
@@ -2077,7 +2079,7 @@ type c{.deprecated.} = object
                 (ident))
               (opr)
               (pragma
-                (exprColonEqExpr
+                (pragmaExprColonEqExpr
                   (expr
                     (primary
                       (symbol

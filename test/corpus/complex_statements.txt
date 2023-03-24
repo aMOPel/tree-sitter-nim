@@ -1399,7 +1399,7 @@ test
     (asmStmt
       (keyw)
       (pragma
-        (exprColonEqExpr
+        (pragmaExprColonEqExpr
           (expr
             (primary
               (symbol
